@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:travelgram/app/routes/app_pages.dart';
 
+import '../../../shared/bottom_navigation.dart';
 import '../../register/views/register_view.dart';
 
 class LoginView extends StatefulWidget {
@@ -100,25 +101,22 @@ class _LoginViewState extends State<LoginView> {
                     ),
                   ),
 
-                  Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: () {
-                        //create a snackbar
-                        ScaffoldMessenger.of(context).showSnackBar(
+                  Container(
+                    width: 300.w,
+                    height: 40.h,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        color: Colors.blue),
+                    margin: EdgeInsets.only(top: 20.h, left: 20.w, right: 20.w),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(16),
+                        onTap: () => ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text("Masih dalam tahap pengembangan"),
                           ),
-                        );
-                      },
-                      child: Container(
-                        width: 300.w,
-                        height: 40.h,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            color: Colors.blue),
-                        margin:
-                            EdgeInsets.only(top: 20.h, left: 20.w, right: 20.w),
+                        ),
                         child: Row(
                           children: [
                             Padding(
@@ -181,21 +179,26 @@ class _LoginViewState extends State<LoginView> {
                     ],
                   ),
 
-                  //create a button
-                  Container(
-                    width: 300.w,
-                    height: 40.h,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      color: const Color.fromARGB(255, 122, 101, 180),
-                    ),
-                    margin: EdgeInsets.only(top: 8.h, left: 20.w, right: 20.w),
-                    child: const Center(
-                      child: Text(
-                        "Login",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
+                  InkWell(
+                    onTap: () {
+                      Get.offAll(() => const BottomNavBar());
+                    },
+                    child: Container(
+                      width: 300.w,
+                      height: 40.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        color: const Color.fromARGB(255, 122, 101, 180),
+                      ),
+                      margin:
+                          EdgeInsets.only(top: 8.h, left: 20.w, right: 20.w),
+                      child: const Center(
+                        child: Text(
+                          "Login",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
                         ),
                       ),
                     ),

@@ -3,10 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
 
-import '../controllers/register_controller.dart';
-
 class RegisterView extends StatefulWidget {
-  const RegisterView({Key? key}) : super(key: key);
+  const RegisterView({super.key});
 
   @override
   State<RegisterView> createState() => _RegisterViewState();
@@ -33,8 +31,8 @@ class _RegisterViewState extends State<RegisterView> {
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
             colors: [
-              Colors.blue,
-              Color(0x006f7bf7),
+              Color.fromARGB(255, 0, 26, 255),
+              Color.fromARGB(0, 0, 200, 255),
             ],
           ),
         ),
