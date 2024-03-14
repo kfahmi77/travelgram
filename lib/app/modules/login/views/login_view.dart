@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:travelgram/app/routes/app_pages.dart';
+
+import '../../register/views/register_view.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -36,7 +40,7 @@ class _LoginViewState extends State<LoginView> {
             ),
             Container(
               width: 220.w,
-              height: 320.h,
+              height: 340.h,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10),
@@ -51,8 +55,9 @@ class _LoginViewState extends State<LoginView> {
                         filled: true,
                         fillColor: const Color.fromRGBO(217, 217, 217, 1),
                         hintText: "Email",
-                        border: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
+                        border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                          borderSide: BorderSide.none,
                         ),
                         prefixIcon: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -78,8 +83,9 @@ class _LoginViewState extends State<LoginView> {
                         filled: true,
                         fillColor: const Color.fromRGBO(217, 217, 217, 1),
                         hintText: "Password",
-                        border: UnderlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
+                        border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                          borderSide: BorderSide.none,
                         ),
                         prefixIcon: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -119,16 +125,16 @@ class _LoginViewState extends State<LoginView> {
                               padding: const EdgeInsets.all(8.0),
                               child: Image.asset(
                                 "assets/images/google.png",
-                                width: 23.w,
+                                width: 18.w,
                                 height: 30.h,
                                 fit: BoxFit.fill,
                               ),
                             ),
-                            const Text(
+                            Text(
                               "Lanjutkan dengan Google",
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 16,
+                                fontSize: 10.sp,
                               ),
                             ),
                           ],
@@ -197,27 +203,32 @@ class _LoginViewState extends State<LoginView> {
                   SizedBox(
                     height: 8.h,
                   ),
-                  const Row(
+                  Row(
                     children: [
-                      Spacer(),
-                      Text(
+                      const Spacer(),
+                      const Text(
                         "Belum punya akun?",
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 12,
                         ),
                       ),
-                      Spacer(),
-                      Spacer(),
-                      Spacer(),
-                      Text(
-                        "Daftar",
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 12,
+                      const Spacer(),
+                      const Spacer(),
+                      const Spacer(),
+                      InkWell(
+                        onTap: () {
+                          Get.to(() => const RegisterView());
+                        },
+                        child: const Text(
+                          "Daftar",
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 12,
+                          ),
                         ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                     ],
                   ),
                 ],
