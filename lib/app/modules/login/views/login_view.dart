@@ -31,16 +31,15 @@ class _LoginViewState extends State<LoginView> {
           ],
         )),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
               "assets/images/logo.png",
               width: 200.w,
-              height: 300.h,
               fit: BoxFit.fill,
             ),
             Container(
-              width: 220.w,
+              width: 250.w,
               height: 340.h,
               decoration: BoxDecoration(
                 color: Colors.white,
