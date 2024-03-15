@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:travelgram/app/modules/splash/views/splash_view.dart';
+import 'package:travelgram/app/shared/bottom_navigation.dart';
 import 'app/routes/app_pages.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
+  final token = prefs.getString('token');
+
   runApp(
-    const MyApp(),
+    MyApp(token: token),
   );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final String? token;
+
+  const MyApp({super.key, this.token});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +30,7 @@ class MyApp extends StatelessWidget {
       child: GetMaterialApp(
         title: 'MyApp',
         theme: ThemeData(visualDensity: VisualDensity.adaptivePlatformDensity),
-        initialRoute: AppPages.initial,
+        home: token == null ? const SplashView() : const BottomNavBar(),
         getPages: AppPages.routes,
       ),
     );

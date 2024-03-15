@@ -6,14 +6,15 @@ environment:
   sdk: ">=3.2.6 <4.0.0"
 
 dependencies:
+  animated_notch_bottom_bar: ^1.0.2
   cupertino_icons: ^1.0.2
-  get: 4.6.6
   flutter:
     sdk: flutter
   flutter_screenutil: ^5.9.0
-  motion_tab_bar: ^2.0.4
-  animated_notch_bottom_bar: ^1.0.2
+  get: 4.6.6
   http: ^1.2.0
+  motion_tab_bar: ^2.0.4
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_lints: 3.0.1

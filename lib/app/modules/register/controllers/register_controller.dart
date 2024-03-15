@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:travelgram/app/routes/app_pages.dart';
+import 'package:travelgram/app/shared/url_api.dart';
 
 class RegisterController extends GetxController {
   TextEditingController namaLengkapController = TextEditingController();
@@ -17,7 +18,7 @@ class RegisterController extends GetxController {
   RxBool isFieldEmpty = false.obs;
 
   Future<void> postData() async {
-    final url = Uri.parse('http://192.168.242.181:80/api/register');
+    final url = Uri.parse(UrlApi.register);
 
     isPasswordMismatch.value =
         passwordController.text != passwordRepeatController.text;
@@ -57,7 +58,7 @@ class RegisterController extends GetxController {
       },
     );
 
-    Get.back(); 
+    Get.back();
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       Get.snackbar('Success', 'Registrasi berhasil');

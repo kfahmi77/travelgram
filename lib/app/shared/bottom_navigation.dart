@@ -2,6 +2,9 @@ import 'dart:developer';
 
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:travelgram/app/routes/app_pages.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});
@@ -160,7 +163,23 @@ class Page1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        color: Colors.yellow, child: const Center(child: Text('Page 1')));
+        color: Colors.yellow,
+        child: Center(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blueGrey,
+              ),
+              onPressed: () {
+                logout();
+              },
+              child: const Text("Save"),
+            ),
+            Text('Page 1'),
+          ],
+        )));
   }
 }
 
@@ -202,4 +221,10 @@ class Page5 extends StatelessWidget {
     return Container(
         color: Colors.grey, child: const Center(child: Text('Page 5')));
   }
+}
+
+void logout() async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.remove('token');
+  Get.offAllNamed(Routes.LOGIN);
 }
