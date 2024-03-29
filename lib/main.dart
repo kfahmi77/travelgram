@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       child: GetMaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'MyApp',
         theme: ThemeData(visualDensity: VisualDensity.adaptivePlatformDensity),
         home: token == null ? const SplashView() : const BottomNavBar(),

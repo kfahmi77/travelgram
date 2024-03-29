@@ -4,6 +4,7 @@ import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_not
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:travelgram/app/modules/home/views/home_view.dart';
 import 'package:travelgram/app/routes/app_pages.dart';
 
 class BottomNavBar extends StatefulWidget {
@@ -27,7 +28,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   /// widget list
   final List<Widget> bottomBarPages = [
-    const Page1(),
+    const HomeView(),
     const Page2(),
     const Page3(),
     const Page4(),

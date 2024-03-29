@@ -7,6 +7,8 @@ import 'package:travelgram/app/shared/bottom_navigation.dart';
 import 'package:travelgram/app/shared/url_api.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../shared/token.dart';
+
 class LoginController extends GetxController {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -51,9 +53,4 @@ class LoginController extends GetxController {
       Get.snackbar('Error', 'Login gagal dengan error: $e');
     }
   }
-}
-
-Future<void> saveToken(String token) async {
-  final prefs = await SharedPreferences.getInstance();
-  await prefs.setString('token', token);
 }
