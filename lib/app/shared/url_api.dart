@@ -8,4 +8,6 @@ class UrlApi {
   static String messages = '${baseUrl}all-chats';
   static String sendMessage = '${baseUrl}chat-messages';
   static String getMessageById = '${baseUrl}get-messages';
+
+  static String searchUser = '${baseUrl}user/search';
 }

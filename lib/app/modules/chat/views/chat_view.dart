@@ -7,6 +7,7 @@ import 'package:travelgram/app/modules/chat/views/detail_chat_view.dart';
 import 'package:travelgram/app/shared/url_api.dart';
 import 'dart:convert';
 
+import '../../search/views/search_view.dart';
 import '../models/chat_model.dart';
 
 class ChatScreenView extends StatefulWidget {
@@ -63,6 +64,15 @@ class _ChatScreenViewState extends State<ChatScreenView> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Messages'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => UserSearchPage()));
+              },
+            ),
+          ],
         ),
         body: StreamBuilder<List<ChatMessages>>(
           stream: _messagesStream,
@@ -96,7 +106,7 @@ class _ChatScreenViewState extends State<ChatScreenView> {
                       MaterialPageRoute(
                         builder: (context) => DetailChatView(
                           token: _token ?? '',
-                          receiverId:selectedReceiverId,
+                          receiverId: selectedReceiverId,
                           senderId: message.senderId,
                           conversationId: message.conversationId.toString(),
                         ),
