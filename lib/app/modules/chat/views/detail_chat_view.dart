@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:travelgram/app/shared/url_api.dart';
 
 class ChatMessage {
@@ -104,7 +105,7 @@ class _DetailChatViewState extends State<DetailChatView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat Messages'),
+        title: const Text('Chat Messages'),
       ),
       body: Column(
         children: [
@@ -113,7 +114,7 @@ class _DetailChatViewState extends State<DetailChatView> {
               future: fetchMessages(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else {
@@ -122,29 +123,62 @@ class _DetailChatViewState extends State<DetailChatView> {
                     itemCount: messages.length,
                     itemBuilder: (context, index) {
                       final message = messages[index];
+                      String localDateTime = DateFormat('yyyy-MM-dd HH:mm:ss')
+                          .format(message.createdAt);
+
                       return message.type == 'received'
                           ? Align(
                               alignment: Alignment.centerLeft,
-                              child: Container(
-                                margin: EdgeInsets.all(8),
-                                padding: EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  color: Colors.blueGrey[100],
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Text(message.message),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.all(8),
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: Colors.blueGrey[100],
+                                      borderRadius: const BorderRadius.only(
+                                        topRight: Radius.circular(16),
+                                        bottomRight: Radius.circular(16),
+                                        bottomLeft: Radius.circular(16),
+                                      ),
+                                    ),
+                                    child: Text(message.message),
+                                  ),
+                                  Text(
+                                    localDateTime,
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ],
                               ),
                             )
                           : Align(
                               alignment: Alignment.centerRight,
-                              child: Container(
-                                margin: EdgeInsets.all(8),
-                                padding: EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  color: Colors.blue[200],
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Text(message.message),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.all(8),
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: Colors.blue[200],
+                                      borderRadius: const BorderRadius.only(
+                                        topLeft: Radius.circular(16),
+                                        bottomRight: Radius.circular(16),
+                                        bottomLeft: Radius.circular(16),
+                                      ),
+                                    ),
+                                    child: Text(message.message),
+                                  ),
+                                  Text(
+                                    localDateTime,
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ],
                               ),
                             );
                     },
@@ -154,19 +188,19 @@ class _DetailChatViewState extends State<DetailChatView> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             child: Row(
               children: [
                 Expanded(
                   child: TextField(
                     controller: _messageController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'Type your message...',
                     ),
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.send),
+                  icon: const Icon(Icons.send),
                   onPressed: () {
                     if (_messageController.text.isNotEmpty) {
                       // Call function to send message

@@ -98,6 +98,7 @@ class _ChatScreenViewState extends State<ChatScreenView> {
                 final message = snapshot.data![index];
                 final formattedDate =
                     timeago.format(message.createdAt, locale: 'id');
+                String messagesLength = message.message;
                 return InkWell(
                   onTap: () {
                     String selectedReceiverId =
@@ -105,29 +106,31 @@ class _ChatScreenViewState extends State<ChatScreenView> {
                             ? message.senderId.toString()
                             : message.receiverId.toString();
                     print('${UrlApi.storage}${message.receiver.avatar}');
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => DetailChatView(
-                    //       token: _token ?? '',
-                    //       receiverId: selectedReceiverId,
-                    //       conversationId: message.conversationId.toString(),
-                    //     ),
-                    //   ),
-                    // );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailChatView(
+                          token: _token ?? '',
+                          receiverId: selectedReceiverId,
+                          conversationId: message.conversationId.toString(),
+                        ),
+                      ),
+                    );
                   },
                   child: ListTile(
                     leading: CircleAvatar(
                       backgroundImage: message.receiver.avatar != null
                           ? NetworkImage(
                               'http://192.168.14.181:8080/storage//${message.receiver.avatar}')
-                          : NetworkImage(
+                          : const NetworkImage(
                               'https://www.pngkey.com/png/full/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png'),
                     ),
-                    title: Text(message.message),
+                    title: Text(message.sender.id.toString() == _idUser
+                        ? 'Saya'
+                        : message.sender.username),
                     subtitle: Text(message.sender.id.toString() == _idUser
-                        ? 'Saya : ${message.message}'
-                        : '${message.sender.username} : ${message.message}'),
+                        ? 'Saya : ${messagesLength.length > 20 ? '${messagesLength.substring(0, 20)}...' : messagesLength}'
+                        : '${message.sender.username} :  ${messagesLength.length > 20 ? '${messagesLength.substring(0, 20)}...' : messagesLength}'),
                     trailing: Text(formattedDate),
                   ),
                 );
