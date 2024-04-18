@@ -5,10 +5,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travelgram/app/modules/splash/views/splash_view.dart';
 import 'package:travelgram/app/shared/bottom_navigation.dart';
 import 'app/routes/app_pages.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
+  timeago.setLocaleMessages('id', timeago.IdMessages());
   final token = prefs.getString('token');
 
   runApp(

@@ -42,11 +42,9 @@ class DetailChatView extends StatefulWidget {
   final String token;
   final String receiverId;
   final String conversationId;
-  final int senderId;
   const DetailChatView(
       {required this.token,
       required this.receiverId,
-      required this.senderId,
       required this.conversationId});
 
   @override

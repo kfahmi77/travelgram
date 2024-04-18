@@ -1,12 +1,18 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:travelgram/app/modules/chat/views/chat_view.dart';
+import 'package:travelgram/app/modules/chat/views/detail_chat_view.dart';
 import 'package:travelgram/app/modules/search/models/user_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:travelgram/app/shared/url_api.dart';
 
+import '../../../shared/token.dart';
+
 class UserSearchPage extends StatefulWidget {
-  const UserSearchPage({super.key});
+  final String token;
+  const UserSearchPage({required this.token, super.key});
 
   @override
   createState() => _UserSearchPageState();
@@ -18,11 +24,10 @@ class _UserSearchPageState extends State<UserSearchPage> {
 
   Future<List<User>> searchUsers(String keyword) async {
     final response = await http.get(
-      Uri.parse('${UrlApi.searchUser}?keyword=$keyword'),
+      Uri.parse('http://192.168.14.181:8080/api/users/search?search=$keyword'),
       headers: {
         'Content-Type': 'application/json',
-        'Authorization':
-            'Bearer 46|o6Kzu7W0LOADhHGT2fqG6vEi5D64KVx05HyxyBf80c2ee7fd',
+        'Authorization': 'Bearer ${widget.token}',
       },
     );
 
@@ -54,6 +59,43 @@ class _UserSearchPageState extends State<UserSearchPage> {
     }
   }
 
+  void _startConversation(User user) async {
+    try {
+      final response = await http.post(
+        Uri.parse('${UrlApi.startConversation}'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${widget.token}',
+        },
+        body: jsonEncode({'receiver_id': user.id}),
+      );
+
+      if (response.statusCode == 201) {
+        int conversationId = jsonDecode(response.body)['conversation_id'];
+        // Navigasi ke halaman chat dengan conversationId yang sesuai
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DetailChatView(
+                conversationId: conversationId.toString(),
+                receiverId: user.id.toString(),
+                token: widget.token),
+          ),
+        );
+      } else {
+        throw Exception('Failed to start conversation');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+  @override
+  void initState() {
+    print('Token: ${widget.token}');
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,7 +117,7 @@ class _UserSearchPageState extends State<UserSearchPage> {
             title: Text(user.username),
             subtitle: Text(user.email),
             onTap: () {
-              // Do something when user is tapped
+              _startConversation(user);
             },
           );
         },

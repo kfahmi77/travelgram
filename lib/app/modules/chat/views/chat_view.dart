@@ -68,8 +68,11 @@ class _ChatScreenViewState extends State<ChatScreenView> {
             IconButton(
               icon: const Icon(Icons.add),
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => UserSearchPage()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            UserSearchPage(token: _token ?? '')));
               },
             ),
           ],
@@ -93,29 +96,38 @@ class _ChatScreenViewState extends State<ChatScreenView> {
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 final message = snapshot.data![index];
-                final formattedDate = timeago.format(message.createdAt);
+                final formattedDate =
+                    timeago.format(message.createdAt, locale: 'id');
                 return InkWell(
                   onTap: () {
                     String selectedReceiverId =
                         message.receiverId.toString() == _idUser
                             ? message.senderId.toString()
                             : message.receiverId.toString();
-                    print(selectedReceiverId);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailChatView(
-                          token: _token ?? '',
-                          receiverId: selectedReceiverId,
-                          senderId: message.senderId,
-                          conversationId: message.conversationId.toString(),
-                        ),
-                      ),
-                    );
+                    print('${UrlApi.storage}${message.receiver.avatar}');
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => DetailChatView(
+                    //       token: _token ?? '',
+                    //       receiverId: selectedReceiverId,
+                    //       conversationId: message.conversationId.toString(),
+                    //     ),
+                    //   ),
+                    // );
                   },
                   child: ListTile(
+                    leading: CircleAvatar(
+                      backgroundImage: message.receiver.avatar != null
+                          ? NetworkImage(
+                              'http://192.168.14.181:8080/storage//${message.receiver.avatar}')
+                          : NetworkImage(
+                              'https://www.pngkey.com/png/full/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png'),
+                    ),
                     title: Text(message.message),
-                    subtitle: Text(message.receiver.username),
+                    subtitle: Text(message.sender.id.toString() == _idUser
+                        ? 'Saya : ${message.message}'
+                        : '${message.sender.username} : ${message.message}'),
                     trailing: Text(formattedDate),
                   ),
                 );
