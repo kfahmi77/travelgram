@@ -10,7 +10,9 @@ class UrlApi {
   static String getMessageById = '${baseUrl}get-messages';
   static String startConversation = '${baseUrl}conversations/start';
 
- static String searchUser = '${baseUrl}users/search';
+  static String searchUser = '${baseUrl}users/search';
 
-static String addfriend = '${baseUrl}add-friend/';
+  static String addfriend = '${baseUrl}add-friend/';
+  static String acceptFriend = '${baseUrl}accept-friend-request/';
+  static String getRequestFriend = '${baseUrl}friend-requests/';
 }
