@@ -15,4 +15,7 @@ class UrlApi {
   static String addfriend = '${baseUrl}add-friend/';
   static String acceptFriend = '${baseUrl}accept-friend-request/';
   static String getRequestFriend = '${baseUrl}friend-requests/';
+
+  static String addFeed = '${baseUrl}posts';
+    static String getFeed = '${baseUrl}posts';
 }

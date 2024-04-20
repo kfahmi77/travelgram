@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travelgram/app/modules/chat/bindings/chat_binding.dart';
+import 'package:travelgram/app/modules/feed/views/feed_view.dart';
 import 'package:travelgram/app/shared/token.dart';
 
 import '../../../shared/url_api.dart';
@@ -205,12 +206,7 @@ class _HomeViewState extends State<HomeView> {
           ),
         ],
       ),
-      body: const Center(
-        child: Text(
-          'HomeView is working',
-          style: TextStyle(fontSize: 20),
-        ),
-      ),
+      body:  const FeedList(),
     );
   }
 }

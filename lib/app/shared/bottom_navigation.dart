@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travelgram/app/modules/home/views/home_view.dart';
 import 'package:travelgram/app/routes/app_pages.dart';
 
+import '../modules/feed/views/add_feed_view.dart';
 import '../modules/search/views/search_view.dart';
 
 class BottomNavBar extends StatefulWidget {
@@ -52,7 +53,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
     final List<Widget> bottomBarPages = [
       const HomeView(),
       const Page2(),
-      const Page3(),
+      AddFeedView(token: _token ?? ''),
       UserSearchPage(token: _token ?? ''),
       const Page5(),
     ];

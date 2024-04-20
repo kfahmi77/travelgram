@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 
 import '../modules/chat/bindings/chat_binding.dart';
 import '../modules/chat/views/chat_view.dart';
+import '../modules/feed/bindings/feed_binding.dart';
+import '../modules/feed/views/feed_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
@@ -42,5 +44,6 @@ class AppPages {
       page: () => ChatScreenView(),
       binding: ChatBinding(),
     ),
+
   ];
 }
