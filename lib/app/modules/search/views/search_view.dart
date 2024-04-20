@@ -1,14 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:travelgram/app/modules/chat/views/chat_view.dart';
+import 'package:get/get.dart';
 import 'package:travelgram/app/modules/chat/views/detail_chat_view.dart';
 import 'package:travelgram/app/modules/search/models/user_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:travelgram/app/modules/search_user/views/search_user_view.dart';
 import 'package:travelgram/app/shared/url_api.dart';
-
-import '../../../shared/token.dart';
 
 class UserSearchPage extends StatefulWidget {
   final String token;
@@ -24,7 +22,7 @@ class _UserSearchPageState extends State<UserSearchPage> {
 
   Future<List<User>> searchUsers(String keyword) async {
     final response = await http.get(
-      Uri.parse('http://192.168.14.181:8080/api/users/search?search=$keyword'),
+      Uri.parse('${UrlApi.searchUser}?search=$keyword'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ${widget.token}',
@@ -103,7 +101,7 @@ class _UserSearchPageState extends State<UserSearchPage> {
         title: TextField(
           controller: _searchController,
           decoration: InputDecoration(
-            hintText: 'Search users...',
+            hintText: 'Cari user...',
             border: InputBorder.none,
           ),
           onChanged: _onSearch,
@@ -114,12 +112,26 @@ class _UserSearchPageState extends State<UserSearchPage> {
         itemBuilder: (context, index) {
           User user = _searchResults[index];
           return ListTile(
-            title: Text(user.username),
-            subtitle: Text(user.email),
-            onTap: () {
-              _startConversation(user);
-            },
-          );
+              title: Text(user.username),
+              subtitle: Text(user.email),
+              leading: CircleAvatar(
+                backgroundImage: user.avatar != null
+                    ? NetworkImage('${UrlApi.urlStorage}//${user.avatar}')
+                    : const NetworkImage(
+                        'https://www.pngkey.com/png/full/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png'),
+              ),
+              onTap: () {
+                Get.to(SearchUserView(
+                  user: user,
+                  token: widget.token,
+                ));
+              },
+              trailing: GestureDetector(
+                child: const Icon(Icons.message),
+                onTap: () {
+                  _startConversation(user);
+                },
+              ));
         },
       ),
     );

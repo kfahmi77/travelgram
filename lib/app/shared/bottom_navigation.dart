@@ -7,6 +7,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travelgram/app/modules/home/views/home_view.dart';
 import 'package:travelgram/app/routes/app_pages.dart';
 
+import '../modules/search/views/search_view.dart';
+
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});
 
@@ -17,6 +19,23 @@ class BottomNavBar extends StatefulWidget {
 class _BottomNavBarState extends State<BottomNavBar> {
   final _pageController = PageController(initialPage: 0);
   final _controller = NotchBottomBarController(index: 0);
+  String? _token;
+
+  @override
+  void initState() {
+    super.initState();
+    initializeToken();
+  }
+
+  void initializeToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+    if (token != null) {
+      setState(() {
+        _token = token;
+      });
+    }
+  }
 
   int maxCount = 5;
 
@@ -27,16 +46,16 @@ class _BottomNavBarState extends State<BottomNavBar> {
   }
 
   /// widget list
-  final List<Widget> bottomBarPages = [
-    const HomeView(),
-    const Page2(),
-    const Page3(),
-    const Page4(),
-    const Page5(),
-  ];
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> bottomBarPages = [
+      const HomeView(),
+      const Page2(),
+      const Page3(),
+      UserSearchPage(token: _token ?? ''),
+      const Page5(),
+    ];
     return Scaffold(
       body: PageView(
         controller: _pageController,
