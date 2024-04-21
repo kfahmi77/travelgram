@@ -124,17 +124,18 @@ class _HomeViewState extends State<HomeView> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('HomeView'),
-        centerTitle: true,
+        title: const Text('Travelgram',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.blue,
         actions: [
           IconButton(
             onPressed: () {
-              Get.to(() => ChatScreenView(), binding: ChatBinding());
+              Get.to(() => const ChatScreenView(), binding: ChatBinding());
               getIdUser();
               getToken();
               // fetchMessages();
             },
-            icon: const Icon(Icons.message),
+            icon: const Icon(Icons.message, color: Colors.white),
           ),
           //button logout
           IconButton(
@@ -143,7 +144,7 @@ class _HomeViewState extends State<HomeView> {
 
               Get.offAllNamed('/login');
             },
-            icon: const Icon(Icons.logout),
+            icon: const Icon(Icons.logout, color: Colors.white),
           ),
           //icon notification
           IconButton(
@@ -168,8 +169,8 @@ class _HomeViewState extends State<HomeView> {
                                     elevation: 1,
                                     child: ListTile(
                                       title: Text(user['username']),
-                                      subtitle:
-                                          Text('mengirim pertemanan ke anda'),
+                                      subtitle: const Text(
+                                          'mengirim pertemanan ke anda'),
                                       trailing: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.blue,
@@ -187,7 +188,8 @@ class _HomeViewState extends State<HomeView> {
                               return Text('${snapshot.error}');
                             }
 
-                            return CircularProgressIndicator();
+                            return const Center(
+                                child: CircularProgressIndicator());
                           },
                         )),
                     actions: [
@@ -202,11 +204,11 @@ class _HomeViewState extends State<HomeView> {
                 },
               );
             },
-            icon: const Icon(Icons.notifications),
+            icon: const Icon(Icons.notifications, color: Colors.white),
           ),
         ],
       ),
-      body:  const FeedList(),
+      body: const FeedList(),
     );
   }
 }

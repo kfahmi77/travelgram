@@ -13,6 +13,7 @@ class Feed {
     int userId;
     String content;
     String? imageUrl;
+    String username;
     DateTime createdAt;
     DateTime updatedAt;
 
@@ -21,6 +22,7 @@ class Feed {
         required this.userId,
         required this.content,
         required this.imageUrl,
+required this.username,
         required this.createdAt,
         required this.updatedAt,
     });
@@ -30,6 +32,7 @@ class Feed {
         userId: json["user_id"],
         content: json["content"],
         imageUrl: json["image_url"],
+        username: json["username"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
     );
@@ -39,6 +42,7 @@ class Feed {
         "user_id": userId,
         "content": content,
         "image_url": imageUrl,
+        "username": username,
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
     };

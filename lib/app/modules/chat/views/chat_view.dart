@@ -11,8 +11,10 @@ import '../../search/views/search_view.dart';
 import '../models/chat_model.dart';
 
 class ChatScreenView extends StatefulWidget {
+  const ChatScreenView({super.key});
+
   @override
-  _ChatScreenViewState createState() => _ChatScreenViewState();
+   createState() => _ChatScreenViewState();
 }
 
 class _ChatScreenViewState extends State<ChatScreenView> {
@@ -125,9 +127,7 @@ class _ChatScreenViewState extends State<ChatScreenView> {
                           : const NetworkImage(
                               'https://www.pngkey.com/png/full/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png'),
                     ),
-                    title: Text(message.sender.id.toString() == _idUser
-                        ? 'Saya'
-                        : message.sender.username),
+                    title: Text(message.receiver.username),
                     subtitle: Text(message.sender.id.toString() == _idUser
                         ? 'Saya : ${messagesLength.length > 20 ? '${messagesLength.substring(0, 20)}...' : messagesLength}'
                         : '${message.sender.username} :  ${messagesLength.length > 20 ? '${messagesLength.substring(0, 20)}...' : messagesLength}'),

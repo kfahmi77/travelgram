@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -51,7 +54,7 @@ class _FeedListState extends State<FeedList> {
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = jsonDecode(response.body);
       messages = jsonData.map((e) => Feed.fromJson(e)).toList();
-      print(messages);
+      log(messages.toString());
     } else {
       throw Exception('Failed to load messages');
     }
@@ -61,6 +64,91 @@ class _FeedListState extends State<FeedList> {
 
   @override
   Widget build(BuildContext context) {
+    // return // Generated code for this Column Widget...
+    //     Column(
+    //   children: [
+    //     Card(
+    //       color: Colors.yellow,
+    //       child: Column(
+    //         mainAxisSize: MainAxisSize.max,
+    //         children: [
+    //           Row(
+    //             mainAxisSize: MainAxisSize.max,
+    //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //             children: [
+    //               Column(
+    //                 mainAxisSize: MainAxisSize.max,
+    //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //                 crossAxisAlignment: CrossAxisAlignment.center,
+    //                 children: [
+    //                   Row(
+    //                     mainAxisSize: MainAxisSize.max,
+    //                     children: [
+    //                       Container(
+    //                         width: 50,
+    //                         height: 50,
+    //                         clipBehavior: Clip.antiAlias,
+    //                         decoration: BoxDecoration(
+    //                           shape: BoxShape.circle,
+    //                         ),
+    //                         child: Image.network(
+    //                           'https://picsum.photos/seed/748/600',
+    //                           fit: BoxFit.cover,
+    //                         ),
+    //                       ),
+    //                       Column(
+    //                         mainAxisSize: MainAxisSize.max,
+    //                         children: [
+    //                           Text(
+    //                             'Hello World',
+    //                           ),
+    //                           Text(
+    //                             'Hello World',
+    //                           ),
+    //                         ],
+    //                       ),
+    //                     ],
+    //                   ),
+    //                 ],
+    //               ),
+    //               Icon(
+    //                 Icons.settings_outlined,
+    //                 color: Colors.red,
+    //                 size: 24,
+    //               ),
+    //             ],
+    //           ),
+    //           Row(
+    //             mainAxisSize: MainAxisSize.max,
+    //             mainAxisAlignment: MainAxisAlignment.center,
+    //             children: [
+    //               ClipRRect(
+    //                 borderRadius: BorderRadius.circular(8),
+    //                 child: Image.network(
+    //                   'https://picsum.photos/seed/279/600',
+    //                   width: 300,
+    //                   height: 200,
+    //                   fit: BoxFit.cover,
+    //                 ),
+    //               ),
+    //             ],
+    //           ),
+    //           Row(
+    //             mainAxisSize: MainAxisSize.max,
+    //             children: [
+    //               Icon(
+    //                 Icons.settings_outlined,
+    //                 color: Colors.red,
+    //                 size: 24,
+    //               ),
+    //             ],
+    //           ),
+    //         ],
+    //       ),
+    //     ),
+    //   ],
+    // );
+
     return StreamBuilder<List<Feed>>(
       stream: _messagesStream,
       builder: (context, snapshot) {
@@ -81,18 +169,152 @@ class _FeedListState extends State<FeedList> {
           itemBuilder: (context, index) {
             final message = snapshot.data![index];
 
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                message.imageUrl != null
-                    ? Image.network(
-                        '${UrlApi.urlStorage}${message.imageUrl!}',
-                        width: 200.0,
-                        height: 200.0,
-                        fit: BoxFit.cover,
-                      )
-                    : const SizedBox(),
-              ],
+            return Card(
+              color: Colors.white,
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Container(
+                                width: 50,
+                                height: 50,
+                                clipBehavior: Clip.antiAlias,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                ),
+                                child: message.imageUrl != null
+                                    ? Image.network(
+                                        '${UrlApi.urlStorage}${message.imageUrl!}',
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Image.network(
+                                        'https://picsum.photos/seed/748/600',
+                                        fit: BoxFit.cover,
+                                      ),
+                              ),
+                              Padding(padding: EdgeInsets.only(left: 8.w)),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    message.username,
+                                  ),
+                                  const Text(
+                                    'Lokasi',
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      const Icon(
+                        Icons.more_horiz_outlined,
+                        color: Colors.black,
+                        size: 32,
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 6),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.network(
+                            'https://picsum.photos/seed/279/600',
+                            width: 350.w,
+                            height: 200,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 8.h),
+                  const Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Icon(
+                        Icons.favorite_border,
+                        color: Colors.red,
+                        size: 24,
+                      ),
+                      Padding(padding: EdgeInsets.only(left: 8)),
+                      Icon(
+                        Icons.chat_bubble_outline,
+                        color: Colors.black,
+                        size: 24,
+                      ),
+                      Padding(padding: EdgeInsets.only(left: 8)),
+                      Icon(
+                        Icons.send,
+                        color: Colors.black,
+                        size: 24,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 8.h),
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Text(
+                        '1 menyukai',
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 8.h),
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Text(
+                        '${message.username} ',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 8.h),
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Text(
+                        message.content,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+
+            return Container(
+              width: double.infinity,
+              height: 50.h,
+              color: Colors.yellow,
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  if (message.imageUrl != null)
+                    Image.network(
+                      '${UrlApi.urlStorage}${message.imageUrl!}',
+                      width: 30.w,
+                      fit: BoxFit.cover,
+                    ),
+                ],
+              ),
             );
           },
         );
