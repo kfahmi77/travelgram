@@ -195,7 +195,7 @@ class _FeedListState extends State<FeedList> {
                                 ),
                                 child: message.imageUrl != null
                                     ? Image.network(
-                                        '${UrlApi.urlStorage}${message.imageUrl!}',
+                                        '${UrlApi.urlStorage}${message.avatar!}',
                                         fit: BoxFit.cover,
                                       )
                                     : Image.network(
@@ -233,14 +233,15 @@ class _FeedListState extends State<FeedList> {
                       Padding(
                         padding: const EdgeInsets.only(top: 6),
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Image.network(
-                            'https://picsum.photos/seed/279/600',
-                            width: 350.w,
-                            height: 200,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+                            borderRadius: BorderRadius.circular(8),
+                            child: message.imageUrl != null
+                                ? Image.network(
+                                    '${UrlApi.urlStorage}${message.imageUrl!}',
+                                    width: 300.w,
+                                    height: 200.h,
+                                    fit: BoxFit.cover,
+                                  )
+                                : SizedBox()),
                       ),
                     ],
                   ),

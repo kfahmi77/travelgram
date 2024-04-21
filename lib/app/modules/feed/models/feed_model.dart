@@ -14,6 +14,7 @@ class Feed {
     String content;
     String? imageUrl;
     String username;
+    String? avatar;
     DateTime createdAt;
     DateTime updatedAt;
 
@@ -23,6 +24,7 @@ class Feed {
         required this.content,
         required this.imageUrl,
 required this.username,
+required this.avatar,
         required this.createdAt,
         required this.updatedAt,
     });
@@ -33,6 +35,7 @@ required this.username,
         content: json["content"],
         imageUrl: json["image_url"],
         username: json["username"],
+        avatar: json["avatar"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
     );
@@ -43,6 +46,7 @@ required this.username,
         "content": content,
         "image_url": imageUrl,
         "username": username,
+        "avatar": avatar,
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
     };
