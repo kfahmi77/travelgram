@@ -117,8 +117,7 @@ class _UserSearchPageState extends State<UserSearchPage> {
               leading: CircleAvatar(
                 backgroundImage: user.avatar != null
                     ? NetworkImage('${UrlApi.urlStorage}//${user.avatar}')
-                    : const NetworkImage(
-                        'https://www.pngkey.com/png/full/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png'),
+                    : NetworkImage(UrlApi.dummyImage),
               ),
               onTap: () {
                 Get.to(SearchUserView(

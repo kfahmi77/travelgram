@@ -17,5 +17,7 @@ class UrlApi {
   static String getRequestFriend = '${baseUrl}friend-requests/';
 
   static String addFeed = '${baseUrl}posts';
-    static String getFeed = '${baseUrl}posts';
+  static String getFeed = '${baseUrl}posts';
+
+  static String dummyImage = 'https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg';
 }

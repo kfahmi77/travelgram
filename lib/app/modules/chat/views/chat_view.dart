@@ -14,7 +14,7 @@ class ChatScreenView extends StatefulWidget {
   const ChatScreenView({super.key});
 
   @override
-   createState() => _ChatScreenViewState();
+  createState() => _ChatScreenViewState();
 }
 
 class _ChatScreenViewState extends State<ChatScreenView> {
@@ -124,8 +124,7 @@ class _ChatScreenViewState extends State<ChatScreenView> {
                       backgroundImage: message.receiver.avatar != null
                           ? NetworkImage(
                               '${UrlApi.urlStorage}//${message.receiver.avatar}')
-                          : const NetworkImage(
-                              'https://www.pngkey.com/png/full/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png'),
+                          : NetworkImage(UrlApi.dummyImage),
                     ),
                     title: Text(message.receiver.username),
                     subtitle: Text(message.sender.id.toString() == _idUser

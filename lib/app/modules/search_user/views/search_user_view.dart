@@ -49,8 +49,7 @@ class _SearchUserViewState extends State<SearchUserView> {
                   backgroundImage: widget.user.avatar != null
                       ? NetworkImage(
                           '${UrlApi.urlStorage}//${widget.user.avatar}')
-                      : const NetworkImage(
-                          'https://www.pngkey.com/png/full/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png'),
+                      : NetworkImage(UrlApi.dummyImage),
                 ),
                 const SizedBox(width: 16.0),
                 Expanded(

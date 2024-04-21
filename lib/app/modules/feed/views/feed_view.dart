@@ -199,7 +199,7 @@ class _FeedListState extends State<FeedList> {
                                         fit: BoxFit.cover,
                                       )
                                     : Image.network(
-                                        'https://picsum.photos/seed/748/600',
+                                        UrlApi.dummyImage,
                                         fit: BoxFit.cover,
                                       ),
                               ),
