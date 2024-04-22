@@ -193,7 +193,7 @@ class _FeedListState extends State<FeedList> {
                                 decoration: const BoxDecoration(
                                   shape: BoxShape.circle,
                                 ),
-                                child: message.imageUrl != null
+                                child: message.imageUrl == null
                                     ? Image.network(
                                         '${UrlApi.urlStorage}${message.avatar!}',
                                         fit: BoxFit.cover,
