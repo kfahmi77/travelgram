@@ -20,15 +20,18 @@ class _AddFeedViewState extends State<AddFeedView> {
   File? _image;
   TextEditingController _caption = TextEditingController();
 
-  void postImage(File imageFile) async {
+  void postImage() async {
     var url = Uri.parse(UrlApi.addFeed);
     var request = http.MultipartRequest('POST', url);
     request.headers.addAll({
       'Authorization': 'Bearer ${widget.token}',
       "Content-type": "multipart/form-data",
     });
-    request.files
-        .add(await http.MultipartFile.fromPath('image_url', imageFile.path));
+
+    if (_image != null) {
+      request.files
+          .add(await http.MultipartFile.fromPath('image_url', _image!.path));
+    }
 
     request.fields['content'] = _caption.text;
 
@@ -102,7 +105,7 @@ class _AddFeedViewState extends State<AddFeedView> {
                 ),
               ),
               onPressed: () {
-                postImage(_image!);
+                postImage();
               },
               child: const Text("Save"),
             ),

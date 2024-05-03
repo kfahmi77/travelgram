@@ -9,7 +9,6 @@ import 'package:travelgram/app/modules/feed/models/feed_model.dart';
 import 'package:travelgram/app/shared/url_api.dart';
 import 'dart:convert';
 
-
 class FeedList extends StatefulWidget {
   const FeedList({super.key});
 
@@ -19,6 +18,7 @@ class FeedList extends StatefulWidget {
 
 class _FeedListState extends State<FeedList> {
   String? _token;
+  bool _isliked = false;
   Stream<List<Feed>>? _messagesStream;
 
   @override
@@ -59,93 +59,69 @@ class _FeedListState extends State<FeedList> {
     yield messages;
   }
 
+  void _showCommentBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.75,
+          padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(15.0),
+              topRight: Radius.circular(15.0),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              const Text(
+                'Comments',
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 20.0),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: 10,
+                  itemBuilder: (BuildContext context, int index) {
+                    return ListTile(
+                      leading: CircleAvatar(
+                        radius: 25.0,
+                        backgroundImage: NetworkImage(UrlApi.dummyImage),
+                      ),
+                      title: const Text('Username'),
+                      subtitle: Text('Comment ${index + 1}'),
+                      trailing: Text('1h ago'),
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(height: 20.0),
+              TextFormField(
+                decoration: InputDecoration(
+                  hintText: 'Add a comment...',
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.send),
+                    onPressed: () {
+                      // Kirim komentar
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    // return // Generated code for this Column Widget...
-    //     Column(
-    //   children: [
-    //     Card(
-    //       color: Colors.yellow,
-    //       child: Column(
-    //         mainAxisSize: MainAxisSize.max,
-    //         children: [
-    //           Row(
-    //             mainAxisSize: MainAxisSize.max,
-    //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //             children: [
-    //               Column(
-    //                 mainAxisSize: MainAxisSize.max,
-    //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //                 crossAxisAlignment: CrossAxisAlignment.center,
-    //                 children: [
-    //                   Row(
-    //                     mainAxisSize: MainAxisSize.max,
-    //                     children: [
-    //                       Container(
-    //                         width: 50,
-    //                         height: 50,
-    //                         clipBehavior: Clip.antiAlias,
-    //                         decoration: BoxDecoration(
-    //                           shape: BoxShape.circle,
-    //                         ),
-    //                         child: Image.network(
-    //                           'https://picsum.photos/seed/748/600',
-    //                           fit: BoxFit.cover,
-    //                         ),
-    //                       ),
-    //                       Column(
-    //                         mainAxisSize: MainAxisSize.max,
-    //                         children: [
-    //                           Text(
-    //                             'Hello World',
-    //                           ),
-    //                           Text(
-    //                             'Hello World',
-    //                           ),
-    //                         ],
-    //                       ),
-    //                     ],
-    //                   ),
-    //                 ],
-    //               ),
-    //               Icon(
-    //                 Icons.settings_outlined,
-    //                 color: Colors.red,
-    //                 size: 24,
-    //               ),
-    //             ],
-    //           ),
-    //           Row(
-    //             mainAxisSize: MainAxisSize.max,
-    //             mainAxisAlignment: MainAxisAlignment.center,
-    //             children: [
-    //               ClipRRect(
-    //                 borderRadius: BorderRadius.circular(8),
-    //                 child: Image.network(
-    //                   'https://picsum.photos/seed/279/600',
-    //                   width: 300,
-    //                   height: 200,
-    //                   fit: BoxFit.cover,
-    //                 ),
-    //               ),
-    //             ],
-    //           ),
-    //           Row(
-    //             mainAxisSize: MainAxisSize.max,
-    //             children: [
-    //               Icon(
-    //                 Icons.settings_outlined,
-    //                 color: Colors.red,
-    //                 size: 24,
-    //               ),
-    //             ],
-    //           ),
-    //         ],
-    //       ),
-    //     ),
-    //   ],
-    // );
-
     return StreamBuilder<List<Feed>>(
       stream: _messagesStream,
       builder: (context, snapshot) {
@@ -166,152 +142,161 @@ class _FeedListState extends State<FeedList> {
           itemBuilder: (context, index) {
             final message = snapshot.data![index];
 
-            return Card(
-              color: Colors.white,
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Container(
-                                width: 50,
-                                height: 50,
-                                clipBehavior: Clip.antiAlias,
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Card(
+                color: Colors.white,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Container(
+                                    width: 40,
+                                    clipBehavior: Clip.antiAlias,
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: message.avatar != null
+                                        ? Image.network(
+                                            '${UrlApi.urlStorage}${message.avatar!}',
+                                            fit: BoxFit.cover,
+                                          )
+                                        : Image.network(
+                                            UrlApi.dummyImage,
+                                            fit: BoxFit.cover,
+                                          ),
+                                  ),
                                 ),
-                                child: message.imageUrl == null
-                                    ? Image.network(
-                                        '${UrlApi.urlStorage}${message.avatar!}',
-                                        fit: BoxFit.cover,
-                                      )
-                                    : Image.network(
-                                        UrlApi.dummyImage,
-                                        fit: BoxFit.cover,
-                                      ),
-                              ),
-                              Padding(padding: EdgeInsets.only(left: 8.w)),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    message.username,
-                                  ),
-                                  const Text(
-                                    'Lokasi',
-                                  ),
-                                ],
-                              ),
-                            ],
+                                Padding(padding: EdgeInsets.only(left: 8.w)),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      message.username,
+                                    ),
+                                    const Text(
+                                      'Lokasi',
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        const Icon(
+                          Icons.more_horiz_outlined,
+                          color: Colors.black,
+                          size: 32,
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0, right: 8),
+                      child: Row(
+                        children: [
+                          Text(
+                            message.content,
                           ),
                         ],
                       ),
-                      const Icon(
-                        Icons.more_horiz_outlined,
-                        color: Colors.black,
-                        size: 32,
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 6),
-                        child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: message.imageUrl != null
-                                ? Image.network(
-                                    '${UrlApi.urlStorage}${message.imageUrl!}',
-                                    width: 300.w,
-                                    height: 200.h,
-                                    fit: BoxFit.cover,
-                                  )
-                                : SizedBox()),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 8.h),
-                  const Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Icon(
-                        Icons.favorite_border,
-                        color: Colors.red,
-                        size: 24,
-                      ),
-                      Padding(padding: EdgeInsets.only(left: 8)),
-                      Icon(
-                        Icons.chat_bubble_outline,
-                        color: Colors.black,
-                        size: 24,
-                      ),
-                      Padding(padding: EdgeInsets.only(left: 8)),
-                      Icon(
-                        Icons.send,
-                        color: Colors.black,
-                        size: 24,
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 8.h),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Text(
-                        '1 menyukai',
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 8.h),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Text(
-                        '${message.username} ',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 8.h),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Text(
-                        message.content,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            );
-
-            return Container(
-              width: double.infinity,
-              height: 50.h,
-              color: Colors.yellow,
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  if (message.imageUrl != null)
-                    Image.network(
-                      '${UrlApi.urlStorage}${message.imageUrl!}',
-                      width: 30.w,
-                      fit: BoxFit.cover,
                     ),
-                ],
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 6),
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: message.imageUrl != null
+                                  ? Image.network(
+                                      '${UrlApi.urlStorage}${message.imageUrl!}',
+                                      width: 300.w,
+                                      height: 200.h,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : const SizedBox()),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 8.h),
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        IconButton(
+                          icon: Icon(
+                            _isliked ? Icons.favorite : Icons.favorite_border,
+                            color: Colors.red,
+                            size: 24,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _isliked = !_isliked;
+                            });
+                          },
+                        ),
+                        const Padding(padding: EdgeInsets.only(left: 8)),
+                        IconButton(
+                          onPressed: () {
+                            _showCommentBottomSheet(context);
+                          },
+                          icon: const Icon(
+                            Icons.chat_bubble_outline,
+                            color: Colors.black,
+                            size: 24,
+                          ),
+                        ),
+                        const Spacer(),
+                        const Padding(
+                          padding: EdgeInsets.only(right: 8.0),
+                          child: Icon(
+                            Icons.send,
+                            color: Colors.black,
+                            size: 24,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 8.h),
+                    const Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Text(
+                          '1 menyukai',
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 8.h),
+                    const Divider(
+                      height: 0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Text(
+                            '${message.username} ',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           },
