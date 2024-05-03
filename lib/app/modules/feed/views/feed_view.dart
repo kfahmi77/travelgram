@@ -2,16 +2,13 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:travelgram/app/modules/chat/views/detail_chat_view.dart';
 import 'package:travelgram/app/modules/feed/models/feed_model.dart';
 import 'package:travelgram/app/shared/url_api.dart';
 import 'dart:convert';
 
-import '../../search/views/search_view.dart';
 
 class FeedList extends StatefulWidget {
   const FeedList({super.key});

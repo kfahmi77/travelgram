@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -26,8 +28,16 @@ class _SearchUserViewState extends State<SearchUserView> {
         'Authorization': 'Bearer ${widget.token}',
       },
     );
+
     if (response.statusCode == 200) {
-      Get.snackbar('Success', 'Friend request sent');
+      Get.snackbar('Success', 'Permintaan pertemanan berhasil dikirim');
+    } else {
+      final responseData = jsonDecode(response.body);
+      if (responseData['message'] == 'Friend request already sent') {
+        Get.snackbar('Info', 'Pengajuan pertemanan sudah dikirim');
+      } else {
+        Get.snackbar('Error', 'Failed to send friend request');
+      }
     }
   }
 
@@ -76,12 +86,17 @@ class _SearchUserViewState extends State<SearchUserView> {
                         ],
                       ),
                       const SizedBox(height: 8.0),
-                      ElevatedButton(
-                        onPressed: () {
-                          addFriend();
-                        },
-                        child: const Text('Follow'),
-                      ),
+                      widget.user.confirmed != null
+                          ? ElevatedButton(
+                              onPressed: () {},
+                              child: const Text('Teman'),
+                            )
+                          : ElevatedButton(
+                              onPressed: () {
+                                addFriend();
+                              },
+                              child: const Text('Tambah Teman'),
+                            )
                     ],
                   ),
                 ),
