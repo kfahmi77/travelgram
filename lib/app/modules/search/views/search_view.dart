@@ -22,7 +22,7 @@ class _UserSearchPageState extends State<UserSearchPage> {
 
   Future<List<User>> searchUsers(String keyword) async {
     final response = await http.get(
-      Uri.parse('http://192.168.157.181:8000/api/users/search?search=$keyword'),
+      Uri.parse('${UrlApi.searchUser}?search=$keyword'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ${widget.token}',
