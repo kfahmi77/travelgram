@@ -2,12 +2,14 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:travelgram/app/modules/feed/models/comment_model.dart';
 import 'package:travelgram/app/modules/feed/models/feed_model.dart';
 import 'package:travelgram/app/modules/feed/views/comment_feed.dart';
+import 'package:travelgram/app/shared/bottom_navigation.dart';
 import 'package:travelgram/app/shared/url_api.dart';
 import 'dart:convert';
 
@@ -20,6 +22,8 @@ class FeedList extends StatefulWidget {
 
 class _FeedListState extends State<FeedList> {
   String? _token;
+  String? _idUser;
+
   bool _isliked = false;
   Stream<List<Feed>>? _messagesStream;
   Future<List<CommentModel>>? futureComments;
@@ -33,16 +37,16 @@ class _FeedListState extends State<FeedList> {
   void initializeToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('token');
+    String? idUser = prefs.getString('id');
+
     if (token != null) {
       setState(() {
         _token = token;
+        _idUser = idUser;
         _messagesStream = _fetchMessagesStream();
-      
       });
     }
   }
-
-  
 
   Stream<List<Feed>> _fetchMessagesStream() async* {
     List<Feed> messages = [];
@@ -62,6 +66,18 @@ class _FeedListState extends State<FeedList> {
     }
 
     yield messages;
+  }
+
+  Future<http.Response> deleteAlbum(String id) async {
+    final http.Response response = await http.delete(
+      Uri.parse('${UrlApi.deleteFeed}/$id'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${_token ?? ''}',
+      },
+    );
+
+    return response;
   }
 
   void _showCommentBottomSheet(BuildContext context, int postId) {
@@ -150,11 +166,32 @@ class _FeedListState extends State<FeedList> {
                             ),
                           ],
                         ),
-                        const Icon(
-                          Icons.more_horiz_outlined,
-                          color: Colors.black,
-                          size: 32,
-                        ),
+                        PopupMenuButton<int>(
+                          icon: const Icon(
+                            Icons.more_horiz_outlined,
+                            color: Colors.black,
+                            size: 32,
+                          ),
+                          itemBuilder: (context) => [
+                            _idUser == message.userId.toString()
+                                ? const PopupMenuItem(
+                                    value: 1,
+                                    child: Text("Hapus Postingan"),
+                                  )
+                                : const PopupMenuItem(
+                                    value: 2,
+                                    child: Text("Laporkan Postingan"),
+                                  ),
+                          ],
+                          onSelected: (value) {
+                            if (value == 1) {
+                              deleteAlbum(message.id.toString());
+                              Get.offAll(const BottomNavBar());
+                            } else if (value == 2) {
+                              print("Option 2 selected");
+                            }
+                          },
+                        )
                       ],
                     ),
                     Padding(

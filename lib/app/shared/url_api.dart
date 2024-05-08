@@ -21,6 +21,7 @@ class UrlApi {
 
   static String addFeed = '${baseUrl}posts';
   static String getFeed = '${baseUrl}posts';
+    static String deleteFeed = '${baseUrl}posts';
 
   static String commentFeed = '${baseUrl}posts';
   static String addCommentFeed = '${baseUrl}posts';
