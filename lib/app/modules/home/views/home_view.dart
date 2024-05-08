@@ -177,6 +177,9 @@ class _HomeViewState extends State<HomeView> {
                                         ),
                                         onPressed: () {
                                           acceptFriendRequest(user['id']);
+                                          setState(() {
+                                            snapshot.data?.removeAt(index);
+                                          });
                                         },
                                         child: const Text("Tambah"),
                                       ),

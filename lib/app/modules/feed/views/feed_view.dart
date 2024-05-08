@@ -5,9 +5,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:travelgram/app/modules/feed/models/comment_model.dart';
 import 'package:travelgram/app/modules/feed/models/feed_model.dart';
 import 'package:travelgram/app/shared/url_api.dart';
 import 'dart:convert';
+import 'package:timeago/timeago.dart' as timeago;
 
 class FeedList extends StatefulWidget {
   const FeedList({super.key});
@@ -20,6 +22,7 @@ class _FeedListState extends State<FeedList> {
   String? _token;
   bool _isliked = false;
   Stream<List<Feed>>? _messagesStream;
+  Future<List<CommentModel>>? futureComments;
 
   @override
   void initState() {
@@ -33,9 +36,26 @@ class _FeedListState extends State<FeedList> {
     if (token != null) {
       setState(() {
         _token = token;
-
         _messagesStream = _fetchMessagesStream();
+        futureComments = fetchComments(18);
       });
+    }
+  }
+
+  Future<List<CommentModel>> fetchComments(int postId) async {
+    final response = await http.get(
+      Uri.parse('${UrlApi.commentFeed}/$postId/comments'),
+      headers: <String, String>{
+        'Authorization': 'Bearer ${_token ?? ''}',
+      },
+    );
+    if (response.statusCode == 200) {
+      List<dynamic> jsonData = jsonDecode(response.body);
+      log(jsonData.toString());
+      return jsonData.map((json) => CommentModel.fromJson(json)).toList();
+    } else {
+      log(response.reasonPhrase.toString());
+      throw Exception('${response.reasonPhrase.toString()} $postId');
     }
   }
 
@@ -59,7 +79,7 @@ class _FeedListState extends State<FeedList> {
     yield messages;
   }
 
-  void _showCommentBottomSheet(BuildContext context) {
+  void _showCommentBottomSheet(BuildContext context, int postId) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -86,18 +106,45 @@ class _FeedListState extends State<FeedList> {
               ),
               const SizedBox(height: 20.0),
               Expanded(
-                child: ListView.builder(
-                  itemCount: 10,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ListTile(
-                      leading: CircleAvatar(
-                        radius: 25.0,
-                        backgroundImage: NetworkImage(UrlApi.dummyImage),
-                      ),
-                      title: const Text('Username'),
-                      subtitle: Text('Comment ${index + 1}'),
-                      trailing: Text('1h ago'),
-                    );
+                child: FutureBuilder<List<CommentModel>>(
+                  future: futureComments,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      List<CommentModel> comments = snapshot.data!;
+
+                      return ListView.builder(
+                        itemCount: comments.length,
+                        itemBuilder: (context, index) {
+                          final formattedDate = timeago
+                              .format(comments[index].createdAt, locale: 'id');
+                          return ListTile(
+                            title: Text(
+                              comments[index].username,
+                              style: const TextStyle(
+                                fontSize: 13.0,
+                              ),
+                            ),
+                            subtitle: Text(comments[index].content),
+                            leading: CircleAvatar(
+                              backgroundImage: comments[index].avatar != null
+                                  ? NetworkImage(
+                                      '${UrlApi.urlStorage}${comments[index].avatar}',
+                                    )
+                                  : NetworkImage(UrlApi.dummyImage),
+                            ),
+                            trailing: Text(
+                              formattedDate,
+                              style: const TextStyle(
+                                fontSize: 12.0,
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text('${snapshot.error}');
+                    }
+                    return const CircularProgressIndicator();
                   },
                 ),
               ),
@@ -251,7 +298,7 @@ class _FeedListState extends State<FeedList> {
                         const Padding(padding: EdgeInsets.only(left: 8)),
                         IconButton(
                           onPressed: () {
-                            _showCommentBottomSheet(context);
+                            _showCommentBottomSheet(context, message.id);
                           },
                           icon: const Icon(
                             Icons.chat_bubble_outline,
