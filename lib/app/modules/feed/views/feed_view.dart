@@ -7,9 +7,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:travelgram/app/modules/feed/models/comment_model.dart';
 import 'package:travelgram/app/modules/feed/models/feed_model.dart';
+import 'package:travelgram/app/modules/feed/views/comment_feed.dart';
 import 'package:travelgram/app/shared/url_api.dart';
 import 'dart:convert';
-import 'package:timeago/timeago.dart' as timeago;
 
 class FeedList extends StatefulWidget {
   const FeedList({super.key});
@@ -37,27 +37,12 @@ class _FeedListState extends State<FeedList> {
       setState(() {
         _token = token;
         _messagesStream = _fetchMessagesStream();
-        futureComments = fetchComments(18);
+      
       });
     }
   }
 
-  Future<List<CommentModel>> fetchComments(int postId) async {
-    final response = await http.get(
-      Uri.parse('${UrlApi.commentFeed}/$postId/comments'),
-      headers: <String, String>{
-        'Authorization': 'Bearer ${_token ?? ''}',
-      },
-    );
-    if (response.statusCode == 200) {
-      List<dynamic> jsonData = jsonDecode(response.body);
-      log(jsonData.toString());
-      return jsonData.map((json) => CommentModel.fromJson(json)).toList();
-    } else {
-      log(response.reasonPhrase.toString());
-      throw Exception('${response.reasonPhrase.toString()} $postId');
-    }
-  }
+  
 
   Stream<List<Feed>> _fetchMessagesStream() async* {
     List<Feed> messages = [];
@@ -84,85 +69,7 @@ class _FeedListState extends State<FeedList> {
       context: context,
       isScrollControlled: true,
       builder: (BuildContext context) {
-        return Container(
-          height: MediaQuery.of(context).size.height * 0.75,
-          padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(15.0),
-              topRight: Radius.circular(15.0),
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const Text(
-                'Comments',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 20.0),
-              Expanded(
-                child: FutureBuilder<List<CommentModel>>(
-                  future: futureComments,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      List<CommentModel> comments = snapshot.data!;
-
-                      return ListView.builder(
-                        itemCount: comments.length,
-                        itemBuilder: (context, index) {
-                          final formattedDate = timeago
-                              .format(comments[index].createdAt, locale: 'id');
-                          return ListTile(
-                            title: Text(
-                              comments[index].username,
-                              style: const TextStyle(
-                                fontSize: 13.0,
-                              ),
-                            ),
-                            subtitle: Text(comments[index].content),
-                            leading: CircleAvatar(
-                              backgroundImage: comments[index].avatar != null
-                                  ? NetworkImage(
-                                      '${UrlApi.urlStorage}${comments[index].avatar}',
-                                    )
-                                  : NetworkImage(UrlApi.dummyImage),
-                            ),
-                            trailing: Text(
-                              formattedDate,
-                              style: const TextStyle(
-                                fontSize: 12.0,
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    } else if (snapshot.hasError) {
-                      return Text('${snapshot.error}');
-                    }
-                    return const CircularProgressIndicator();
-                  },
-                ),
-              ),
-              const SizedBox(height: 20.0),
-              TextFormField(
-                decoration: InputDecoration(
-                  hintText: 'Add a comment...',
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.send),
-                    onPressed: () {
-                      // Kirim komentar
-                    },
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
+        return CommentBottomSheet(postId: postId, token: _token!);
       },
     );
   }
