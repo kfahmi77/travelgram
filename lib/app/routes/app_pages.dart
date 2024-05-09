@@ -15,6 +15,8 @@ import '../modules/search/views/search_view.dart';
 import '../modules/search_user/bindings/search_user_binding.dart';
 import '../modules/search_user/views/search_user_view.dart';
 import '../modules/splash/views/splash_view.dart';
+import '../modules/tiket/bindings/tiket_binding.dart';
+import '../modules/tiket/views/tiket_view.dart';
 
 part 'app_routes.dart';
 
@@ -44,6 +46,10 @@ class AppPages {
       page: () => ChatScreenView(),
       binding: ChatBinding(),
     ),
-
+    GetPage(
+      name: _Paths.TIKET,
+      page: () => const TiketView(),
+      binding: TiketBinding(),
+    ),
   ];
 }

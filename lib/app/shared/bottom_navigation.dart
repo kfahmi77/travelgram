@@ -9,6 +9,7 @@ import 'package:travelgram/app/routes/app_pages.dart';
 
 import '../modules/feed/views/add_feed_view.dart';
 import '../modules/search/views/search_view.dart';
+import '../modules/tiket/views/tiket_view.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});
@@ -52,7 +53,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   Widget build(BuildContext context) {
     final List<Widget> bottomBarPages = [
       const HomeView(),
-      const Page2(),
+      TiketView(),
       AddFeedView(token: _token ?? ''),
       UserSearchPage(token: _token ?? ''),
       const Page5(),

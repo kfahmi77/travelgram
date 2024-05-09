@@ -33,7 +33,8 @@ class _LoginViewState extends State<LoginView> {
             Colors.blue,
             Color(0x006f7bf7),
           ],
-        )),
+        ),
+        ),
         child: SingleChildScrollView(
           child: Column(
             children: [

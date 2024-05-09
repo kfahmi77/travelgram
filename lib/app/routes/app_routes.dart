@@ -11,6 +11,7 @@ abstract class Routes {
   static const SEARCH = _Paths.SEARCH;
   static const SEARCH_USER = _Paths.SEARCH_USER;
   static const FEED = _Paths.FEED;
+  static const TIKET = _Paths.TIKET;
 }
 
 abstract class _Paths {
@@ -23,4 +24,5 @@ abstract class _Paths {
   static const SEARCH = '/search';
   static const SEARCH_USER = '/search-user';
   static const FEED = '/feed';
+  static const TIKET = '/tiket';
 }
