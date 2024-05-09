@@ -8,6 +8,8 @@ import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
+import '../modules/tiket/pesawat/bindings/pesawat_binding.dart';
+import '../modules/tiket/pesawat/views/pesawat_view.dart';
 import '../modules/register/bindings/register_binding.dart';
 import '../modules/register/views/register_view.dart';
 import '../modules/search/bindings/search_binding.dart';
@@ -50,6 +52,11 @@ class AppPages {
       name: _Paths.TIKET,
       page: () => const TiketView(),
       binding: TiketBinding(),
+    ),
+    GetPage(
+      name: _Paths.PESAWAT,
+      page: () => const PesawatView(),
+      binding: PesawatBinding(),
     ),
   ];
 }
