@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:timeline_tile/timeline_tile.dart';
+import 'package:travelgram/app/modules/tiket/pesawat/views/detail_pesawat_view.dart';
 
 class CariPesawatView extends StatelessWidget {
   const CariPesawatView({super.key});
@@ -227,7 +229,9 @@ class CariPesawatView extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.to(DetailPesawatView());
+                        },
                         child: Text(
                           "Pesan",
                           style:

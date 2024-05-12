@@ -13,6 +13,7 @@ abstract class Routes {
   static const FEED = _Paths.FEED;
   static const TIKET = _Paths.TIKET;
   static const PESAWAT = _Paths.PESAWAT;
+  static const DETAIL_PEMESANAN = _Paths.DETAIL_PEMESANAN;
 }
 
 abstract class _Paths {
@@ -27,4 +28,5 @@ abstract class _Paths {
   static const FEED = '/feed';
   static const TIKET = '/tiket';
   static const PESAWAT = '/pesawat';
+  static const DETAIL_PEMESANAN = '/detail-pemesanan';
 }

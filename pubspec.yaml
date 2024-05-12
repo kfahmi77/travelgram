@@ -11,6 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_screenutil: ^5.9.0
+  font_awesome_flutter: ^10.7.0
   get: 4.6.6
   http: ^1.2.0
   image_picker: ^1.0.8
