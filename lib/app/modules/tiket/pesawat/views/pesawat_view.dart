@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:travelgram/app/modules/tiket/pesawat/views/cari_pesawat_view.dart';
 
 class PesawatView extends StatefulWidget {
   const PesawatView({super.key});
@@ -382,6 +383,7 @@ class _PesawatViewState extends State<PesawatView> {
                     ),
                   ),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       IconButton(
                         icon: const Icon(Icons.remove),
@@ -424,49 +426,77 @@ class _PesawatViewState extends State<PesawatView> {
                       color: Colors.grey,
                     ),
                   ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton(
-                      isExpanded: true,
-                      value: selectedKelas.isEmpty ? null : selectedKelas,
-                      items: ["Ekonomi", "Bisnis", "First"].map((String value) {
-                        return DropdownMenuItem(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          selectedKelas = value.toString();
-                          log(selectedKelas);
-                        });
-                      },
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 14.sp,
-                      ),
-                      icon: const Icon(
-                        Icons.arrow_drop_down,
-                        color: Colors.grey,
-                      ),
-                      iconSize: 24.w,
-                      elevation: 16,
-                      underline: Container(
-                        height: 2,
-                        color: Colors.grey,
-                      ),
-                      dropdownColor: Colors.white,
-                      isDense: false,
-                      hint: Text(
-                        "Pilih Kelas",
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton(
+                        isExpanded: true,
+                        value: selectedKelas.isEmpty ? null : selectedKelas,
+                        items:
+                            ["Ekonomi", "Bisnis", "First"].map((String value) {
+                          return DropdownMenuItem(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            selectedKelas = value.toString();
+                            log(selectedKelas);
+                          });
+                        },
                         style: TextStyle(
-                          color: Colors.grey,
+                          color: Colors.black,
                           fontSize: 14.sp,
+                        ),
+                        icon: const Icon(
+                          Icons.arrow_drop_down,
+                          color: Colors.grey,
+                        ),
+                        iconSize: 24.w,
+                        elevation: 16,
+                        underline: Container(
+                          height: 2,
+                          color: Colors.grey,
+                        ),
+                        dropdownColor: Colors.white,
+                        isDense: false,
+                        hint: Text(
+                          "Pilih Kelas",
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 14.sp,
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
               ],
+            ),
+          ),
+          SizedBox(
+            height: 10.h,
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return CariPesawatView();
+              }));
+            },
+            child: Text(
+              "Cari Tiket",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 14.sp,
+              ),
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.blue,
+              padding: EdgeInsets.symmetric(horizontal: 100.w, vertical: 10.h),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
           ),
         ],

@@ -20,6 +20,7 @@ dependencies:
   scroll_to_index: ^3.0.1
   shared_preferences: ^2.2.2
   timeago: ^3.6.1
+  timeline_tile: ^2.0.0
 
 dev_dependencies:
   flutter_lints: 3.0.1
