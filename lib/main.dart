@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travelgram/app/modules/detail_pemesanan/views/detail_pemesanan_view.dart';
+import 'package:travelgram/app/modules/detail_pemesanan/views/konfirmasi_view.dart';
 import 'package:travelgram/app/modules/splash/views/splash_view.dart';
 import 'package:travelgram/app/modules/tiket/pesawat/views/detail_pesawat_view.dart';
 import 'package:travelgram/app/modules/tiket/pesawat/views/pesawat_view.dart';
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
         title: 'MyApp',
         theme: ThemeData(visualDensity: VisualDensity.adaptivePlatformDensity),
         // home: token == null ? const SplashView() : const BottomNavBar(),
-        home: MetodePembayaranView(),
+        home: KonfirmasiView(),
         getPages: AppPages.routes,
       ),
     );

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
+import 'package:travelgram/app/modules/detail_pemesanan/views/konfirmasi_view.dart';
 
 class MetodePembayaranView extends StatelessWidget {
   const MetodePembayaranView({super.key});
@@ -35,6 +37,9 @@ class MetodePembayaranView extends StatelessWidget {
                     height: 40.0,
                     fit: BoxFit.fill,
                   ),
+                  onTap: () {
+                    Get.to(() => const KonfirmasiView());
+                  },
                   title: const Text("Tambah Pembayaran"),
                   trailing: const FaIcon(
                     FontAwesomeIcons.chevronRight,

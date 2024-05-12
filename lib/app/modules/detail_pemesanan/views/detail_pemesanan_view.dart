@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:travelgram/app/modules/detail_pemesanan/views/metode_pembayaran.dart';
-
-import '../../tiket/pesawat/views/detail_pesawat_view.dart';
 
 class DetailPemesananView extends StatelessWidget {
   const DetailPemesananView({super.key});
@@ -151,9 +147,6 @@ class DetailPemesananView extends StatelessWidget {
                   ),
                   const Spacer(),
                   GestureDetector(
-                    onTap: () {
-                      Get.to(() => const MetodePembayaranView());
-                    },
                     child: Container(
                       height: 50,
                       width: MediaQuery.of(context).size.width * 0.9,
