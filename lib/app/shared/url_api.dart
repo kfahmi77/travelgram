@@ -14,6 +14,7 @@ class UrlApi {
   static String startConversation = '${baseUrl}conversations/start';
 
   static String searchUser = '${baseUrl}users/search';
+  static String getUserById = '${baseUrl}user-by-id/search';
 
   static String addfriend = '${baseUrl}add-friend/';
   static String acceptFriend = '${baseUrl}accept-friend-request/';

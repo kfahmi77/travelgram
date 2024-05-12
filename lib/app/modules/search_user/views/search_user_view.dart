@@ -40,6 +40,27 @@ class _SearchUserViewState extends State<SearchUserView> {
       }
     }
   }
+  Future<List<User>> searchUsers(String idUser) async {
+    final response = await http.get(
+      Uri.parse('${UrlApi.getUserById}/$idUser'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${widget.token}',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> data = jsonDecode(response.body);
+      List<User> users = data.map((user) => User.fromJson(user)).toList();
+      if (users.isEmpty) {
+        print(users);
+        throw Exception('No users found');
+      }
+      return users;
+    } else {
+      throw Exception('Failed to load users');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

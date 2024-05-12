@@ -8,6 +8,8 @@ import 'package:http/http.dart' as http;
 import 'package:travelgram/app/modules/search_user/views/search_user_view.dart';
 import 'package:travelgram/app/shared/url_api.dart';
 
+import '../../search_user/views/search_user_view copy.dart';
+
 class UserSearchPage extends StatefulWidget {
   final String token;
   const UserSearchPage({required this.token, super.key});
@@ -121,8 +123,8 @@ class _UserSearchPageState extends State<UserSearchPage> {
                     : NetworkImage(UrlApi.dummyImage),
               ),
               onTap: () {
-                Get.to(SearchUserView(
-                  user: user,
+                Get.to(SearchUserViewTest(
+                  idUser: user.id,
                   token: widget.token,
                 ));
               },

@@ -21,6 +21,8 @@ import '../modules/tiket/bindings/tiket_binding.dart';
 import '../modules/tiket/pesawat/bindings/pesawat_binding.dart';
 import '../modules/tiket/pesawat/views/pesawat_view.dart';
 import '../modules/tiket/views/tiket_view.dart';
+import '../modules/user_profile/bindings/user_profile_binding.dart';
+import '../modules/user_profile/views/user_profile_view.dart';
 
 part 'app_routes.dart';
 
@@ -64,6 +66,11 @@ class AppPages {
       name: _Paths.DETAIL_PEMESANAN,
       page: () => const DetailPemesananView(),
       binding: DetailPemesananBinding(),
+    ),
+    GetPage(
+      name: _Paths.USER_PROFILE,
+      page: () => const UserProfileView(),
+      binding: UserProfileBinding(),
     ),
   ];
 }

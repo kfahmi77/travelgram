@@ -53,7 +53,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   Widget build(BuildContext context) {
     final List<Widget> bottomBarPages = [
       const HomeView(),
-      TiketView(),
+      const TiketView(),
       AddFeedView(token: _token ?? ''),
       UserSearchPage(token: _token ?? ''),
       const Page5(),
@@ -199,7 +199,7 @@ class Page1 extends StatelessWidget {
               },
               child: const Text("Save"),
             ),
-            Text('Page 1'),
+            const Text('Page 1'),
           ],
         )));
   }

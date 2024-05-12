@@ -9,9 +9,13 @@ import 'package:http/http.dart' as http;
 import 'package:travelgram/app/modules/feed/models/comment_model.dart';
 import 'package:travelgram/app/modules/feed/models/feed_model.dart';
 import 'package:travelgram/app/modules/feed/views/comment_feed.dart';
+import 'package:travelgram/app/modules/user_profile/views/user_profile_view.dart';
 import 'package:travelgram/app/shared/bottom_navigation.dart';
 import 'package:travelgram/app/shared/url_api.dart';
 import 'dart:convert';
+
+import '../../search/models/user_model.dart';
+import '../../search_user/views/search_user_view copy.dart';
 
 class FeedList extends StatefulWidget {
   const FeedList({super.key});
@@ -45,6 +49,29 @@ class _FeedListState extends State<FeedList> {
         _idUser = idUser;
         _messagesStream = _fetchMessagesStream();
       });
+    }
+  }
+
+  Future<List<User>> searchUsers(int idUser) async {
+    final response = await http.get(
+      Uri.parse('${UrlApi.getUserById}?search=$idUser'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${_token ?? ''}',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> data = jsonDecode(response.body);
+      List<User> users = data.map((user) => User.fromJson(user)).toList();
+      if (users.isEmpty) {
+        print(users);
+        throw Exception('No users found');
+      }
+      print(data);
+      return users;
+    } else {
+      throw Exception('Failed to load users');
     }
   }
 
@@ -133,21 +160,33 @@ class _FeedListState extends State<FeedList> {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.all(4.0),
-                                  child: Container(
-                                    width: 40,
-                                    clipBehavior: Clip.antiAlias,
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      _idUser == message.userId.toString()
+                                          ? Get.to(const UserProfileView())
+                                          : Get.to(SearchUserViewTest(
+                                              idUser: message.userId,
+                                              token: _token!,
+                                            ));
+                                      // searchUsers(6);
+                                      // print(message.userId);
+                                    },
+                                    child: Container(
+                                      width: 40,
+                                      clipBehavior: Clip.antiAlias,
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: message.avatar != null
+                                          ? Image.network(
+                                              '${UrlApi.urlStorage}${message.avatar!}',
+                                              fit: BoxFit.cover,
+                                            )
+                                          : Image.network(
+                                              UrlApi.dummyImage,
+                                              fit: BoxFit.cover,
+                                            ),
                                     ),
-                                    child: message.avatar != null
-                                        ? Image.network(
-                                            '${UrlApi.urlStorage}${message.avatar!}',
-                                            fit: BoxFit.cover,
-                                          )
-                                        : Image.network(
-                                            UrlApi.dummyImage,
-                                            fit: BoxFit.cover,
-                                          ),
                                   ),
                                 ),
                                 Padding(padding: EdgeInsets.only(left: 8.w)),
