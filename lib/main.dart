@@ -40,8 +40,8 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'MyApp',
         theme: ThemeData(visualDensity: VisualDensity.adaptivePlatformDensity),
-        // home: token == null ? const SplashView() : const BottomNavBar(),
-        home: KonfirmasiView(),
+        home: token == null ? const SplashView() : const BottomNavBar(),
+        // home: const KonfirmasiView(),
         getPages: AppPages.routes,
       ),
     );

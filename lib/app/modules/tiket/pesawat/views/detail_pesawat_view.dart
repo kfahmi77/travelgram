@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
+import 'package:travelgram/app/modules/detail_pemesanan/views/detail_pemesanan_view.dart';
+
+import '../../../detail_pemesanan/views/konfirmasi_view.dart';
 
 class DetailPesawatView extends StatelessWidget {
   const DetailPesawatView({super.key});
@@ -379,7 +383,10 @@ class DetailPesawatView extends StatelessWidget {
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.blue,
                                         ),
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          Get.to(() =>
+                                              const DetailPemesananView());
+                                        },
                                         child: const Text(
                                           "Pesan",
                                           style: TextStyle(color: Colors.white),

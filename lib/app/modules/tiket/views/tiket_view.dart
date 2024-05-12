@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
+import 'package:travelgram/app/modules/tiket/pesawat/views/cari_pesawat_view.dart';
+import 'package:travelgram/app/modules/tiket/pesawat/views/pesawat_view.dart';
 import 'package:travelgram/app/shared/url_api.dart';
 
 import '../controllers/tiket_controller.dart';
@@ -121,17 +123,20 @@ class TiketView extends GetView<TiketController> {
               children: [
                 Column(
                   children: [
-                    Container(
-                      height: 60.h,
-                      width: 60.w,
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                      child: const ImageIcon(
-                        AssetImage("assets/images/plane.png"),
-                        color: Colors.black,
-                        size: 4.0,
+                    GestureDetector(
+                      onTap: () => Get.to(() => const PesawatView()),
+                      child: Container(
+                        height: 60.h,
+                        width: 60.w,
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                        child: const ImageIcon(
+                          AssetImage("assets/images/plane.png"),
+                          color: Colors.black,
+                          size: 4.0,
+                        ),
                       ),
                     ),
                     const Text(

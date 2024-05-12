@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:travelgram/app/shared/bottom_navigation.dart';
 
 class KonfirmasiView extends StatelessWidget {
   const KonfirmasiView({super.key});
@@ -60,7 +62,7 @@ class KonfirmasiView extends StatelessWidget {
                       width: MediaQuery.of(context).size.width * 0.8,
                       child: Column(
                         children: [
-                          Text(
+                          const Text(
                             "Detail Pemesanan",
                             style: TextStyle(
                               fontSize: 20.0,
@@ -78,7 +80,7 @@ class KonfirmasiView extends StatelessWidget {
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Container(
-                                      child: Column(
+                                      child: const Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
@@ -96,7 +98,7 @@ class KonfirmasiView extends StatelessWidget {
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Container(
-                                      child: Column(
+                                      child: const Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
@@ -110,9 +112,9 @@ class KonfirmasiView extends StatelessWidget {
                               ],
                             ),
                           ),
-                          Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
+                          const Spacer(),
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
                             child: Row(
                               children: [
                                 Text("Total Pembayaran",
@@ -126,8 +128,32 @@ class KonfirmasiView extends StatelessWidget {
                               ],
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20.0,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                const Spacer(),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Get.offAll(() => const BottomNavBar());
+                                  },
+                                  child: const Text("Pesan lagi"),
+                                ),
+                                const SizedBox(
+                                  width: 20.0,
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Get.offAll(() => const BottomNavBar());
+                                  },
+                                  child: const Text("Lihat pesanan"),
+                                ),
+                                const Spacer(),
+                              ],
+                            ),
                           ),
                         ],
                       ),

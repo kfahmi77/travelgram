@@ -28,7 +28,9 @@ class CariPesawatView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.back();
+                  },
                   icon: const Icon(Icons.arrow_back),
                 ),
                 Column(
@@ -230,7 +232,10 @@ class CariPesawatView extends StatelessWidget {
                           backgroundColor: Colors.green,
                         ),
                         onPressed: () {
-                          Get.to(DetailPesawatView());
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DetailPesawatView()));
                         },
                         child: Text(
                           "Pesan",
