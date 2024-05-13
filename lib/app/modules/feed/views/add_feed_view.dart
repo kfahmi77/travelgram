@@ -38,7 +38,7 @@ class _AddFeedViewState extends State<AddFeedView> {
     var response = await request.send();
     if (response.statusCode == 200) {
       Get.snackbar('Success', 'Berhasil menambahkan feed');
-      Get.offAll(const BottomNavBar());
+      Get.offAll(const BottomNavBar(index: 0,));
       print('Image uploaded successfully');
     } else {
       print('Failed to upload image ${response.reasonPhrase}');

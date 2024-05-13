@@ -67,10 +67,6 @@ class AppPages {
       page: () => const DetailPemesananView(),
       binding: DetailPemesananBinding(),
     ),
-    GetPage(
-      name: _Paths.USER_PROFILE,
-      page: () => const UserProfileView(),
-      binding: UserProfileBinding(),
-    ),
+   
   ];
 }

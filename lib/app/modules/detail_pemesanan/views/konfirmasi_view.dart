@@ -138,7 +138,7 @@ class KonfirmasiView extends StatelessWidget {
                                 const Spacer(),
                                 ElevatedButton(
                                   onPressed: () {
-                                    Get.offAll(() => const BottomNavBar());
+                                    Get.offAll(() => const BottomNavBar(index: 0,));
                                   },
                                   child: const Text("Pesan lagi"),
                                 ),
@@ -147,7 +147,7 @@ class KonfirmasiView extends StatelessWidget {
                                 ),
                                 ElevatedButton(
                                   onPressed: () {
-                                    Get.offAll(() => const BottomNavBar());
+                                    Get.offAll(() => const BottomNavBar(index: 0,));
                                   },
                                   child: const Text("Lihat pesanan"),
                                 ),

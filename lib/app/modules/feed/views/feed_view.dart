@@ -139,6 +139,9 @@ class _FeedListState extends State<FeedList> {
           itemBuilder: (context, index) {
             final message = snapshot.data![index];
 
+           
+
+
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: Card(
@@ -163,7 +166,15 @@ class _FeedListState extends State<FeedList> {
                                   child: GestureDetector(
                                     onTap: () {
                                       _idUser == message.userId.toString()
-                                          ? Get.to(const UserProfileView())
+                                          ? Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    BottomNavBar(
+                                                  index: 4,
+                                                ),
+                                              ),
+                                            )
                                           : Get.to(SearchUserViewTest(
                                               idUser: message.userId,
                                               token: _token!,
@@ -225,7 +236,9 @@ class _FeedListState extends State<FeedList> {
                           onSelected: (value) {
                             if (value == 1) {
                               deleteAlbum(message.id.toString());
-                              Get.offAll(const BottomNavBar());
+                              Get.offAll(const BottomNavBar(
+                                index: 0,
+                              ));
                             } else if (value == 2) {
                               print("Option 2 selected");
                             }

@@ -7,6 +7,7 @@ import 'package:travelgram/app/modules/detail_pemesanan/views/konfirmasi_view.da
 import 'package:travelgram/app/modules/splash/views/splash_view.dart';
 import 'package:travelgram/app/modules/tiket/pesawat/views/detail_pesawat_view.dart';
 import 'package:travelgram/app/modules/tiket/pesawat/views/pesawat_view.dart';
+import 'package:travelgram/app/modules/user_profile/views/user_profile_view.dart';
 import 'package:travelgram/app/shared/bottom_navigation.dart';
 import 'app/modules/detail_pemesanan/views/metode_pembayaran.dart';
 import 'app/modules/tiket/pesawat/views/cari_pesawat_view.dart';
@@ -40,8 +41,12 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'MyApp',
         theme: ThemeData(visualDensity: VisualDensity.adaptivePlatformDensity),
-        home: token == null ? const SplashView() : const BottomNavBar(),
-        // home: const KonfirmasiView(),
+        home: token == null
+            ? const SplashView()
+            : const BottomNavBar(
+                index: 0,
+              ),
+        // home: const UserProfileView(),
         getPages: AppPages.routes,
       ),
     );

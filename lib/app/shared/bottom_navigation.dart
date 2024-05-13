@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travelgram/app/modules/home/views/home_view.dart';
+import 'package:travelgram/app/modules/user_profile/views/user_profile_view.dart';
 import 'package:travelgram/app/routes/app_pages.dart';
 
 import '../modules/feed/views/add_feed_view.dart';
@@ -12,20 +13,24 @@ import '../modules/search/views/search_view.dart';
 import '../modules/tiket/views/tiket_view.dart';
 
 class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({super.key});
+  final int index;
+  const BottomNavBar({required this.index, super.key});
 
   @override
   State<BottomNavBar> createState() => _BottomNavBarState();
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
-  final _pageController = PageController(initialPage: 0);
-  final _controller = NotchBottomBarController(index: 0);
   String? _token;
+  late PageController _pageController;
+  late NotchBottomBarController _controller;
 
   @override
   void initState() {
     super.initState();
+    _pageController = PageController(initialPage: widget.index);
+    _controller = NotchBottomBarController(index: widget.index);
+
     initializeToken();
   }
 
@@ -56,7 +61,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
       const TiketView(),
       AddFeedView(token: _token ?? ''),
       UserSearchPage(token: _token ?? ''),
-      const Page5(),
+      UserProfileView()
     ];
     return Scaffold(
       body: PageView(

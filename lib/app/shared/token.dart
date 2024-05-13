@@ -11,6 +11,15 @@ Future<void> saveIdUser(String idUser) async {
   await prefs.setString('id', idUser);
 
 }
+Future<void> saveUsername (String username) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString('username', username);
+}
+
+Future<void> saveImageUrl (String imageUrl) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString('avatar', imageUrl);
+}
 
 Future<String?> getToken() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();

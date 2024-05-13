@@ -3,7 +3,7 @@ class UrlApi {
   // static String urlStorage = 'https://dksystem.id/storage//';
 
   static String baseUrl = 'http://192.168.196.181:8000/api/';
-  static String urlStorage = 'http://192.168.196.181:8000/storage//';
+  static String urlStorage = 'http://192.168.196.181:8000/storage/';
   static String register = '${baseUrl}register';
   static String login = '${baseUrl}login';
   static String logout = '${baseUrl}logout';
@@ -22,6 +22,7 @@ class UrlApi {
 
   static String addFeed = '${baseUrl}posts';
   static String getFeed = '${baseUrl}posts';
+  static String getFeedById = '${baseUrl}posts/user';
   static String deleteFeed = '${baseUrl}posts';
 
   static String commentFeed = '${baseUrl}posts';
