@@ -1,10 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:travelgram/app/modules/search/models/user_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:travelgram/app/modules/search/models/user_model.dart';
+import 'package:travelgram/app/modules/user_profile/models/feed_user_model.dart';
 import 'package:travelgram/app/shared/token.dart';
 import 'package:travelgram/app/shared/url_api.dart';
 
@@ -20,6 +21,8 @@ class SearchUserViewTest extends StatefulWidget {
 
 class _SearchUserViewTestState extends State<SearchUserViewTest> {
   String? token;
+  late Future<FeedUserModel> profileData;
+
   Future<void> addFriend() async {
     token = await getToken();
     final response = await http.post(
@@ -55,30 +58,52 @@ class _SearchUserViewTestState extends State<SearchUserViewTest> {
       List<dynamic> data = jsonDecode(response.body);
       List<User> users = data.map((user) => User.fromJson(user)).toList();
       if (users.isEmpty) {
-        print(users);
         throw Exception('No users found');
       }
-      print(data);
       return users;
     } else {
       throw Exception('Failed to load users');
     }
   }
 
+  Future<FeedUserModel> fetchProfileData() async {
+    final response = await http.get(
+      Uri.parse('${UrlApi.getFeedById}/${widget.idUser}'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${widget.token}'
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return FeedUserModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load profile data');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    profileData = fetchProfileData();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<User>>(
-      future: searchUsers(widget.idUser),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        } else {
-          User user = snapshot.data!.first;
-          return Scaffold(
-            appBar: AppBar(),
-            body: Column(
+    return Scaffold(
+      appBar: AppBar(),
+      body: FutureBuilder<List<User>>(
+        future: searchUsers(widget.idUser),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: Text('No users found'));
+          } else {
+            User user = snapshot.data!.first;
+            return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Container(
@@ -127,7 +152,8 @@ class _SearchUserViewTestState extends State<SearchUserViewTest> {
                                       addFriend();
                                     },
                                     child: const Text('Tambah Teman'),
-                                  )
+                                  ),
+                            const SizedBox(height: 8.0),
                           ],
                         ),
                       ),
@@ -136,29 +162,114 @@ class _SearchUserViewTestState extends State<SearchUserViewTest> {
                 ),
                 const Divider(height: 0.0),
                 Expanded(
-                  child: GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 2.0,
-                      mainAxisSpacing: 2.0,
-                    ),
-                    itemBuilder: (context, index) {
-                      return Image.network(
-                        "https://images.unsplash.com/flagged/photo-1559502867-c406bd78ff24?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=685&q=80",
-                        width: 200.0,
-                        height: 200.0,
-                        fit: BoxFit.cover,
-                      );
+                  child: FutureBuilder<FeedUserModel>(
+                    future: profileData,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      } else if (!snapshot.hasData) {
+                        return const Center(
+                            child: Text('No profile data found'));
+                      } else {
+                        final profile = snapshot.data!;
+                        return Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                height: 100,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey),
+                                  borderRadius: BorderRadius.circular(24),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'Postingan',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20.0,
+                                            ),
+                                          ),
+                                          Text(
+                                            '${profile.totalPost}',
+                                            style: TextStyle(fontSize: 16.0),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'Teman',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20.0,
+                                            ),
+                                          ),
+                                          Text(
+                                            '${profile.totalFriend}',
+                                            style: TextStyle(fontSize: 16.0),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: double.infinity,
+                              height: 400.h,
+                              child: GridView.builder(
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 1,
+                                  crossAxisSpacing: 1.0,
+                                  mainAxisSpacing: 1.0,
+                                ),
+                                itemCount: profile.posts.length,
+                                itemBuilder: (context, index) {
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: Colors.black,
+                                          width: 1.0,
+                                        ),
+                                        borderRadius:
+                                            BorderRadius.circular(8.0)),
+                                    child: Image.network(
+                                      '${UrlApi.urlStorage}/${profile.posts[index].imageUrl}',
+                                      width: 200.0,
+                                      height: 200.0,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        );
+                      }
                     },
-                    itemCount: 9,
                   ),
                 ),
               ],
-            ),
-          );
-        }
-      },
+            );
+          }
+        },
+      ),
     );
   }
 }
