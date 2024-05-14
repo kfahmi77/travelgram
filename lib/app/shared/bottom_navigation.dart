@@ -61,7 +61,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
       const TiketView(),
       AddFeedView(token: _token ?? ''),
       UserSearchPage(token: _token ?? ''),
-      UserProfileView()
+      UserProfileView(token: _token ?? '')
     ];
     return Scaffold(
       body: PageView(

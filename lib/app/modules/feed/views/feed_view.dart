@@ -139,9 +139,6 @@ class _FeedListState extends State<FeedList> {
           itemBuilder: (context, index) {
             final message = snapshot.data![index];
 
-           
-
-
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: Card(
@@ -166,15 +163,7 @@ class _FeedListState extends State<FeedList> {
                                   child: GestureDetector(
                                     onTap: () {
                                       _idUser == message.userId.toString()
-                                          ? Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    BottomNavBar(
-                                                  index: 4,
-                                                ),
-                                              ),
-                                            )
+                                          ? const SizedBox()
                                           : Get.to(SearchUserViewTest(
                                               idUser: message.userId,
                                               token: _token!,
