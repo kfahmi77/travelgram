@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travelgram/app/modules/user_profile/models/feed_user_model.dart';
+import 'package:travelgram/app/modules/user_profile/views/edit_user_profile.dart';
 import 'package:travelgram/app/shared/url_api.dart';
 
 import '../../../shared/bottom_navigation.dart';
@@ -22,12 +23,15 @@ class UserProfileView extends StatefulWidget {
 class _UserProfileViewState extends State<UserProfileView> {
   late FeedUserModel _feedUserModel;
   String? _idUser;
+  String? _avatar;
+  String? _username;
   bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _feedUserModel = FeedUserModel(posts: [], totalFriend: 0, totalPost: 0);
+    _feedUserModel =
+        FeedUserModel(posts: [], totalFriend: 0, totalPost: 0, avatar: '');
     initializeTokenAndFetchPosts();
   }
 
@@ -35,10 +39,14 @@ class _UserProfileViewState extends State<UserProfileView> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('token');
     String? idUser = prefs.getString('id');
+    String? avatar = prefs.getString('avatar_url');
+    String? username = prefs.getString('username');
 
     if (token != null && idUser != null) {
       setState(() {
         _idUser = idUser;
+        _avatar = avatar;
+        _username = username;
       });
       await fetchPosts();
     }
@@ -67,7 +75,7 @@ class _UserProfileViewState extends State<UserProfileView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('$_idUser'),
+        title: Text('User Profile'),
         actions: [
           IconButton(
             onPressed: () {},
@@ -140,8 +148,8 @@ class _UserProfileViewState extends State<UserProfileView> {
                                 child: CircleAvatar(
                                   radius: 30.sp,
                                   backgroundImage: NetworkImage(
-                                    _feedUserModel.posts.isNotEmpty
-                                        ? '${UrlApi.dummyImage}'
+                                    _feedUserModel.avatar != null
+                                        ? '${UrlApi.urlStorage}${_feedUserModel.avatar}'
                                         : UrlApi.dummyImage,
                                   ),
                                 ),
@@ -156,7 +164,9 @@ class _UserProfileViewState extends State<UserProfileView> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.to(() => const EditProfilePage());
+                          },
                           child: const Text("Edit Profile"),
                         ),
                       ],

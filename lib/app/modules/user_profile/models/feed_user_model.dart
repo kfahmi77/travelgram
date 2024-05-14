@@ -10,23 +10,27 @@ String feedUserModelToJson(FeedUserModel data) => json.encode(data.toJson());
 
 class FeedUserModel {
     List<Post> posts;
+    dynamic avatar;
     int totalPost;
     int totalFriend;
 
     FeedUserModel({
         required this.posts,
+        required this.avatar,
         required this.totalPost,
         required this.totalFriend,
     });
 
     factory FeedUserModel.fromJson(Map<String, dynamic> json) => FeedUserModel(
         posts: List<Post>.from(json["posts"].map((x) => Post.fromJson(x))),
+        avatar: json["avatar"],
         totalPost: json["total_post"],
         totalFriend: json["total_friend"],
     );
 
     Map<String, dynamic> toJson() => {
         "posts": List<dynamic>.from(posts.map((x) => x.toJson())),
+        "avatar": avatar,
         "total_post": totalPost,
         "total_friend": totalFriend,
     };

@@ -43,11 +43,9 @@ class LoginController extends GetxController {
         final jsonResponse = json.decode(response.body);
         final token = jsonResponse['token'];
         final user = jsonResponse['user']['id'];
-        final username = jsonResponse['user']['username'];
 
         await saveToken(token);
         await saveIdUser(user.toString());
-        await saveUsername(username);
 
         Get.offAll(const BottomNavBar(
           index: 0,

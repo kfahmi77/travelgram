@@ -8,6 +8,9 @@ class UrlApi {
   static String login = '${baseUrl}login';
   static String logout = '${baseUrl}logout';
 
+  static String profile = '${baseUrl}user';
+  static String updateProfile = '${baseUrl}user/update';
+
   static String messages = '${baseUrl}all-chats';
   static String sendMessage = '${baseUrl}chat-messages';
   static String getMessageById = '${baseUrl}get-messages';
