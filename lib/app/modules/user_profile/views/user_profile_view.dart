@@ -46,7 +46,7 @@ class _UserProfileViewState extends State<UserProfileView> {
 
   Future<void> fetchPosts() async {
     final response = await http.get(
-      Uri.parse('http://192.168.196.181:8000/api/posts/user/$_idUser'),
+      Uri.parse('${UrlApi.getFeedById}/$_idUser'),
       headers: <String, String>{
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ${widget.token}'
@@ -106,9 +106,11 @@ class _UserProfileViewState extends State<UserProfileView> {
                                     height: 100.h,
                                     decoration: BoxDecoration(
                                         color: Colors.white,
-                                        borderRadius: BorderRadius.circular(10.0)),
+                                        borderRadius:
+                                            BorderRadius.circular(10.0)),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
                                       children: [
                                         Flexible(
                                           child: Text(
@@ -164,17 +166,16 @@ class _UserProfileViewState extends State<UserProfileView> {
                 Flexible(
                   flex: 3,
                   child: Container(
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(40.0),
                         topRight: Radius.circular(40.0),
                       ),
-                      border: Border(
-                        top: BorderSide(
-                          color: Colors.black,
-                          width: 1.0,
-                        ),
+                      //border all
+                      border: Border.all(
+                        color: Colors.black,
+                        width: 1.0,
                       ),
                     ),
                     child: Column(
@@ -197,16 +198,19 @@ class _UserProfileViewState extends State<UserProfileView> {
                             ),
                             itemCount: _feedUserModel.posts.length,
                             itemBuilder: (context, index) {
-                              return Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.black,
-                                    width: 1.0,
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
+                                    ),
                                   ),
-                                ),
-                                child: Image.network(
-                                  '${UrlApi.urlStorage}${_feedUserModel.posts[index].imageUrl}',
-                                  fit: BoxFit.cover,
+                                  child: Image.network(
+                                    '${UrlApi.urlStorage}${_feedUserModel.posts[index].imageUrl}',
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               );
                             },

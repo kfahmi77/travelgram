@@ -75,7 +75,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           ? AnimatedNotchBottomBar(
               /// Provide NotchBottomBarController
               notchBottomBarController: _controller,
-              color: Colors.white,
+              color: Colors.grey,
               showLabel: false,
               shadowElevation: 0,
               kBottomRadius: 10.0,
