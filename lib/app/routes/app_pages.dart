@@ -8,8 +8,8 @@ import '../modules/feed/bindings/feed_binding.dart';
 import '../modules/feed/views/feed_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
-import '../modules/tiket/kereta/bindings/kereta_binding.dart';
-import '../modules/tiket/kereta/views/kereta_view.dart';
+import '../modules/tiket/hotel/bindings/hotel_binding.dart';
+import '../modules/tiket/hotel/views/hotel_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/register/bindings/register_binding.dart';
@@ -22,6 +22,8 @@ import '../modules/splash/views/splash_view.dart';
 import '../modules/tiket/bindings/tiket_binding.dart';
 import '../modules/tiket/bus/bindings/bus_binding.dart';
 import '../modules/tiket/bus/views/bus_view.dart';
+import '../modules/tiket/kereta/bindings/kereta_binding.dart';
+import '../modules/tiket/kereta/views/kereta_view.dart';
 import '../modules/tiket/pesawat/bindings/pesawat_binding.dart';
 import '../modules/tiket/pesawat/views/pesawat_view.dart';
 import '../modules/tiket/views/tiket_view.dart';
@@ -80,6 +82,11 @@ class AppPages {
       name: _Paths.KERETA,
       page: () => const KeretaView(),
       binding: KeretaBinding(),
+    ),
+    GetPage(
+      name: _Paths.HOTEL,
+      page: () =>  HotelView(),
+      binding: HotelBinding(),
     ),
   ];
 }

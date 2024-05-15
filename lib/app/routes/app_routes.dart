@@ -17,6 +17,7 @@ abstract class Routes {
   static const USER_PROFILE = _Paths.USER_PROFILE;
   static const BUS = _Paths.BUS;
   static const KERETA = _Paths.KERETA;
+  static const HOTEL = _Paths.HOTEL;
 }
 
 abstract class _Paths {
@@ -35,4 +36,5 @@ abstract class _Paths {
   static const USER_PROFILE = '/user-profile';
   static const BUS = '/bus';
   static const KERETA = '/kereta';
+  static const HOTEL = '/hotel';
 }
