@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/tiket/bus/bindings/bus_binding.dart';
+import '../modules/tiket/bus/views/bus_view.dart';
 import '../modules/chat/bindings/chat_binding.dart';
 import '../modules/chat/views/chat_view.dart';
 import '../modules/detail_pemesanan/bindings/detail_pemesanan_binding.dart';
@@ -67,6 +69,10 @@ class AppPages {
       page: () => const DetailPemesananView(),
       binding: DetailPemesananBinding(),
     ),
-   
+    GetPage(
+      name: _Paths.BUS,
+      page: () => const BusView(),
+      binding: BusBinding(),
+    ),
   ];
 }

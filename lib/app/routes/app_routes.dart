@@ -15,6 +15,7 @@ abstract class Routes {
   static const PESAWAT = _Paths.PESAWAT;
   static const DETAIL_PEMESANAN = _Paths.DETAIL_PEMESANAN;
   static const USER_PROFILE = _Paths.USER_PROFILE;
+  static const BUS = _Paths.BUS;
 }
 
 abstract class _Paths {
@@ -31,4 +32,5 @@ abstract class _Paths {
   static const PESAWAT = '/pesawat';
   static const DETAIL_PEMESANAN = '/detail-pemesanan';
   static const USER_PROFILE = '/user-profile';
+  static const BUS = '/bus';
 }

@@ -5,6 +5,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travelgram/app/modules/detail_pemesanan/views/detail_pemesanan_view.dart';
 import 'package:travelgram/app/modules/detail_pemesanan/views/konfirmasi_view.dart';
 import 'package:travelgram/app/modules/splash/views/splash_view.dart';
+import 'package:travelgram/app/modules/tiket/bus/views/bus_view.dart';
+import 'package:travelgram/app/modules/tiket/bus/views/cari_bus_view.dart';
+import 'package:travelgram/app/modules/tiket/bus/views/pilih_kursi_view.dart';
 import 'package:travelgram/app/modules/tiket/pesawat/views/detail_pesawat_view.dart';
 import 'package:travelgram/app/modules/tiket/pesawat/views/pesawat_view.dart';
 import 'package:travelgram/app/modules/user_profile/views/user_profile_view.dart';
@@ -41,12 +44,12 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'MyApp',
         theme: ThemeData(visualDensity: VisualDensity.adaptivePlatformDensity),
-        home: token == null
-            ? const SplashView()
-            : const BottomNavBar(
-                index: 0,
-              ),
-        // home: const UserProfileView(),
+        // home: token == null
+        //     ? const SplashView()
+        //     : const BottomNavBar(
+        //         index: 0,
+        //       ),
+        home: const PilihKursiView(),
         getPages: AppPages.routes,
       ),
     );
