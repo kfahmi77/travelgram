@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:travelgram/app/modules/tiket/pesawat/views/cari_pesawat_view.dart';
 
@@ -71,6 +72,12 @@ class _PesawatViewState extends State<PesawatView> {
         children: [
           Stack(
             children: [
+              IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () {
+                  Get.back();
+                },
+              ),
               Container(
                 height: 150.h,
                 width: double.infinity,

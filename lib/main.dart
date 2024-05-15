@@ -13,6 +13,7 @@ import 'package:travelgram/app/modules/tiket/hotel/views/hotel_view.dart';
 import 'package:travelgram/app/modules/tiket/kereta/views/kereta_view.dart';
 import 'package:travelgram/app/modules/tiket/pesawat/views/detail_pesawat_view.dart';
 import 'package:travelgram/app/modules/tiket/pesawat/views/pesawat_view.dart';
+import 'package:travelgram/app/modules/tiket/views/tiket_saya_view.dart';
 import 'package:travelgram/app/modules/tiket/wisata/views/detail_wisata.dart';
 import 'package:travelgram/app/modules/tiket/wisata/views/pesan_wisata.dart';
 import 'package:travelgram/app/modules/tiket/wisata/views/wisata_view.dart';
@@ -52,12 +53,11 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'MyApp',
         theme: ThemeData(visualDensity: VisualDensity.adaptivePlatformDensity),
-        // home: token == null
-        //     ? const SplashView()
-        //     : const BottomNavBar(
-        //         index: 0,
-        //       ),
-        home: DetailPesananWisataView(),
+        home: token == null
+            ? const SplashView()
+            : const BottomNavBar(
+                index: 0,
+              ),
         getPages: AppPages.routes,
       ),
     );

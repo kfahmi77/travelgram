@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
+import 'package:travelgram/app/modules/tiket/bus/views/bus_view.dart';
+import 'package:travelgram/app/modules/tiket/hotel/views/hotel_view.dart';
+import 'package:travelgram/app/modules/tiket/kereta/views/kereta_view.dart';
 import 'package:travelgram/app/modules/tiket/pesawat/views/cari_pesawat_view.dart';
 import 'package:travelgram/app/modules/tiket/pesawat/views/pesawat_view.dart';
+import 'package:travelgram/app/modules/tiket/views/tiket_saya_view.dart';
+import 'package:travelgram/app/modules/tiket/wisata/views/wisata_view.dart';
 import 'package:travelgram/app/shared/url_api.dart';
 
 import '../controllers/tiket_controller.dart';
@@ -93,20 +98,23 @@ class TiketView extends GetView<TiketController> {
                       borderRadius: BorderRadius.circular(16),
                       color: Colors.white,
                     ),
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.all(8.0),
-                        ),
-                        Text(
-                          "Tiket Saya",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ],
+                    child: GestureDetector(
+                      onTap: () => Get.to(() => TiketSayaView()),
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(8.0),
+                          ),
+                          Text(
+                            "Tiket Saya",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -149,17 +157,20 @@ class TiketView extends GetView<TiketController> {
                 ),
                 Column(
                   children: [
-                    Container(
-                      height: 60.h,
-                      width: 60.w,
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                      child: const ImageIcon(
-                        AssetImage("assets/images/lucide_bus.png"),
-                        color: Colors.black,
-                        size: 4.0,
+                    GestureDetector(
+                      onTap: () => Get.to(const BusView()),
+                      child: Container(
+                        height: 60.h,
+                        width: 60.w,
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                        child: const ImageIcon(
+                          AssetImage("assets/images/lucide_bus.png"),
+                          color: Colors.black,
+                          size: 4.0,
+                        ),
                       ),
                     ),
                     const Text(
@@ -172,17 +183,20 @@ class TiketView extends GetView<TiketController> {
                 ),
                 Column(
                   children: [
-                    Container(
-                      height: 60.h,
-                      width: 60.w,
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                      child: const ImageIcon(
-                        AssetImage("assets/images/carbon_train-speed.png"),
-                        color: Colors.black,
-                        size: 4.0,
+                    GestureDetector(
+                      onTap: () => Get.to(const KeretaView()),
+                      child: Container(
+                        height: 60.h,
+                        width: 60.w,
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                        child: const ImageIcon(
+                          AssetImage("assets/images/carbon_train-speed.png"),
+                          color: Colors.black,
+                          size: 4.0,
+                        ),
                       ),
                     ),
                     const Text(
@@ -195,17 +209,20 @@ class TiketView extends GetView<TiketController> {
                 ),
                 Column(
                   children: [
-                    Container(
-                      height: 60.h,
-                      width: 60.w,
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                      child: const ImageIcon(
-                        AssetImage("assets/images/fontisto_hotel.png"),
-                        color: Colors.black,
-                        size: 4.0,
+                    GestureDetector(
+                      onTap: () => Get.to(HotelView()),
+                      child: Container(
+                        height: 60.h,
+                        width: 60.w,
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                        child: const ImageIcon(
+                          AssetImage("assets/images/fontisto_hotel.png"),
+                          color: Colors.black,
+                          size: 4.0,
+                        ),
                       ),
                     ),
                     const Text(
@@ -218,17 +235,20 @@ class TiketView extends GetView<TiketController> {
                 ),
                 Column(
                   children: [
-                    Container(
-                      height: 60.h,
-                      width: 60.w,
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                      child: const ImageIcon(
-                        AssetImage("assets/images/wisata.png"),
-                        color: Colors.black,
-                        size: 4.0,
+                    GestureDetector(
+                      onTap: () => Get.to(const WisataView()),
+                      child: Container(
+                        height: 60.h,
+                        width: 60.w,
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                        child: const ImageIcon(
+                          AssetImage("assets/images/wisata.png"),
+                          color: Colors.black,
+                          size: 4.0,
+                        ),
                       ),
                     ),
                     const Text(

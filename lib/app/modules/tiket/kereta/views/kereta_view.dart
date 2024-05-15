@@ -55,9 +55,6 @@ class _KeretaViewState extends State<KeretaView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Dropdown Provinsi Indonesia'),
-      ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
