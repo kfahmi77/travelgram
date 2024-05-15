@@ -1,7 +1,5 @@
 import 'package:get/get.dart';
 
-import '../modules/tiket/bus/bindings/bus_binding.dart';
-import '../modules/tiket/bus/views/bus_view.dart';
 import '../modules/chat/bindings/chat_binding.dart';
 import '../modules/chat/views/chat_view.dart';
 import '../modules/detail_pemesanan/bindings/detail_pemesanan_binding.dart';
@@ -10,6 +8,8 @@ import '../modules/feed/bindings/feed_binding.dart';
 import '../modules/feed/views/feed_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/tiket/kereta/bindings/kereta_binding.dart';
+import '../modules/tiket/kereta/views/kereta_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/register/bindings/register_binding.dart';
@@ -20,6 +20,8 @@ import '../modules/search_user/bindings/search_user_binding.dart';
 import '../modules/search_user/views/search_user_view.dart';
 import '../modules/splash/views/splash_view.dart';
 import '../modules/tiket/bindings/tiket_binding.dart';
+import '../modules/tiket/bus/bindings/bus_binding.dart';
+import '../modules/tiket/bus/views/bus_view.dart';
 import '../modules/tiket/pesawat/bindings/pesawat_binding.dart';
 import '../modules/tiket/pesawat/views/pesawat_view.dart';
 import '../modules/tiket/views/tiket_view.dart';
@@ -73,6 +75,11 @@ class AppPages {
       name: _Paths.BUS,
       page: () => const BusView(),
       binding: BusBinding(),
+    ),
+    GetPage(
+      name: _Paths.KERETA,
+      page: () => const KeretaView(),
+      binding: KeretaBinding(),
     ),
   ];
 }

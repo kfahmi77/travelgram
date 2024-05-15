@@ -8,6 +8,7 @@ import 'package:travelgram/app/modules/splash/views/splash_view.dart';
 import 'package:travelgram/app/modules/tiket/bus/views/bus_view.dart';
 import 'package:travelgram/app/modules/tiket/bus/views/cari_bus_view.dart';
 import 'package:travelgram/app/modules/tiket/bus/views/pilih_kursi_view.dart';
+import 'package:travelgram/app/modules/tiket/kereta/views/kereta_view.dart';
 import 'package:travelgram/app/modules/tiket/pesawat/views/detail_pesawat_view.dart';
 import 'package:travelgram/app/modules/tiket/pesawat/views/pesawat_view.dart';
 import 'package:travelgram/app/modules/user_profile/views/user_profile_view.dart';
@@ -49,7 +50,7 @@ class MyApp extends StatelessWidget {
         //     : const BottomNavBar(
         //         index: 0,
         //       ),
-        home: const PilihKursiView(),
+        home: const KeretaView(),
         getPages: AppPages.routes,
       ),
     );

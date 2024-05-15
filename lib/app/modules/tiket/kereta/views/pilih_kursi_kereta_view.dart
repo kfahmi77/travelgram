@@ -4,14 +4,14 @@ import 'package:get/get.dart';
 
 import '../../../detail_pemesanan/views/detail_pemesanan_view.dart';
 
-class PilihKursiView extends StatefulWidget {
-  const PilihKursiView({super.key});
+class PilihKursiKeretaView extends StatefulWidget {
+  const PilihKursiKeretaView({super.key});
 
   @override
-  createState() => _PilihKursiViewState();
+  createState() => _PilihKursiKeretaViewState();
 }
 
-class _PilihKursiViewState extends State<PilihKursiView> {
+class _PilihKursiKeretaViewState extends State<PilihKursiKeretaView> {
   List<bool> selectedSeats = List.generate(30, (index) => false);
   List<int> disabledSeats = [5, 10, 15]; // List of disabled seats
 
@@ -24,7 +24,7 @@ class _PilihKursiViewState extends State<PilihKursiView> {
             height: 200.h,
             width: double.infinity,
             child: Image.asset(
-              "assets/images/bis.png",
+              "assets/images/kereta.png",
               fit: BoxFit.fill,
             ),
           ),
