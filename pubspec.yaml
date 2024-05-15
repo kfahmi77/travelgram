@@ -20,8 +20,10 @@ dependencies:
   pusher_channels_flutter: ^2.2.1
   scroll_to_index: ^3.0.1
   shared_preferences: ^2.2.2
+  table_calendar: ^3.1.1
   timeago: ^3.6.1
   timeline_tile: ^2.0.0
+  
 
 dev_dependencies:
   flutter_lints: 3.0.1

@@ -18,6 +18,7 @@ abstract class Routes {
   static const BUS = _Paths.BUS;
   static const KERETA = _Paths.KERETA;
   static const HOTEL = _Paths.HOTEL;
+  static const WISATA = _Paths.WISATA;
 }
 
 abstract class _Paths {
@@ -37,4 +38,5 @@ abstract class _Paths {
   static const BUS = '/bus';
   static const KERETA = '/kereta';
   static const HOTEL = '/hotel';
+  static const WISATA = '/wisata';
 }
