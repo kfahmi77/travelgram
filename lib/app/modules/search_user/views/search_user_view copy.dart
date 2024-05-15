@@ -231,7 +231,7 @@ class _SearchUserViewTestState extends State<SearchUserViewTest> {
                             ),
                             SizedBox(
                               width: double.infinity,
-                              height: 400.h,
+                              height: 350.h,
                               child: GridView.builder(
                                 gridDelegate:
                                     const SliverGridDelegateWithFixedCrossAxisCount(
