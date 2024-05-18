@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:travelgram/app/modules/tiket/bus/views/bus_view.dart';
 import 'package:travelgram/app/modules/tiket/hotel/views/hotel_view.dart';
 import 'package:travelgram/app/modules/tiket/kereta/views/kereta_view.dart';
-import 'package:travelgram/app/modules/tiket/pesawat/views/cari_pesawat_view.dart';
 import 'package:travelgram/app/modules/tiket/pesawat/views/pesawat_view.dart';
 import 'package:travelgram/app/modules/tiket/views/tiket_saya_view.dart';
 import 'package:travelgram/app/modules/tiket/wisata/views/wisata_view.dart';

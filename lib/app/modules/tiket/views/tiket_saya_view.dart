@@ -1,143 +1,155 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
-class TiketSayaView extends StatelessWidget {
-  final List<TicketData> tickets = [
-    TicketData(
-      title: 'Jakarta - Bandung',
-      date: 'Kamis, 07 Desember 2023 | 04:30',
-      price: 123000,
-      quantity: 1,
-      passenger: 'ANDIVA KASIH ANGGORO PUTRA',
-      details: 'Jackal Holidays | Shuttle | Kuningan',
-    ),
-    TicketData(
-      title: 'Jakarta - Bali',
-      date: 'Kamis, 07 Desember 2023 | 04:30',
-      price: 2648700,
-      quantity: 1,
-      passenger: 'ANDIVA KASIH ANGGORO PUTRA',
-      details: 'Batik Air | CGK',
-    ),
-    TicketData(
-      title: 'Jakarta - Surabaya',
-      date: 'Kamis, 07 Desember 2023 | 08:20',
-      price: 880000,
-      quantity: 1,
-      passenger: 'ANDIVA KASIH ANGGORO PUTRA',
-      details: 'Argo Bromo Anggrek | GMR',
-    ),
-    TicketData(
-      title: 'Siliwangi Sport',
-      date: 'Kamis, 07 Desember 2023 | 12:30 | 1 Bulan',
-      price: 1000000,
-      quantity: 1,
-      passenger: 'ANDIVA KASIH ANGGORO PUTRA',
-      details: 'Kamar Deluks Twin',
-    ),
-    TicketData(
-      title: 'Tiket Jatim Park 1 + Museum Tubuh',
-      date: 'Kamis, 07 Desember 2023',
-      price: 190000,
-      quantity: 2,
-      passenger: 'ANDIVA KASIH ANGGORO PUTRA',
-    ),
-  ];
+import '../models/tiket_saya_model.dart';
 
-  TiketSayaView({super.key});
+class TiketSayaView extends StatefulWidget {
+  const TiketSayaView({Key? key}) : super(key: key);
+
+  @override
+  State<TiketSayaView> createState() => _TiketSayaViewState();
+}
+
+class _TiketSayaViewState extends State<TiketSayaView> {
+  List<Transaksi> tickets = [];
+  String? _token;
+  bool isLoading = true;
+  String? errorMessage;
+
+  @override
+  void initState() {
+    super.initState();
+    initializeToken();
+  }
+
+  void initializeToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+    if (token != null) {
+      setState(() {
+        _token = token;
+      });
+      await fetchTransaksi();
+    } else {
+      setState(() {
+        isLoading = false;
+        errorMessage = 'Token tidak ditemukan';
+      });
+    }
+  }
+
+  Future<void> fetchTransaksi() async {
+    try {
+      final response = await http.get(
+        Uri.parse('http://192.168.196.181:8000/api/transactions'),
+        headers: <String, String>{
+          'Authorization': 'Bearer $_token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        setState(() {
+          tickets = data.map((json) => Transaksi.fromJson(json)).toList();
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          isLoading = false;
+          errorMessage = 'Failed to load transaksi';
+        });
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+        errorMessage = 'Failed to load transaksi: $e';
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Get.back();
           },
         ),
-        title: Text('Tiket Saya'),
+        title: const Text('Tiket Saya'),
         actions: [
           IconButton(
-            icon: Icon(Icons.history),
+            icon: const Icon(Icons.history),
             onPressed: () {},
           ),
         ],
       ),
-      body: ListView.builder(
-        itemCount: tickets.length,
-        itemBuilder: (context, index) {
-          return TicketCard(ticket: tickets[index]);
-        },
-      ),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : errorMessage != null
+              ? Center(child: Text(errorMessage!))
+              : tickets.isEmpty
+                  ? const Center(child: Text('Tidak ada data transaksi'))
+                  : ListView.builder(
+                      itemCount: tickets.length,
+                      itemBuilder: (context, index) {
+                        return TicketCard(ticket: tickets[index]);
+                      },
+                    ),
     );
   }
 }
 
-class TicketData {
-  final String title;
-  final String date;
-  final double price;
-  final int quantity;
-  final String passenger;
-  final String? details;
-
-  TicketData({
-    required this.title,
-    required this.date,
-    required this.price,
-    required this.quantity,
-    required this.passenger,
-    this.details,
-  });
-}
-
 class TicketCard extends StatelessWidget {
-  final TicketData ticket;
+  final Transaksi ticket;
 
-  TicketCard({super.key, required this.ticket});
+  const TicketCard({Key? key, required this.ticket}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
       color: Colors.blue[200],
       child: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              ticket.title,
-              style: TextStyle(
+              ticket.namaTransaksi,
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 8),
-            Text(ticket.date),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
+            Text(ticket.tanggalTransaksi),
+            const SizedBox(height: 8),
             Text(
-              'Rp ${ticket.price.toStringAsFixed(0)}/${ticket.quantity}',
-              style: TextStyle(
+              'Total: ${ticket.harga}',
+              style: const TextStyle(
                 color: Colors.red,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Row(
               children: [
-                Icon(Icons.person),
-                SizedBox(width: 4),
-                Text(ticket.passenger),
+                const Icon(Icons.person),
+                const SizedBox(width: 4),
+                Text(ticket.nama),
               ],
             ),
-            if (ticket.details != null) ...[
-              SizedBox(height: 8),
-              Text(ticket.details!),
+            if (ticket.detailTransaksi.isNotEmpty) ...[
+              const SizedBox(height: 8),
+              Text(ticket.detailTransaksi),
             ],
           ],
         ),
