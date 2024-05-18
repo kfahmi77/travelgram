@@ -18,9 +18,14 @@ class AddFeedView extends StatefulWidget {
 
 class _AddFeedViewState extends State<AddFeedView> {
   File? _image;
-  TextEditingController _caption = TextEditingController();
+  final TextEditingController _caption = TextEditingController();
+  bool _isLoading = false;
 
   void postImage() async {
+    setState(() {
+      _isLoading = true;
+    });
+
     var url = Uri.parse(UrlApi.addFeed);
     var request = http.MultipartRequest('POST', url);
     request.headers.addAll({
@@ -36,9 +41,15 @@ class _AddFeedViewState extends State<AddFeedView> {
     request.fields['content'] = _caption.text;
 
     var response = await request.send();
+    setState(() {
+      _isLoading = false;
+    });
+
     if (response.statusCode == 200) {
       Get.snackbar('Success', 'Berhasil menambahkan feed');
-      Get.offAll(const BottomNavBar(index: 0,));
+      Get.offAll(const BottomNavBar(
+        index: 0,
+      ));
       print('Image uploaded successfully');
     } else {
       print('Failed to upload image ${response.reasonPhrase}');
@@ -51,6 +62,7 @@ class _AddFeedViewState extends State<AddFeedView> {
       appBar: AppBar(
         title: const Text('Tambah Feed'),
       ),
+      resizeToAvoidBottomInset: false,
       body: Center(
         child: Column(
           children: <Widget>[
@@ -58,7 +70,7 @@ class _AddFeedViewState extends State<AddFeedView> {
               padding: const EdgeInsets.all(12),
               child: TextFormField(
                 controller: _caption,
-                maxLength: 20,
+                maxLength: 100,
                 decoration: const InputDecoration(
                   labelText: 'Caption',
                   labelStyle: TextStyle(
@@ -107,7 +119,11 @@ class _AddFeedViewState extends State<AddFeedView> {
               onPressed: () {
                 postImage();
               },
-              child: const Text("Save"),
+              child: _isLoading
+                  ? CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+                    )
+                  : const Text("Save"),
             ),
           ],
         ),

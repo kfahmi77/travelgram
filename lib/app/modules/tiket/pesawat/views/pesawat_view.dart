@@ -43,7 +43,7 @@ class _PesawatViewState extends State<PesawatView> {
   };
 
   String formatDate(DateTime date) {
-    return DateFormat('EEEE, dd MMMM yyyy').format(date);
+    return DateFormat('EEEE, dd MMMM yyyy', 'id_ID').format(date);
   }
 
   Future<void> _selectDate(BuildContext context, bool isDepartureDate) async {
@@ -488,21 +488,25 @@ class _PesawatViewState extends State<PesawatView> {
           ElevatedButton(
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return CariPesawatView();
+                return CariPesawatView(
+                  namaBandaraAsal: dropdownAsalBandara,
+                  namaBandaraTujuan: dropdownTujuanBandara, tanggal: formatDate(selectedDate),
+                  
+                );
               }));
             },
-            child: Text(
-              "Cari Tiket",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 14.sp,
-              ),
-            ),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.blue,
               padding: EdgeInsets.symmetric(horizontal: 100.w, vertical: 10.h),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            child: Text(
+              "Cari Tiket",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 14.sp,
               ),
             ),
           ),

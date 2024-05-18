@@ -24,7 +24,6 @@ class UserProfileView extends StatefulWidget {
 class _UserProfileViewState extends State<UserProfileView> {
   late FeedUserModel _feedUserModel;
   String? _idUser;
-  String? _username;
   bool isLoading = true;
   Future<User>? futureUser;
 
@@ -42,13 +41,11 @@ class _UserProfileViewState extends State<UserProfileView> {
     String? token = prefs.getString('token');
     String? idUser = prefs.getString('id');
     prefs.getString('avatar_url');
-    String? username = prefs.getString('username');
+    prefs.getString('username');
 
     if (token != null && idUser != null) {
       setState(() {
         _idUser = idUser;
-
-        _username = username;
       });
       await fetchPosts();
     }
@@ -90,6 +87,7 @@ class _UserProfileViewState extends State<UserProfileView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         title: FutureBuilder<User>(
           future: futureUser,
           builder: (context, snapshot) {
@@ -102,12 +100,6 @@ class _UserProfileViewState extends State<UserProfileView> {
             return CircularProgressIndicator();
           },
         ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.list),
-          ),
-        ],
         centerTitle: false,
       ),
       body: isLoading

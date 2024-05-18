@@ -32,6 +32,7 @@ class UrlApi {
   static String addCommentFeed = '${baseUrl}posts';
 
   static String hotel = '${baseUrl}hotel';
+  static String flight = '${baseUrl}flight-schedules';
 
   static String transaction = '${baseUrl}transactions';
 

@@ -40,7 +40,7 @@ class DetailPesawatView extends StatelessWidget {
               height: 20.h,
             ),
             Container(
-              height: MediaQuery.of(context).size.height * 0.8,
+              height: 400.h,
               width: double.infinity,
               decoration: const BoxDecoration(
                 color: Colors.blue,
