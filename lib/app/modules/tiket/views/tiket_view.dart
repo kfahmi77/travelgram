@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travelgram/app/modules/tiket/bus/views/bus_view.dart';
 import 'package:travelgram/app/modules/tiket/hotel/views/hotel_view.dart';
 import 'package:travelgram/app/modules/tiket/kereta/views/kereta_view.dart';
@@ -9,11 +12,50 @@ import 'package:travelgram/app/modules/tiket/pesawat/views/pesawat_view.dart';
 import 'package:travelgram/app/modules/tiket/views/tiket_saya_view.dart';
 import 'package:travelgram/app/modules/tiket/wisata/views/wisata_view.dart';
 import 'package:travelgram/app/shared/url_api.dart';
+import 'package:http/http.dart' as http;
 
-import '../controllers/tiket_controller.dart';
+class TiketView extends StatefulWidget {
+  const TiketView({super.key});
 
-class TiketView extends GetView<TiketController> {
-  const TiketView({Key? key}) : super(key: key);
+  @override
+  State<TiketView> createState() => _TiketViewState();
+}
+
+class _TiketViewState extends State<TiketView> {
+  Future<Map<String, dynamic>>? futureUserData;
+  String? _token;
+  @override
+  void initState() {
+    super.initState();
+    initializeToken();
+  }
+
+  Future<Map<String, dynamic>> fetchUserData() async {
+    final response = await http.get(
+      Uri.parse(UrlApi.profile),
+      headers: {
+        'Authorization': 'Bearer $_token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      throw Exception('Failed to load user data');
+    }
+  }
+
+  void initializeToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+    if (token != null) {
+      setState(() {
+        _token = token;
+      });
+      futureUserData = fetchUserData();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,38 +81,57 @@ class TiketView extends GetView<TiketController> {
                 ),
                 SizedBox(
                   height: 50.0,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(left: 8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                  child: FutureBuilder<Map<String, dynamic>>(
+                    future: futureUserData,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      } else if (snapshot.hasData) {
+                        final userData = snapshot.data!;
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              "Hai",
-                              style: TextStyle(
-                                fontSize: 11.0,
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    "Hai",
+                                    style: TextStyle(
+                                      fontSize: 11.0,
+                                    ),
+                                  ),
+                                  Text(
+                                    userData['nama_lengkap'],
+                                    style: const TextStyle(
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            Text(
-                              "Rizki",
-                              style: TextStyle(
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold,
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                  userData['avatar'] != null
+                                      ? "${UrlApi.urlStorage}${userData['avatar']}"
+                                      : "${UrlApi.dummyImage}",
+                                ),
+                                backgroundColor: Colors.transparent,
+                                radius: 30,
                               ),
                             ),
                           ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
-                        child: CircleAvatar(
-                          backgroundImage:
-                              NetworkImage("${UrlApi.dummyImage}", scale: 2),
-                        ),
-                      ),
-                    ],
+                        );
+                      } else {
+                        return const Text('No data available');
+                      }
+                    },
                   ),
                 ),
                 const Row(
@@ -98,7 +159,7 @@ class TiketView extends GetView<TiketController> {
                       color: Colors.white,
                     ),
                     child: GestureDetector(
-                      onTap: () => Get.to(() => TiketSayaView()),
+                      onTap: () => Get.to(() => const TiketSayaView()),
                       child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

@@ -33,6 +33,8 @@ class UrlApi {
 
   static String hotel = '${baseUrl}hotel';
 
+  static String transaction = '${baseUrl}transactions';
+
   static String dummyImage =
       'https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg';
 }

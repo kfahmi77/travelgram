@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:travelgram/app/modules/tiket/hotel/models/hotel_model.dart';
 
+import '../../../detail_pemesanan/views/detail_pemesanan_view copy.dart';
 import '../../../detail_pemesanan/views/metode_pembayaran copy.dart';
 
 class DetailHotelView extends StatefulWidget {
@@ -32,7 +33,7 @@ class _DetailHotelViewState extends State<DetailHotelView> {
 
   void _updateResult() {
     DateTime now = DateTime.now();
-    DateTime futureDate = now.add(Duration(days: 1));
+    DateTime futureDate = now.add(const Duration(days: 1));
 
     // Format tanggal
     String formattedDate =
@@ -65,7 +66,7 @@ class _DetailHotelViewState extends State<DetailHotelView> {
                 child: CircleAvatar(
                   backgroundColor: Colors.white,
                   child: IconButton(
-                    icon: Icon(Icons.arrow_back, color: Colors.black),
+                    icon: const Icon(Icons.arrow_back, color: Colors.black),
                     onPressed: () {
                       Get.back();
                     },
@@ -95,32 +96,32 @@ class _DetailHotelViewState extends State<DetailHotelView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           'Detail:',
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Text(
                           'Nama hotel: ${widget.hotel.nama}\n'
                           'Lokasi: Balikpapan ${widget.hotel.lokasi} \n'
                           'Fasilitas: ${widget.hotel.fasilitas}\n'
                           'Jenis kamar: ${widget.hotel.jenisKamar}\n'
                           'Harga: ${currencyFormatter.format(widget.hotel.harga)}/malam',
-                          style: TextStyle(fontSize: 16),
+                          style: const TextStyle(fontSize: 16),
                         ),
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         Row(
                           children: [
-                            Text(
+                            const Text(
                               'Lama sewa:',
                               style: TextStyle(fontSize: 16),
                             ),
-                            SizedBox(width: 16),
+                            const SizedBox(width: 16),
                             IconButton(
-                              icon: Icon(Icons.remove),
+                              icon: const Icon(Icons.remove),
                               onPressed: () {
                                 setState(() {
                                   if (rentalDuration > 1) {
@@ -132,10 +133,10 @@ class _DetailHotelViewState extends State<DetailHotelView> {
                             ),
                             Text(
                               '$rentalDuration',
-                              style: TextStyle(fontSize: 16),
+                              style: const TextStyle(fontSize: 16),
                             ),
                             IconButton(
-                              icon: Icon(Icons.add),
+                              icon: const Icon(Icons.add),
                               onPressed: () {
                                 setState(() {
                                   rentalDuration++;
@@ -146,8 +147,8 @@ class _DetailHotelViewState extends State<DetailHotelView> {
                                 });
                               },
                             ),
-                            SizedBox(width: 8),
-                            Text(
+                            const SizedBox(width: 8),
+                            const Text(
                               'malam',
                               style: TextStyle(fontSize: 16),
                             ),
@@ -156,37 +157,44 @@ class _DetailHotelViewState extends State<DetailHotelView> {
                         // buat total harga
                         Row(
                           children: [
-                            Text(
+                            const Text(
                               'Total harga:',
                               style: TextStyle(fontSize: 16),
                             ),
-                            SizedBox(width: 16),
+                            const SizedBox(width: 16),
                             Text(
                               currencyFormatter
                                   .format(widget.hotel.harga * rentalDuration),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         Center(
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.red,
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 32, vertical: 12),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),
                               ),
                             ),
                             onPressed: () {
-                              // Get.to(() => MetodePembayaranViewTest());
+                              Get.to(() => DetailPemesananViewTest(
+                                    namaTransaksi: widget.hotel.nama,
+                                    tanggal: result,
+                                    harga:
+                                        (widget.hotel.harga * rentalDuration),
+                                    detailTransaksi: widget.hotel.jenisKamar,
+                                  ));
+                        
                               log(result);
                             },
-                            child: Text(
+                            child: const Text(
                               'PESAN',
                               style: TextStyle(
                                 color: Colors.white,
@@ -195,7 +203,7 @@ class _DetailHotelViewState extends State<DetailHotelView> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         Text(result),
                       ],
                     ),
