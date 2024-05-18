@@ -139,7 +139,7 @@ class _DetailWisataViewState extends State<DetailWisataView> {
                             },
                             child: Text('Pilih Tiket'),
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.blue,
+                              backgroundColor: Colors.blue,
                             ),
                           ),
                         ),

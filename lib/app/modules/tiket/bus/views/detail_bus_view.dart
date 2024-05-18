@@ -208,8 +208,7 @@ class DetailBusView extends StatelessWidget {
           },
           child: Text('Pilih kursi'),
           style: ElevatedButton.styleFrom(
-            padding: EdgeInsets.symmetric(horizontal: 80, vertical: 16),
-            primary: Colors.blue,
+            padding: EdgeInsets.symmetric(horizontal: 80, vertical: 16), backgroundColor: Colors.blue,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
