@@ -9,6 +9,7 @@ import 'package:travelgram/app/modules/user_profile/views/edit_user_profile.dart
 import 'package:travelgram/app/shared/url_api.dart';
 
 import '../../../shared/bottom_navigation.dart';
+import '../../search/models/user_model.dart';
 import '../controllers/user_profile_controller.dart';
 import 'package:http/http.dart' as http;
 
@@ -23,9 +24,9 @@ class UserProfileView extends StatefulWidget {
 class _UserProfileViewState extends State<UserProfileView> {
   late FeedUserModel _feedUserModel;
   String? _idUser;
-  String? _avatar;
   String? _username;
   bool isLoading = true;
+  Future<User>? futureUser;
 
   @override
   void initState() {
@@ -33,19 +34,20 @@ class _UserProfileViewState extends State<UserProfileView> {
     _feedUserModel =
         FeedUserModel(posts: [], totalFriend: 0, totalPost: 0, avatar: '');
     initializeTokenAndFetchPosts();
+    futureUser = fetchUser();
   }
 
   Future<void> initializeTokenAndFetchPosts() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('token');
     String? idUser = prefs.getString('id');
-    String? avatar = prefs.getString('avatar_url');
+    prefs.getString('avatar_url');
     String? username = prefs.getString('username');
 
     if (token != null && idUser != null) {
       setState(() {
         _idUser = idUser;
-        _avatar = avatar;
+
         _username = username;
       });
       await fetchPosts();
@@ -71,11 +73,35 @@ class _UserProfileViewState extends State<UserProfileView> {
     }
   }
 
+  Future<User> fetchUser() async {
+    final response = await http.get(Uri.parse(UrlApi.profile), headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${widget.token}',
+    });
+
+    if (response.statusCode == 200) {
+      return User.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to load user');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Profile'),
+        title: FutureBuilder<User>(
+          future: futureUser,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return Text(snapshot.data!.username);
+            } else if (snapshot.hasError) {
+              return Text("${snapshot.error}");
+            }
+
+            return CircularProgressIndicator();
+          },
+        ),
         actions: [
           IconButton(
             onPressed: () {},
@@ -145,13 +171,30 @@ class _UserProfileViewState extends State<UserProfileView> {
                                 ),
                               ),
                               Flexible(
-                                child: CircleAvatar(
-                                  radius: 30.sp,
-                                  backgroundImage: NetworkImage(
-                                    _feedUserModel.avatar != null
-                                        ? '${UrlApi.urlStorage}${_feedUserModel.avatar}'
-                                        : UrlApi.dummyImage,
-                                  ),
+                                child: FutureBuilder<User>(
+                                  future: futureUser,
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      return Column(
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 50,
+                                            backgroundImage: snapshot
+                                                        .data!.avatar !=
+                                                    null
+                                                ? NetworkImage(
+                                                    '${UrlApi.urlStorage}${snapshot.data!.avatar}')
+                                                : NetworkImage(
+                                                    UrlApi.dummyImage),
+                                          ),
+                                        ],
+                                      );
+                                    } else if (snapshot.hasError) {
+                                      return Text("${snapshot.error}");
+                                    }
+
+                                    return CircularProgressIndicator();
+                                  },
                                 ),
                               ),
                             ],
