@@ -116,7 +116,7 @@ class _PilihKursiViewState extends State<PilihKursiView> {
               height: 300.h,
               width: double.infinity,
               child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2, // Number of seats in a row
                   mainAxisSpacing: 8.0,
                   crossAxisSpacing: 8.0,
@@ -147,11 +147,11 @@ class _PilihKursiViewState extends State<PilihKursiView> {
                           Center(
                             child: Text(
                               'Kursi ${index + 1}',
-                              style: TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
                             ),
                           ),
                           if (isDisabled)
-                            Align(
+                            const Align(
                               alignment: Alignment.topRight,
                               child: Icon(
                                 Icons.close,
@@ -166,7 +166,7 @@ class _PilihKursiViewState extends State<PilihKursiView> {
               ),
             ),
           ),
-          Spacer(),
+          const Spacer(),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
@@ -194,7 +194,7 @@ class _PilihKursiViewState extends State<PilihKursiView> {
                       ));
                   print(selected);
                 },
-                child: Text(
+                child: const Text(
                   "Lanjut ke Form Pemesanan",
                   style: TextStyle(color: Colors.white),
                 ),

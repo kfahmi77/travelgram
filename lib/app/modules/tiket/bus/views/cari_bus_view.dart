@@ -7,7 +7,6 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:travelgram/app/modules/tiket/bus/models/bus_model.dart';
 import 'package:travelgram/app/modules/tiket/bus/views/detail_bus_view.dart';
-import 'package:travelgram/app/modules/tiket/pesawat/views/detail_pesawat_view.dart';
 
 import '../../../../shared/url_api.dart';
 

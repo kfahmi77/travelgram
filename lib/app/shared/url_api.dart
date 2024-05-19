@@ -34,6 +34,7 @@ class UrlApi {
   static String hotel = '${baseUrl}hotel';
   static String flight = '${baseUrl}flight-schedules';
   static String bus = '${baseUrl}bus-schedules';
+  static String train = '${baseUrl}train-schedules';
 
   static String transaction = '${baseUrl}transactions';
 

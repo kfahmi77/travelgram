@@ -349,7 +349,11 @@ class _KeretaViewState extends State<KeretaView> {
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 onPressed: () {
-                  Get.to(() => const CariKeretaView());
+                  Get.to(() => CariKeretaView(
+                        namaAsal: _selectedProvinsi1.toString(),
+                        namaTujuan: _selectedProvinsi2.toString(),
+                        tanggal: formatDate(selectedDate),
+                      ));
                 },
                 child: const Text('Cari Tiket'),
               ),

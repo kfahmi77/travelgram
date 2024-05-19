@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:travelgram/app/modules/detail_pemesanan/views/detail_pemesanan_view%20copy.dart';
+import 'package:travelgram/app/modules/tiket/bus/models/bus_model.dart';
+import 'package:travelgram/app/modules/tiket/kereta/models/kereta_model.dart';
 
 import '../../../detail_pemesanan/views/detail_pemesanan_view.dart';
 
 class PilihKursiKeretaView extends StatefulWidget {
-  const PilihKursiKeretaView({super.key});
+  final KeretaModel busModel;
+  const PilihKursiKeretaView({required this.busModel, super.key});
 
   @override
   createState() => _PilihKursiKeretaViewState();
@@ -13,10 +18,19 @@ class PilihKursiKeretaView extends StatefulWidget {
 
 class _PilihKursiKeretaViewState extends State<PilihKursiKeretaView> {
   List<bool> selectedSeats = List.generate(30, (index) => false);
-  List<int> disabledSeats = [5, 10, 15]; // List of disabled seats
+  List<int> disabledSeats = [5, 10, 15];
 
   @override
   Widget build(BuildContext context) {
+    DateTime now = DateTime.now();
+
+    DateTime futureDate = now.add(const Duration(days: 1));
+
+    String formattedDate =
+        DateFormat('EEEE, dd MMMM yyyy', 'id_ID').format(futureDate);
+    String detailTiket =
+        '${formattedDate} | ${widget.busModel.pukulBerangkat} - ${widget.busModel.pukulSampai} | ${widget.busModel.totalWaktu}';
+
     return Scaffold(
       body: Column(
         children: [
@@ -31,7 +45,7 @@ class _PilihKursiKeretaViewState extends State<PilihKursiKeretaView> {
           Row(
             children: [
               Text(
-                "Jackal holidays | Shuttle",
+                "${widget.busModel.namaArmada} | ${widget.busModel.tipe}",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 15.sp,
@@ -42,7 +56,7 @@ class _PilihKursiKeretaViewState extends State<PilihKursiKeretaView> {
           Row(
             children: [
               Text(
-                "Kam, 07 Des | 05:15 - 07:15 | 2j",
+                detailTiket,
                 style: TextStyle(
                   fontWeight: FontWeight.normal,
                   fontSize: 15.sp,
@@ -100,10 +114,10 @@ class _PilihKursiKeretaViewState extends State<PilihKursiKeretaView> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Container(
-              height: 300.0,
+              height: 300.h,
               width: double.infinity,
               child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2, // Number of seats in a row
                   mainAxisSpacing: 8.0,
                   crossAxisSpacing: 8.0,
@@ -134,11 +148,11 @@ class _PilihKursiKeretaViewState extends State<PilihKursiKeretaView> {
                           Center(
                             child: Text(
                               'Kursi ${index + 1}',
-                              style: TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
                             ),
                           ),
                           if (isDisabled)
-                            Align(
+                            const Align(
                               alignment: Alignment.topRight,
                               child: Icon(
                                 Icons.close,
@@ -153,7 +167,7 @@ class _PilihKursiKeretaViewState extends State<PilihKursiKeretaView> {
               ),
             ),
           ),
-          Spacer(),
+          const Spacer(),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
@@ -170,10 +184,18 @@ class _PilihKursiKeretaViewState extends State<PilihKursiKeretaView> {
                       selected.add(i + 1);
                     }
                   }
-                  Get.to(() => const DetailPemesananView());
+                  String namaTransaksi =
+                      '${widget.busModel.asalDaerah} ke ${widget.busModel.tujuanDaerah}';
+                  Get.to(() => DetailPemesananViewTest(
+                        namaTransaksi: namaTransaksi,
+                        tanggal: detailTiket,
+                        harga: widget.busModel.harga,
+                        detailTransaksi:
+                            '${widget.busModel.namaArmada} | ${widget.busModel.tipe}',
+                      ));
                   print(selected);
                 },
-                child: Text(
+                child: const Text(
                   "Lanjut ke Form Pemesanan",
                   style: TextStyle(color: Colors.white),
                 ),
