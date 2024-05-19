@@ -21,47 +21,26 @@ class _BusViewState extends State<BusView> {
   int penumpang = 1;
 
   final List<String> _provinsiList = [
-    "Aceh",
-    "Sumatera Utara",
-    "Sumatera Barat",
-    "Riau",
-    "Jambi",
-    "Sumatera Selatan",
-    "Bengkulu",
-    "Lampung",
-    "Kepulauan Bangka Belitung",
-    "Kepulauan Riau",
-    "DKI Jakarta",
-    "Jawa Barat",
-    "Jawa Tengah",
-    "DI Yogyakarta",
-    "Jawa Timur",
-    "Banten",
-    "Bali",
-    "Nusa Tenggara Barat",
-    "Nusa Tenggara Timur",
-    "Kalimantan Barat",
-    "Kalimantan Tengah",
-    "Kalimantan Selatan",
-    "Kalimantan Timur",
-    "Kalimantan Utara",
-    "Sulawesi Utara",
-    "Sulawesi Tengah",
-    "Sulawesi Selatan",
-    "Sulawesi Tenggara",
-    "Gorontalo",
-    "Sulawesi Barat",
-    "Maluku",
-    "Maluku Utara",
-    "Papua",
-    "Papua Barat",
-    "Papua Selatan",
-    "Papua Tengah",
-    "Papua Pegunungan",
-    "Papua Barat Daya",
+    "Depok",
+    "Tanggerang",
+    "garut",
+    "Sukabumi",
+    "Bekasi",
+    "Majalengka",
+    "Jakarta",
+    "Cimahi",
+    "Cibubur",
+    "Kuningan",
+    "Cirebon",
+    "karawang",
+    "Cianjur",
+    "Indramayu",
+    "Cikarang",
+    "Bandung",
+    "Sumedang",
   ];
   String formatDate(DateTime date) {
-    return DateFormat('EEEE, dd MMMM yyyy').format(date);
+    return DateFormat('EEEE, dd MMMM yyyy', 'id_ID').format(date);
   }
 
   Future<void> _selectDate(BuildContext context, bool isDepartureDate) async {
@@ -86,7 +65,6 @@ class _BusViewState extends State<BusView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -144,7 +122,7 @@ class _BusViewState extends State<BusView> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: DropdownButton<String>(
-                          hint: Text('Pilih Provinsi'),
+                          hint: const Text('Pilih Shuttle/Bis'),
                           value: _selectedProvinsi1,
                           onChanged: (String? newValue) {
                             setState(() {
@@ -193,7 +171,7 @@ class _BusViewState extends State<BusView> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: DropdownButton<String>(
-                          hint: Text('Pilih Provinsi'),
+                          hint: const Text('Pilih Shuttle/Bis'),
                           value: _selectedProvinsi2,
                           onChanged: (String? newValue) {
                             setState(() {
@@ -381,7 +359,12 @@ class _BusViewState extends State<BusView> {
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 onPressed: () {
-                  Get.to(() => const CariBusView());
+                  Get.to(() => CariBusView(
+                        namaAsal: _selectedProvinsi1.toString(),
+                        namaTujuan: _selectedProvinsi2.toString(),
+                        tanggal: formatDate(selectedDate),
+                      ));
+                  log(_selectedProvinsi1.toString());
                 },
                 child: const Text('Cari Tiket'),
               ),
