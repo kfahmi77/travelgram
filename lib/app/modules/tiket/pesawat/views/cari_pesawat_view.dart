@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:travelgram/app/modules/tiket/pesawat/views/detail_pesawat_view.dart';
 
 import '../../../../shared/url_api.dart';
@@ -83,7 +84,7 @@ class _CariPesawatViewState extends State<CariPesawatView> {
                         ),
                       ),
                       Text(
-                       widget.tanggal,
+                        widget.tanggal,
                         style: TextStyle(
                           fontSize: 12.sp,
                           color: Colors.white,
@@ -143,6 +144,11 @@ class CardFlight extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final NumberFormat currencyFormatter = NumberFormat.currency(
+      locale: 'id_ID',
+      symbol: 'Rp ',
+      decimalDigits: 0,
+    );
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -280,7 +286,7 @@ class CardFlight extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  flight.hargaTiket,
+                  currencyFormatter.format(flight.hargaTiket),
                   style: TextStyle(
                       fontSize: 15.0,
                       color: Colors.red,
@@ -310,7 +316,9 @@ class CardFlight extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const DetailPesawatView()));
+                              builder: (context) => DetailPesawatView(
+                                    flight: flight,
+                                  )));
                     },
                     child: Text(
                       "Pesan",

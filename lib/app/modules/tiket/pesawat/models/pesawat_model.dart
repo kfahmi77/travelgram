@@ -7,7 +7,7 @@ class Flight {
   final String pukulSampai;
   final String kodeKeberangkatan;
   final String kodeTujuan;
-  final String hargaTiket;
+  final int hargaTiket;
   final String tanggalKeberangkatan;
   final String tanggalSampai;
   final String kodeFlight;
