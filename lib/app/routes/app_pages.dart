@@ -91,7 +91,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.WISATA,
-      page: () => const WisataView(),
+      page: () =>  WisataView(),
       binding: WisataBinding(),
     ),
   ];

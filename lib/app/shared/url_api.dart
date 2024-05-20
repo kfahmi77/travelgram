@@ -35,8 +35,9 @@ class UrlApi {
   static String flight = '${baseUrl}flight-schedules';
   static String bus = '${baseUrl}bus-schedules';
   static String train = '${baseUrl}train-schedules';
+  static String tour = '${baseUrl}tour-ticket';
 
-static String getCountLike = '${baseUrl}likes';
+  static String getCountLike = '${baseUrl}likes';
   static String likeFeed = '${baseUrl}likes';
   static String unlikeFeed = '${baseUrl}unlikes';
 

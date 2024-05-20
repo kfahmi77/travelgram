@@ -296,7 +296,7 @@ class _TiketViewState extends State<TiketView> {
                 Column(
                   children: [
                     GestureDetector(
-                      onTap: () => Get.to(const WisataView()),
+                      onTap: () => Get.to( WisataView()),
                       child: Container(
                         height: 60.h,
                         width: 60.w,

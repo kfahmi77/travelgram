@@ -3,18 +3,21 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
 class MapWisataView extends StatelessWidget {
-  const MapWisataView({super.key});
+  final String longtitude;
+  const MapWisataView({required this.longtitude, super.key});
 
   @override
   Widget build(BuildContext context) {
+     List<double> koordinatList = longtitude.split(',').map(double.parse).toList();
+      LatLng koordinat = LatLng(koordinatList[0], koordinatList[1]);
     return Scaffold(
       
       appBar: AppBar(
         title: const Text('Map Wisata'),
       ),
       body: FlutterMap(
-        options: const MapOptions(
-          initialCenter: LatLng(-7.8617132, 112.383796),
+        options:  MapOptions(
+          initialCenter: koordinat,
           initialZoom: 13.0,
         ),
         children: [
@@ -22,10 +25,10 @@ class MapWisataView extends StatelessWidget {
             urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             subdomains: ['a', 'b', 'c'],
           ),
-          const MarkerLayer(
+           MarkerLayer(
             markers: [
               Marker(
-                point: LatLng(-7.8617132, 112.383796),
+                point: koordinat,
                 width: 80.0,
                 height: 80.0,
                 child: Icon(
