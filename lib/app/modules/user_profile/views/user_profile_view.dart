@@ -1,16 +1,16 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:travelgram/app/modules/feed/views/feed_view.dart';
 import 'package:travelgram/app/modules/user_profile/models/feed_user_model.dart';
 import 'package:travelgram/app/modules/user_profile/views/edit_user_profile.dart';
 import 'package:travelgram/app/shared/url_api.dart';
 
-import '../../../shared/bottom_navigation.dart';
 import '../../search/models/user_model.dart';
-import '../controllers/user_profile_controller.dart';
 import 'package:http/http.dart' as http;
 
 class UserProfileView extends StatefulWidget {
@@ -252,9 +252,22 @@ class _UserProfileViewState extends State<UserProfileView> {
                                       width: 1.0,
                                     ),
                                   ),
-                                  child: Image.network(
-                                    '${UrlApi.urlStorage}${_feedUserModel.posts[index].imageUrl}',
-                                    fit: BoxFit.cover,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => FullScreenImage(
+                                            imageUrl:
+                                                '${UrlApi.urlStorage}${_feedUserModel.posts[index].imageUrl}',
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: Image.network(
+                                      '${UrlApi.urlStorage}${_feedUserModel.posts[index].imageUrl}',
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
                               );

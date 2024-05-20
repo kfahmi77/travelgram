@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:travelgram/app/modules/chat/views/detail_chat_view.dart';
 import 'package:travelgram/app/modules/search/models/user_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:travelgram/app/modules/search_user/views/search_user_view.dart';
 import 'package:travelgram/app/shared/url_api.dart';
 
 import '../../search_user/views/search_user_view copy.dart';

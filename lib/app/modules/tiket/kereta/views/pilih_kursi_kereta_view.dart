@@ -3,10 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:travelgram/app/modules/detail_pemesanan/views/detail_pemesanan_view%20copy.dart';
-import 'package:travelgram/app/modules/tiket/bus/models/bus_model.dart';
 import 'package:travelgram/app/modules/tiket/kereta/models/kereta_model.dart';
 
-import '../../../detail_pemesanan/views/detail_pemesanan_view.dart';
 
 class PilihKursiKeretaView extends StatefulWidget {
   final KeretaModel busModel;

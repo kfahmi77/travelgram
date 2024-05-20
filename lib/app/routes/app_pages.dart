@@ -15,7 +15,6 @@ import '../modules/register/views/register_view.dart';
 import '../modules/search/bindings/search_binding.dart';
 import '../modules/search/views/search_view.dart';
 import '../modules/search_user/bindings/search_user_binding.dart';
-import '../modules/search_user/views/search_user_view.dart';
 import '../modules/splash/views/splash_view.dart';
 import '../modules/tiket/bindings/tiket_binding.dart';
 import '../modules/tiket/bus/bindings/bus_binding.dart';

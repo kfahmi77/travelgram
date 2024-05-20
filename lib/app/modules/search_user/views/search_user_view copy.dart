@@ -9,6 +9,8 @@ import 'package:travelgram/app/modules/user_profile/models/feed_user_model.dart'
 import 'package:travelgram/app/shared/token.dart';
 import 'package:travelgram/app/shared/url_api.dart';
 
+import '../../feed/views/feed_view.dart';
+
 class SearchUserViewTest extends StatefulWidget {
   final int idUser;
   final String token;
@@ -247,19 +249,33 @@ class _SearchUserViewTestState extends State<SearchUserViewTest> {
                                   ),
                                   itemCount: profile.posts.length,
                                   itemBuilder: (context, index) {
-                                    return Container(
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: Colors.black,
-                                            width: 1.0,
+                                    return GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                FullScreenImage(
+                                              imageUrl:
+                                                  '${UrlApi.urlStorage}${profile.posts[index].imageUrl}',
+                                            ),
                                           ),
-                                          borderRadius:
-                                              BorderRadius.circular(8.0)),
-                                      child: Image.network(
-                                        '${UrlApi.urlStorage}/${profile.posts[index].imageUrl}',
-                                        width: 200.0,
-                                        height: 200.0,
-                                        fit: BoxFit.cover,
+                                        );
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.black,
+                                              width: 1.0,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(8.0)),
+                                        child: Image.network(
+                                          '${UrlApi.urlStorage}/${profile.posts[index].imageUrl}',
+                                          width: 200.0,
+                                          height: 200.0,
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                     );
                                   },

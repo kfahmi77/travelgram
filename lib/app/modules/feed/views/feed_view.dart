@@ -3,13 +3,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:photo_view/photo_view.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:travelgram/app/modules/feed/models/comment_model.dart';
 import 'package:travelgram/app/modules/feed/models/feed_model.dart';
 import 'package:travelgram/app/modules/feed/views/comment_feed.dart';
-import 'package:travelgram/app/modules/user_profile/views/user_profile_view.dart';
 import 'package:travelgram/app/shared/bottom_navigation.dart';
 import 'package:travelgram/app/shared/url_api.dart';
 import 'dart:convert';
@@ -28,9 +27,7 @@ class _FeedListState extends State<FeedList> {
   String? _token;
   String? _idUser;
 
-  bool _isliked = false;
   Stream<List<Feed>>? _messagesStream;
-  Future<List<CommentModel>>? futureComments;
 
   @override
   void initState() {
@@ -88,11 +85,63 @@ class _FeedListState extends State<FeedList> {
       final List<dynamic> jsonData = jsonDecode(response.body);
       messages = jsonData.map((e) => Feed.fromJson(e)).toList();
       log(messages.toString());
+
+      // Fetch likes count for each post
+      for (Feed message in messages) {
+        final likesResponse = await http.get(
+          Uri.parse('${UrlApi.getCountLike}/${message.id}/count'),
+          headers: <String, String>{
+            'Authorization': 'Bearer ${_token ?? ''}',
+          },
+        );
+        if (likesResponse.statusCode == 200) {
+          final likesData = jsonDecode(likesResponse.body);
+          message.likesCount = likesData['likes_count'];
+        }
+      }
     } else {
       throw Exception('Failed to load messages');
     }
 
     yield messages;
+  }
+
+  Future<void> _addLike(int postId) async {
+    final response = await http.post(
+      Uri.parse(UrlApi.likeFeed),
+      headers: <String, String>{
+        'Authorization': 'Bearer ${_token ?? ''}',
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, int>{
+        'post_id': postId,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      log('Like added successfully');
+    } else {
+      throw Exception('Failed to add like');
+    }
+  }
+
+  Future<void> _removeLike(int postId) async {
+    final response = await http.delete(
+      Uri.parse(UrlApi.unlikeFeed),
+      headers: <String, String>{
+        'Authorization': 'Bearer ${_token ?? ''}',
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, int>{
+        'post_id': postId,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      log('Like removed successfully');
+    } else {
+      throw Exception('Failed to remove like');
+    }
   }
 
   Future<http.Response> deleteAlbum(String id) async {
@@ -168,8 +217,6 @@ class _FeedListState extends State<FeedList> {
                                               idUser: message.userId,
                                               token: _token!,
                                             ));
-                                      // searchUsers(6);
-                                      // print(message.userId);
                                     },
                                     child: Container(
                                       width: 40,
@@ -251,16 +298,29 @@ class _FeedListState extends State<FeedList> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(top: 6),
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: message.imageUrl != null
-                                  ? Image.network(
-                                      '${UrlApi.urlStorage}${message.imageUrl!}',
-                                      width: 300.w,
-                                      height: 200.h,
-                                      fit: BoxFit.cover,
-                                    )
-                                  : const SizedBox()),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => FullScreenImage(
+                                    imageUrl:
+                                        '${UrlApi.urlStorage}${message.imageUrl!}',
+                                  ),
+                                ),
+                              );
+                            },
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: message.imageUrl != null
+                                    ? Image.network(
+                                        '${UrlApi.urlStorage}${message.imageUrl!}',
+                                        width: 300.w,
+                                        height: 200.h,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : const SizedBox()),
+                          ),
                         ),
                       ],
                     ),
@@ -270,13 +330,21 @@ class _FeedListState extends State<FeedList> {
                       children: [
                         IconButton(
                           icon: Icon(
-                            _isliked ? Icons.favorite : Icons.favorite_border,
+                            message.isLiked ? Icons.favorite : Icons.favorite_border,
                             color: Colors.red,
                             size: 24,
                           ),
                           onPressed: () {
                             setState(() {
-                              _isliked = !_isliked;
+                              if (message.isLiked) {
+                                _removeLike(message.id);
+                                message.isLiked = false;
+                                message.likesCount--;
+                              } else {
+                                _addLike(message.id);
+                                message.isLiked = true;
+                                message.likesCount++;
+                              }
                             });
                           },
                         ),
@@ -291,23 +359,14 @@ class _FeedListState extends State<FeedList> {
                             size: 24,
                           ),
                         ),
-                        const Spacer(),
-                        const Padding(
-                          padding: EdgeInsets.only(right: 8.0),
-                          child: Icon(
-                            Icons.send,
-                            color: Colors.black,
-                            size: 24,
-                          ),
-                        ),
                       ],
                     ),
                     SizedBox(height: 8.h),
-                    const Row(
+                    Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Text(
-                          '1 menyukai',
+                          '${message.likesCount} menyukai',
                         ),
                       ],
                     ),
@@ -334,6 +393,29 @@ class _FeedListState extends State<FeedList> {
           },
         );
       },
+    );
+  }
+}
+
+class FullScreenImage extends StatelessWidget {
+  final String imageUrl;
+
+  FullScreenImage({required this.imageUrl});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: PhotoView(
+          imageProvider: NetworkImage(imageUrl),
+          backgroundDecoration: BoxDecoration(
+            color: Colors.black,
+          ),
+        ),
+      ),
     );
   }
 }
