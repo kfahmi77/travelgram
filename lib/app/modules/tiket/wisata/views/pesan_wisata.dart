@@ -24,7 +24,9 @@ class _DetailPesananWisataViewState extends State<DetailPesananWisataView> {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          onPressed: () {},
+          onPressed: () {
+            Get.back();
+          },
         ),
         title: Text('Detail Pesanan'),
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:travelgram/app/modules/tiket/wisata/views/map_view.dart';
 import 'package:travelgram/app/modules/tiket/wisata/views/pesan_wisata.dart';
 
 import '../../../detail_pemesanan/views/detail_pemesanan_view.dart';
@@ -17,7 +18,9 @@ class _DetailWisataViewState extends State<DetailWisataView> {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          onPressed: () {},
+          onPressed: () {
+            Get.back();
+          },
         ),
         actions: [
           IconButton(
@@ -189,7 +192,9 @@ class _DetailWisataViewState extends State<DetailWisataView> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.to(MapWisataView());
+                      },
                       child: Text('Lihat Peta',
                           style: TextStyle(color: Colors.blue)),
                     ),
