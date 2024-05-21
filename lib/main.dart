@@ -22,6 +22,7 @@ import 'package:travelgram/app/modules/user_profile/views/user_profile_view.dart
 import 'package:travelgram/app/shared/bottom_navigation.dart';
 import 'app/modules/detail_pemesanan/views/metode_pembayaran.dart';
 import 'app/modules/tiket/pesawat/views/cari_pesawat_view.dart';
+import 'app/modules/tiket/wisata/views/lihat_review.dart';
 import 'app/routes/app_pages.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -59,7 +60,7 @@ class MyApp extends StatelessWidget {
             : const BottomNavBar(
                 index: 0,
               ),
-        // home: TiketView(),
+        // home: ReviewPage(),
         getPages: AppPages.routes,
       ),
     );

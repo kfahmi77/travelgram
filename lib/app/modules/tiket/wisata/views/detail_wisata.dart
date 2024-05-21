@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:travelgram/app/modules/tiket/wisata/models/tour_widget.dart';
+import 'package:travelgram/app/modules/tiket/wisata/views/lihat_review.dart';
 import 'package:travelgram/app/modules/tiket/wisata/views/map_view.dart';
 import 'package:travelgram/app/modules/tiket/wisata/views/pesan_wisata.dart';
 
@@ -113,7 +114,9 @@ class _DetailWisataViewState extends State<DetailWisataView> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.to(()=>ReviewPage());
+                      },
                       child: const Text('Lihat Semua',
                           style: TextStyle(color: Colors.blue)),
                     ),
