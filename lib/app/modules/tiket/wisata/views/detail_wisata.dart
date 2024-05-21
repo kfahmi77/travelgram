@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:travelgram/app/modules/tiket/wisata/models/tour_widget.dart';
 import 'package:travelgram/app/modules/tiket/wisata/views/map_view.dart';
 import 'package:travelgram/app/modules/tiket/wisata/views/pesan_wisata.dart';
@@ -16,6 +19,12 @@ class DetailWisataView extends StatefulWidget {
 }
 
 class _DetailWisataViewState extends State<DetailWisataView> {
+  String formatTime(String dateTimeString) {
+    DateTime dateTime = DateTime.parse(dateTimeString);
+    String formattedTime = DateFormat('HH:mm').format(dateTime);
+    return formattedTime;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,12 +35,6 @@ class _DetailWisataViewState extends State<DetailWisataView> {
             Get.back();
           },
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.language),
-            onPressed: () {},
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -67,7 +70,7 @@ class _DetailWisataViewState extends State<DetailWisataView> {
                     children: [
                       const Icon(Icons.access_time),
                       Text(
-                          'Buka |  ${widget.tourModel.jamBuka} - ${widget.tourModel.jamTutup}'),
+                          'Buka |  ${formatTime(widget.tourModel.jamBuka)} - ${formatTime(widget.tourModel.jamTutup)}'),
                     ],
                   ),
                   const SizedBox(height: 8),
