@@ -1,9 +1,9 @@
 class UrlApi {
-  // static String baseUrl = 'https://dksystem.id/api/';
-  // static String urlStorage = 'https://dksystem.id/storage//';
+  static String baseUrl = 'https://dksystem.id/api/';
+  static String urlStorage = 'https://dksystem.id/storage/';
 
-  static String baseUrl = 'http://192.168.183.181:8000/api/';
-  static String urlStorage = 'http://192.168.183.181:8000/storage/';
+  // static String baseUrl = 'http://192.168.183.181:8000/api/';
+  // static String urlStorage = 'http://192.168.183.181:8000/storage/';
   static String register = '${baseUrl}register';
   static String login = '${baseUrl}login';
   static String logout = '${baseUrl}logout';

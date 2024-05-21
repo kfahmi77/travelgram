@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -56,6 +55,10 @@ class _AddFeedViewState extends State<AddFeedView> {
     }
   }
 
+  void _showImageError() {
+    Get.snackbar('Error', 'Gambar terlalu besar, maksimal 2MB');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,69 +66,76 @@ class _AddFeedViewState extends State<AddFeedView> {
         title: const Text('Tambah Feed'),
       ),
       resizeToAvoidBottomInset: false,
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            Container(
-              padding: const EdgeInsets.all(12),
-              child: TextFormField(
-                controller: _caption,
-                maxLength: 100,
-                decoration: const InputDecoration(
-                  labelText: 'Caption',
-                  labelStyle: TextStyle(
-                    color: Colors.blueGrey,
-                  ),
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              Container(
+                padding: const EdgeInsets.all(12),
+                child: TextFormField(
+                  controller: _caption,
+                  maxLength: 100,
+                  decoration: const InputDecoration(
+                    labelText: 'Caption',
+                    labelStyle: TextStyle(
                       color: Colors.blueGrey,
                     ),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.blueGrey,
+                      ),
+                    ),
                   ),
-                ),
-                onChanged: (value) {},
-              ),
-            ),
-            _image != null
-                ? Container(
-                    height: 300.h,
-                    padding: const EdgeInsets.all(12),
-                    child: Image.file(_image!))
-                : const Text('No image selected.'),
-            ElevatedButton(
-              onPressed: () {
-                showModalBottomSheet(
-                  context: context,
-                  builder: (context) => ImageSourceSheet(
-                    onImageSelected: (image) {
-                      setState(() {
-                        _image = image;
-                      });
-                    },
-                  ),
-                );
-              },
-              child: const Text('Pilih gambar'),
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.green,
-                side: const BorderSide(
-                  color: Colors.green,
+                  onChanged: (value) {},
                 ),
               ),
-              onPressed: () {
-                postImage();
-              },
-              child: _isLoading
-                  ? CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
-                    )
-                  : const Text("Save"),
-            ),
-          ],
+              _image != null
+                  ? Container(
+                      height: 300.h,
+                      padding: const EdgeInsets.all(12),
+                      child: Image.file(_image!))
+                  : const Text('No image selected.'),
+              ElevatedButton(
+                onPressed: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) => ImageSourceSheet(
+                      onImageSelected: (image) {
+                        final imageSize = image.lengthSync();
+                        if (imageSize <= 2 * 1024 * 1024) {
+                          setState(() {
+                            _image = image;
+                          });
+                        } else {
+                          _showImageError();
+                        }
+                      },
+                    ),
+                  );
+                },
+                child: const Text('Pilih gambar (max 2MB)'),
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: Colors.green,
+                  side: const BorderSide(
+                    color: Colors.green,
+                  ),
+                ),
+                onPressed: () {
+                  postImage();
+                },
+                child: _isLoading
+                    ? CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+                      )
+                    : const Text("Save"),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -168,7 +178,8 @@ class ImageSourceSheet extends StatelessWidget {
     final pickedImage = await picker.pickImage(source: source);
 
     if (pickedImage != null) {
-      onImageSelected(File(pickedImage.path));
+      final imageFile = File(pickedImage.path);
+      onImageSelected(imageFile);
     }
   }
 }

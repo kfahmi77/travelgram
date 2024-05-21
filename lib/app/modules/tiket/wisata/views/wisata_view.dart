@@ -103,10 +103,9 @@ class _WisataViewState extends State<WisataView> {
     );
   }
 }
-
 class CardWisata extends StatelessWidget {
   final TourModel tourModel;
-  const CardWisata({required this.tourModel, super.key});
+  const CardWisata({required this.tourModel, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -122,11 +121,13 @@ class CardWisata extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.network(
-                tourModel.gambar,
-                height: 100,
-                width: double.infinity,
-                fit: BoxFit.cover,
+              Expanded(
+                child: Image.network(
+                  tourModel.gambar,
+                  height: 100,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
