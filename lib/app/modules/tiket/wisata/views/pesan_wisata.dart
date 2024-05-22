@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:travelgram/app/modules/detail_pemesanan/views/detail_pemesanan_view.dart';
+import 'package:travelgram/app/modules/detail_pemesanan/views/konfirmasi_view.dart';
 import 'package:travelgram/app/modules/detail_pemesanan/views/metode_pembayaran.dart';
+import 'package:travelgram/app/modules/tiket/wisata/models/tour_model.dart';
+
+import '../../../detail_pemesanan/views/detail_pemesanan_view copy.dart';
 
 class DetailPesananWisataView extends StatefulWidget {
+  final TourModel tourModel;
+  const DetailPesananWisataView({required this.tourModel, super.key});
+
   @override
   _DetailPesananWisataViewState createState() =>
       _DetailPesananWisataViewState();
@@ -14,9 +22,20 @@ class _DetailPesananWisataViewState extends State<DetailPesananWisataView> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
-  int _ticketCount = 2;
+  int _ticketCount = 1;
   int _maxTickets = 10;
-  double _ticketPrice = 95000;
+  late int _ticketPrice;
+
+  
+
+  @override
+  void initState() {
+    super.initState();
+    _ticketPrice = widget.tourModel.harga;
+  }
+   String formatDate(DateTime date) {
+    return DateFormat('EEEE, dd MMMM yyyy', 'id_ID').format(date);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +56,7 @@ class _DetailPesananWisataViewState extends State<DetailPesananWisataView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SelectedPackageCard(
-                title: '[Promo] Tiket Jatim Park 1 + Museum Tubuh',
+                title: '[Promo] ${widget.tourModel.namaWisata}',
                 price: _ticketPrice,
                 details: 'Berlaku di tanggal terpilih',
               ),
@@ -80,7 +99,7 @@ class _DetailPesananWisataViewState extends State<DetailPesananWisataView> {
                       _ticketCount--;
                     }
                   });
-                },
+                }, price: _ticketPrice,
               ),
               SizedBox(height: 16),
               OrderSummaryCard(
@@ -91,7 +110,7 @@ class _DetailPesananWisataViewState extends State<DetailPesananWisataView> {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    Get.to(() => MetodePembayaranView());
+                    Get.to(() => DetailPemesananViewTest(namaTransaksi: widget.tourModel.namaWisata, tanggal: formatDate(DateTime.parse(_selectedDay.toString())), harga: widget.tourModel.harga, detailTransaksi: 'jumlah tiket ${_ticketCount}',));
                   },
                   child: Text('PESAN'),
                   style: ElevatedButton.styleFrom(
@@ -113,10 +132,10 @@ class _DetailPesananWisataViewState extends State<DetailPesananWisataView> {
 
 class SelectedPackageCard extends StatelessWidget {
   final String title;
-  final double price;
+  final int price;
   final String details;
 
-  SelectedPackageCard({
+  SelectedPackageCard({super.key, 
     required this.title,
     required this.price,
     required this.details,
@@ -166,7 +185,7 @@ class CalendarWidget extends StatelessWidget {
   final void Function(DateTime, DateTime) onDaySelected;
   final void Function(CalendarFormat) onFormatChanged;
 
-  CalendarWidget({
+  CalendarWidget({super.key, 
     required this.calendarFormat,
     required this.focusedDay,
     required this.selectedDay,
@@ -217,12 +236,14 @@ class CalendarWidget extends StatelessWidget {
 class TicketCounter extends StatelessWidget {
   final int count;
   final int maxTickets;
+  final price;
   final VoidCallback onIncrement;
   final VoidCallback onDecrement;
 
-  TicketCounter({
+  TicketCounter({super.key, 
     required this.count,
     required this.maxTickets,
+    required this.price,
     required this.onIncrement,
     required this.onDecrement,
   });
@@ -244,7 +265,7 @@ class TicketCounter extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Rp. ${(count * 95000).toStringAsFixed(0)}',
+                  'Rp. ${(count * price ).toStringAsFixed(0)}',
                   style: TextStyle(fontSize: 16, color: Colors.red),
                 ),
                 Row(
@@ -273,12 +294,15 @@ class TicketCounter extends StatelessWidget {
 
 class OrderSummaryCard extends StatelessWidget {
   final DateTime? selectedDate;
-  final double totalPrice;
+  final int totalPrice;
 
-  OrderSummaryCard({required this.selectedDate, required this.totalPrice});
+  OrderSummaryCard({super.key, required this.selectedDate, required this.totalPrice});
 
   @override
   Widget build(BuildContext context) {
+ String formatDate(DateTime date) {
+    return DateFormat('EEEE, dd MMMM yyyy', 'id_ID').format(date);
+  }
     return Card(
       child: Padding(
         padding: EdgeInsets.all(16),
@@ -291,7 +315,7 @@ class OrderSummaryCard extends StatelessWidget {
                 Text('Tanggal'),
                 Text(
                   selectedDate != null
-                      ? '${selectedDate!.day} Des ${selectedDate!.year}'
+                      ? formatDate(DateTime.parse(selectedDate.toString()))
                       : '-',
                 ),
               ],

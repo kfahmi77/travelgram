@@ -154,7 +154,7 @@ class _DetailWisataViewState extends State<DetailWisataView> {
                           alignment: Alignment.centerRight,
                           child: ElevatedButton(
                             onPressed: () {
-                              Get.to(() => DetailPesananWisataView());
+                              Get.to(() => DetailPesananWisataView(tourModel: widget.tourModel,));
                             },
                             child: const Text('Pilih Tiket'),
                             style: ElevatedButton.styleFrom(
