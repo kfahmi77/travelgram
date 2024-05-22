@@ -236,7 +236,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                           child: GridView.builder(
                             gridDelegate:
                                 const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
+                              crossAxisCount: 3,
                               crossAxisSpacing: 4.0,
                               mainAxisSpacing: 4.0,
                             ),

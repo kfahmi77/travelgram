@@ -1,19 +1,30 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:travelgram/app/modules/tiket/wisata/models/tour_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+
+import 'package:travelgram/app/modules/tiket/wisata/models/rating_model.dart';
+import 'package:travelgram/app/modules/tiket/wisata/models/tour_model.dart';
 import 'package:travelgram/app/modules/tiket/wisata/views/lihat_review.dart';
 import 'package:travelgram/app/modules/tiket/wisata/views/map_view.dart';
 import 'package:travelgram/app/modules/tiket/wisata/views/pesan_wisata.dart';
 
-import '../../../detail_pemesanan/views/detail_pemesanan_view.dart';
+import '../../../../shared/url_api.dart';
 
 class DetailWisataView extends StatefulWidget {
   final TourModel tourModel;
-  const DetailWisataView({required this.tourModel, super.key});
+  final double rataanReview;
+  final int totalReview;
+  const DetailWisataView(
+      {required this.tourModel,
+      required this.rataanReview,
+      required this.totalReview,
+      super.key});
 
   @override
   _DetailWisataViewState createState() => _DetailWisataViewState();
@@ -63,7 +74,8 @@ class _DetailWisataViewState extends State<DetailWisataView> {
                   Row(
                     children: [
                       const Icon(Icons.star, color: Colors.yellow),
-                      Text('${widget.tourModel.rating} (1.5 RB Review)'),
+                      Text(
+                          '${widget.rataanReview} (${widget.totalReview} Review)'),
                     ],
                   ),
                   const SizedBox(height: 8),
@@ -95,19 +107,12 @@ class _DetailWisataViewState extends State<DetailWisataView> {
                   ),
                   const SizedBox(height: 8),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ReviewCard(
-                          rating: '4,6/5', reviewer: 'Dari 1.5 RB Review'),
-                      ReviewCard(
-                          rating: '5,0/5',
-                          reviewer: 'Budi',
-                          review:
-                              'Good, cocok untuk main bersama teman, banyak wahana seru'),
-                      ReviewCard(
-                          rating: '5,0/5',
-                          reviewer: 'Dwi',
-                          review: 'Pelayanan baik, tempat oke'),
+                          idWisata: widget.tourModel.id,
+                          totalReview: widget.totalReview,
+                          rataanReview: widget.rataanReview)
                     ],
                   ),
                   const SizedBox(height: 16),
@@ -115,7 +120,7 @@ class _DetailWisataViewState extends State<DetailWisataView> {
                     alignment: Alignment.centerRight,
                     child: TextButton(
                       onPressed: () {
-                        Get.to(()=>ReviewPage());
+                        Get.to(() => ReviewPage(idTicket: widget.tourModel.id));
                       },
                       child: const Text('Lihat Semua',
                           style: TextStyle(color: Colors.blue)),
@@ -211,41 +216,119 @@ class _DetailWisataViewState extends State<DetailWisataView> {
   }
 }
 
-class ReviewCard extends StatelessWidget {
-  final String rating;
-  final String reviewer;
-  final String? review;
+class ReviewCard extends StatefulWidget {
+  final int idWisata;
+  final int totalReview;
+  final double rataanReview;
 
-  ReviewCard(
-      {super.key, required this.rating, required this.reviewer, this.review});
+  const ReviewCard(
+      {super.key,
+      required this.idWisata,
+      required this.totalReview,
+      required this.rataanReview});
+
+  @override
+  State<ReviewCard> createState() => _ReviewCardState();
+}
+
+class _ReviewCardState extends State<ReviewCard> {
+  late Future<List<RatingModel>> futureRatings;
+
+  String? token;
+
+  @override
+  void initState() {
+    super.initState();
+    futureRatings = initilaizeTokenAndFetchRatings();
+  }
+
+  Future<void> initilaizeToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    token = prefs.getString('token');
+  }
+
+  Future<List<RatingModel>> fetchRating() async {
+    final response = await http
+        .get(Uri.parse('${UrlApi.getRating}/${widget.idWisata}'), headers: {
+      'Authorization': 'Bearer $token',
+    });
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+      return jsonResponse
+          .map<RatingModel>((data) => RatingModel.fromJson(data))
+          .toList();
+    } else {
+      throw Exception('Failed to load rating');
+    }
+  }
+
+  Future<List<RatingModel>> initilaizeTokenAndFetchRatings() async {
+    await initilaizeToken();
+    return await fetchRating();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 100.w,
-      height: 150.h,
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            rating,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(reviewer),
-          if (review != null) ...[
-            const SizedBox(height: 4),
-            Text(review!),
-          ],
-        ],
+    return Center(
+      child: Container(
+        width: 300.w,
+        height: 150.h,
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: Colors.grey[200],
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: FutureBuilder<List<RatingModel>>(
+          future: futureRatings,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              List<RatingModel> ratings = snapshot.data!;
+              return Expanded(
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: ratings.length,
+                  itemBuilder: (context, index) {
+                    RatingModel rating = ratings[index];
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        margin: const EdgeInsets.only(bottom: 8),
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(rating.username),
+                              ],
+                            ),
+                            const SizedBox(height: 4),
+                            Row(
+                              children: [
+                                const Icon(Icons.star, color: Colors.yellow),
+                                Text(rating.rating.toString()),
+                              ],
+                            ),
+                            const SizedBox(height: 4),
+                            Text(rating.review),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              );
+            } else if (snapshot.hasError) {
+              return Text('Failed to load rating: ${snapshot.error}');
+            }
+            return const Center(child: CircularProgressIndicator());
+          },
+        ),
       ),
     );
   }
@@ -256,7 +339,7 @@ class TicketCard extends StatelessWidget {
   final String details;
   final String price;
 
-  TicketCard(
+  const TicketCard(
       {super.key,
       required this.title,
       required this.details,

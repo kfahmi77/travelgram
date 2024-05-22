@@ -74,7 +74,7 @@ class _AddFeedViewState extends State<AddFeedView> {
                 padding: const EdgeInsets.all(12),
                 child: TextFormField(
                   controller: _caption,
-                  maxLength: 100,
+                  maxLength: 30,
                   decoration: const InputDecoration(
                     labelText: 'Caption',
                     labelStyle: TextStyle(

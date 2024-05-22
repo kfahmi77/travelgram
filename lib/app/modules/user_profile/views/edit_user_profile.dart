@@ -221,13 +221,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
         // Save avatar URL to SharedPreferences if it was updated
         if (_selectedImage != null) {
           var responseData = await http.Response.fromStream(response);
-          var responseJson = jsonDecode(responseData.body);
-          var updatedAvatarUrl = responseJson['avatar'];
-          var updateUsername = responseJson['username'];
+          jsonDecode(responseData.body);
 
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          await prefs.setString('avatar_url', updatedAvatarUrl);
-          await prefs.setString('username', updateUsername);
+
+        
         }
 
         // Fetch the updated profile data

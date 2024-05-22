@@ -1,8 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+
+import '../../../../shared/url_api.dart';
 
 class TambahReviewpage extends StatefulWidget {
-  const TambahReviewpage({super.key});
+  final int idTicket;
+  const TambahReviewpage({required this.idTicket, super.key});
 
   @override
   createState() => _TambahReviewpageState();
@@ -12,20 +19,62 @@ class _TambahReviewpageState extends State<TambahReviewpage> {
   double _rating = 0.0;
   final TextEditingController _reviewController = TextEditingController();
 
-  void _submitReview() {
-    final String review = _reviewController.text;
+  Future<void> _submitReview() async {
+   final String review = _reviewController.text;
 
-    if (review.isNotEmpty && _rating != 0.0) {
-      // Here you can handle the review submission (e.g., send to server)
-      print('Rating: $_rating');
-      print('Review: $review');
-    } else {
+  if (review.isNotEmpty && _rating != 0.0) {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('token');
+
+      final response = await http.post(
+        Uri.parse(UrlApi.addRating), // Replace with your API endpoint
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode({
+          'rating': _rating,
+          'review': review,
+          'tour_ticket_id': widget.idTicket, // Include the tour ticket ID if needed
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        // Handle successful submission
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Review submitted successfully'),
+          ),
+        );
+        // Clear the form
+        _reviewController.clear();
+        setState(() {
+          _rating = 0.0;
+        });
+      } else {
+        // Handle server errors
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to submit review: ${response.reasonPhrase}'),
+          ),
+        );
+      }
+    } catch (e) {
+      // Handle network errors
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Isi review dengan benar'),
+        SnackBar(
+          content: Text('Failed to submit review: $e'),
         ),
       );
     }
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Isi review dengan benar'),
+      ),
+    );
+  }
   }
 
   @override

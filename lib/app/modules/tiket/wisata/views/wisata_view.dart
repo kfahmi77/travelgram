@@ -1,13 +1,18 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travelgram/app/modules/tiket/hotel/models/hotel_model.dart';
 import 'package:travelgram/app/modules/tiket/hotel/views/detial_hotel.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:travelgram/app/modules/tiket/wisata/models/tour_widget.dart';
+import 'package:travelgram/app/modules/tiket/wisata/models/tour_model.dart';
 import 'package:travelgram/app/modules/tiket/wisata/views/detail_wisata.dart';
 import 'package:travelgram/app/shared/url_api.dart';
+
+import '../models/total_rating_model.dart';
 
 class WisataView extends StatefulWidget {
   @override
@@ -103,10 +108,52 @@ class _WisataViewState extends State<WisataView> {
     );
   }
 }
-class CardWisata extends StatelessWidget {
-  final TourModel tourModel;
-  const CardWisata({required this.tourModel, Key? key}) : super(key: key);
 
+class CardWisata extends StatefulWidget {
+  final TourModel tourModel;
+  const CardWisata({required this.tourModel, super.key});
+
+  @override
+  State<CardWisata> createState() => _CardWisataState();
+}
+
+class _CardWisataState extends State<CardWisata> {
+  late Future<TotalRatingModel> futureRating;
+
+  String? token;
+
+  @override
+  void initState() {
+    super.initState();
+    futureRating = initilaizeTokenAndFetchRating();
+  }
+
+  Future<void> initilaizeToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    token = prefs.getString('token');
+  }
+
+  Future<TotalRatingModel> fetchRating() async {
+    final response = await http.get(
+      Uri.parse('${UrlApi.totalRating}/${widget.tourModel.id}'),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body);
+      return TotalRatingModel.fromJson(jsonResponse);
+    } else {
+      throw Exception('Failed to load rating');
+    }
+  }
+
+  Future<TotalRatingModel> initilaizeTokenAndFetchRating() async {
+    await initilaizeToken();
+    return await fetchRating();
+  }
+  var rataRating = 0.0;
+  int totalReview = 0;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -114,8 +161,10 @@ class CardWisata extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           Get.to(DetailWisataView(
-            tourModel: tourModel,
+            tourModel: widget.tourModel, rataanReview: rataRating, totalReview: totalReview,
+            
           ));
+          log(rataRating.toString());
         },
         child: Card(
           child: Column(
@@ -123,7 +172,7 @@ class CardWisata extends StatelessWidget {
             children: [
               Expanded(
                 child: Image.network(
-                  tourModel.gambar,
+                  widget.tourModel.gambar,
                   height: 100,
                   width: double.infinity,
                   fit: BoxFit.cover,
@@ -134,12 +183,43 @@ class CardWisata extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(tourModel.namaWisata,
+                    Text(widget.tourModel.namaWisata,
                         style: const TextStyle(fontWeight: FontWeight.bold)),
-                    Text(tourModel.tempatWisata,
+                    Text(widget.tourModel.tempatWisata,
                         style: const TextStyle(color: Colors.grey)),
-                    Text(tourModel.rating.toString()),
-                    Text(tourModel.harga.toString(),
+                   FutureBuilder<TotalRatingModel>(
+      future: futureRating,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          rataRating = double.parse(snapshot.data!.averageRating!.toStringAsFixed(1));
+          totalReview = snapshot.data!.totalUser!; 
+          return Column(
+            children: [
+              Row(
+                children: [
+                  Text(
+                    '$rataRating',
+                  ),
+                  const SizedBox(width: 8),
+                  const Text(
+                    '/5',
+                  ),
+                  const SizedBox(width: 16),
+                  Text('Dari $totalReview Review'),
+                ],
+              ),
+            ],
+          );
+        } else if (snapshot.hasError) {
+          return Text('${snapshot.error}');
+        } else if (!snapshot.hasData) {
+          return const Center(child: Text('Belum ada review'));
+        }
+
+        return const Center(child: CircularProgressIndicator());
+      },
+    ),
+                    Text(widget.tourModel.harga.toString(),
                         style: const TextStyle(
                             color: Colors.red, fontWeight: FontWeight.bold)),
                   ],
