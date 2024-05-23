@@ -200,8 +200,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
     // Menambahkan header otorisasi jika diperlukan
     request.headers['Authorization'] = 'Bearer $token';
-
-    request.fields['id'] = updatedProfile.id.toString();
     request.fields['nama_lengkap'] = updatedProfile.namaLengkap;
     request.fields['username'] = updatedProfile.username;
     request.fields['no_telp'] = updatedProfile.noTelp;
@@ -222,21 +220,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
         if (_selectedImage != null) {
           var responseData = await http.Response.fromStream(response);
           jsonDecode(responseData.body);
-
-
-        
         }
-
-        // Fetch the updated profile data
         _fetchProfileData();
-      } else if (response.statusCode == 302) {
-        var responseString = await response.stream.bytesToString();
-        print('Failed to update profile. Status code: ${response.statusCode}');
-        print('Response: $responseString');
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to update profile')),
-        );
       }
     } catch (e) {
       print('Error: $e');
