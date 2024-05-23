@@ -154,7 +154,9 @@ class _DetailWisataViewState extends State<DetailWisataView> {
                           alignment: Alignment.centerRight,
                           child: ElevatedButton(
                             onPressed: () {
-                              Get.to(() => DetailPesananWisataView(tourModel: widget.tourModel,));
+                              Get.to(() => DetailPesananWisataView(
+                                    tourModel: widget.tourModel,
+                                  ));
                             },
                             child: const Text('Pilih Tiket'),
                             style: ElevatedButton.styleFrom(
@@ -283,45 +285,43 @@ class _ReviewCardState extends State<ReviewCard> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               List<RatingModel> ratings = snapshot.data!;
-              return Expanded(
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: ratings.length,
-                  itemBuilder: (context, index) {
-                    RatingModel rating = ratings[index];
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        margin: const EdgeInsets.only(bottom: 8),
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(rating.username),
-                              ],
-                            ),
-                            const SizedBox(height: 4),
-                            Row(
-                              children: [
-                                const Icon(Icons.star, color: Colors.yellow),
-                                Text(rating.rating.toString()),
-                              ],
-                            ),
-                            const SizedBox(height: 4),
-                            Text(rating.review),
-                          ],
-                        ),
+              return ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: ratings.length,
+                itemBuilder: (context, index) {
+                  RatingModel rating = ratings[index];
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      margin: const EdgeInsets.only(bottom: 8),
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                    );
-                  },
-                ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(rating.username),
+                            ],
+                          ),
+                          const SizedBox(height: 4),
+                          Row(
+                            children: [
+                              const Icon(Icons.star, color: Colors.yellow),
+                              Text(rating.rating.toString()),
+                            ],
+                          ),
+                          const SizedBox(height: 4),
+                          Text(rating.review),
+                        ],
+                      ),
+                    ),
+                  );
+                },
               );
             } else if (snapshot.hasError) {
               return Text('Failed to load rating: ${snapshot.error}');

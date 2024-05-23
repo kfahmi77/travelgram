@@ -40,16 +40,18 @@ class ReviewPage extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 onPressed: () {
-                  Get.to(() =>  TambahReviewpage(idTicket: idTicket));
+                  Get.to(() => TambahReviewpage(idTicket: idTicket));
                 },
                 child: const Text('Tulis Review anda'),
               ),
             ),
             const SizedBox(height: 16),
-             RatingSummary(idTicket:idTicket),
+            RatingSummary(idTicket: idTicket),
             const SizedBox(height: 16),
-             Expanded(
-              child: ReviewList(idTicket: idTicket,),
+            Expanded(
+              child: ReviewList(
+                idTicket: idTicket,
+              ),
             ),
           ],
         ),
@@ -57,6 +59,7 @@ class ReviewPage extends StatelessWidget {
     );
   }
 }
+
 class RatingSummary extends StatefulWidget {
   final int idTicket;
   const RatingSummary({required this.idTicket, super.key});
@@ -108,25 +111,25 @@ class _RatingSummaryState extends State<RatingSummary> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return Column(
-        children: [
-          Row(
             children: [
-              Text(
-                '${snapshot.data?.averageRating?.toStringAsFixed(1) ?? 0}',
-                style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+              Row(
+                children: [
+                  Text(
+                    '${snapshot.data?.averageRating?.toStringAsFixed(1) ?? 0}',
+                    style: const TextStyle(
+                        fontSize: 48, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(width: 8),
+                  const Text(
+                    '/5',
+                    style: TextStyle(fontSize: 24),
+                  ),
+                  const SizedBox(width: 16),
+                  Text('Dari ${snapshot.data?.totalUser ?? 0} Review'),
+                ],
               ),
-              const SizedBox(width: 8),
-              const Text(
-                '/5',
-                style: TextStyle(fontSize: 24),
-              ),
-              const SizedBox(width: 16),
-              Text('Dari ${snapshot.data?.totalUser ?? 0} Review'),
             ],
-          ),
-        ],
-      )
-;
+          );
         } else if (snapshot.hasError) {
           return Text('${snapshot.error}');
         } else if (!snapshot.hasData) {
@@ -138,7 +141,6 @@ class _RatingSummaryState extends State<RatingSummary> {
     );
   }
 }
-
 
 class ReviewList extends StatefulWidget {
   final int idTicket;
@@ -165,7 +167,8 @@ class _ReviewListState extends State<ReviewList> {
   }
 
   Future<List<RatingModel>> fetchRating() async {
-    final response = await http.get(Uri.parse('${UrlApi.rating}/${widget.idTicket}'), headers: {
+    final response = await http
+        .get(Uri.parse('${UrlApi.rating}/${widget.idTicket}'), headers: {
       'Authorization': 'Bearer $token',
     });
     if (response.statusCode == 200) {
@@ -182,6 +185,7 @@ class _ReviewListState extends State<ReviewList> {
     await initilaizeToken();
     return await fetchRating();
   }
+
   String formatDate(DateTime date) {
     return DateFormat('EEEE, dd MMMM yyyy', 'id_ID').format(date);
   }
@@ -206,13 +210,14 @@ class _ReviewListState extends State<ReviewList> {
                       children: [
                         Row(
                           children: [
-                           rating.avatar != null
-                              ? CircleAvatar(
-                                  backgroundImage: NetworkImage('${UrlApi.baseUrl}${rating.avatar!}'),
-                                )
-                              : const CircleAvatar(
-                                  child: Icon(Icons.person),
-                                ),
+                            rating.avatar != null
+                                ? CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                        '${UrlApi.urlStorage}${rating.avatar!}'),
+                                  )
+                                : const CircleAvatar(
+                                    child: Icon(Icons.person),
+                                  ),
                             const SizedBox(width: 16),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -244,7 +249,7 @@ class _ReviewListState extends State<ReviewList> {
           );
         } else if (snapshot.hasError) {
           return Text('${snapshot.error}');
-        } else if(!snapshot.hasData){
+        } else if (!snapshot.hasData) {
           return const Center(child: Text('Belum ada review'));
         }
 
