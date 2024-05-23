@@ -31,7 +31,7 @@ class _TourTicketSearchViewState extends State<TourTicketSearchView> {
 
   Future<List<TourModel>> fetchTourTickets(String query) async {
     final response = await http.get(Uri.parse(
-        'http://192.168.183.181:8000/api/tour-ticket/search?nama_wisata=$query'));
+        '${UrlApi.baseUrl}tour-ticket/search?nama_wisata=$query'));
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
@@ -45,7 +45,7 @@ class _TourTicketSearchViewState extends State<TourTicketSearchView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tour Tickets'),
+        title: Text('Wisata'),
       ),
       body: Column(
         children: [
@@ -54,7 +54,7 @@ class _TourTicketSearchViewState extends State<TourTicketSearchView> {
             child: TextField(
               controller: _controller,
               decoration: InputDecoration(
-                labelText: 'Search Tour Ticket',
+                labelText: 'Cari wisata',
                 suffixIcon: IconButton(
                   icon: Icon(Icons.search),
                   onPressed: () {
