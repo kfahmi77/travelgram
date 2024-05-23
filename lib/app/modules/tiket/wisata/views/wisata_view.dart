@@ -13,6 +13,7 @@ import 'package:travelgram/app/modules/tiket/wisata/views/detail_wisata.dart';
 import 'package:travelgram/app/shared/url_api.dart';
 
 import '../models/total_rating_model.dart';
+import 'cari_wisata.dart';
 
 class WisataView extends StatefulWidget {
   @override
@@ -70,7 +71,11 @@ class _WisataViewState extends State<WisataView> {
                         hintText: "Cari Wisata",
                         border: InputBorder.none,
                         prefixIcon: Icon(Icons.search),
+                        
                       ),
+                      onTap: () {
+                        Get.to(TourTicketSearchView());
+                      },
                     ),
                   ),
                 ),
