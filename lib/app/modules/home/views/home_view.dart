@@ -61,7 +61,7 @@ class _HomeViewState extends State<HomeView> {
             await prefs.remove('token');
             await prefs.remove('id');
             await prefs.remove('username');
-        
+
             print('Logout successful');
           } else {
             print('Failed to logout: ${response.statusCode}');

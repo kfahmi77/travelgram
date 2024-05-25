@@ -234,8 +234,17 @@ class _SearchUserViewTestState extends State<SearchUserViewTest> {
                             Container(
                               width: double.infinity,
                               decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey),
-                                borderRadius: BorderRadius.circular(24),
+                                //border only top right and left
+                                border: Border(
+                                  top: BorderSide(color: Colors.grey),
+                                  right: BorderSide(color: Colors.grey),
+                                  left: BorderSide(color: Colors.grey),
+                                ),
+                                //border radius only top right and left
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(24),
+                                  topRight: Radius.circular(24),
+                                ),
                               ),
                               height: 350.h,
                               child: Padding(
@@ -244,8 +253,8 @@ class _SearchUserViewTestState extends State<SearchUserViewTest> {
                                   gridDelegate:
                                       const SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 3,
-                                    crossAxisSpacing: 1.0,
-                                    mainAxisSpacing: 1.0,
+                                    crossAxisSpacing: 10.0,
+                                    mainAxisSpacing: 10.0,
                                   ),
                                   itemCount: profile.posts.length,
                                   itemBuilder: (context, index) {
@@ -263,20 +272,30 @@ class _SearchUserViewTestState extends State<SearchUserViewTest> {
                                         );
                                       },
                                       child: Container(
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Colors.black,
-                                              width: 1.0,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(8.0)),
-                                        child: Image.network(
-                                          '${UrlApi.urlStorage}/${profile.posts[index].imageUrl}',
-                                          width: 200.0,
-                                          height: 200.0,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: Colors.black,
+                                                width: 1.0,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0)),
+                                          child:
+                                              profile.posts[index].imageUrl !=
+                                                      null
+                                                  ? Image.network(
+                                                      '${UrlApi.urlStorage}${profile.posts[index].imageUrl}',
+                                                      fit: BoxFit.cover,
+                                                    )
+                                                  : Center(
+                                                      child: Text(
+                                                          profile.posts[index]
+                                                              .content,
+                                                          style: TextStyle(
+                                                            fontSize: 16.0,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          )),
+                                                    )),
                                     );
                                   },
                                 ),

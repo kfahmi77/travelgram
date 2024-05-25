@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
@@ -13,6 +14,8 @@ import 'package:travelgram/app/modules/tiket/views/tiket_saya_view.dart';
 import 'package:travelgram/app/modules/tiket/wisata/views/wisata_view.dart';
 import 'package:travelgram/app/shared/url_api.dart';
 import 'package:http/http.dart' as http;
+
+import '../wisata/models/tour_model.dart';
 
 class TiketView extends StatefulWidget {
   const TiketView({super.key});
@@ -296,7 +299,7 @@ class _TiketViewState extends State<TiketView> {
                 Column(
                   children: [
                     GestureDetector(
-                      onTap: () => Get.to( WisataView()),
+                      onTap: () => Get.to(WisataView()),
                       child: Container(
                         height: 60.h,
                         width: 60.w,
@@ -325,7 +328,7 @@ class _TiketViewState extends State<TiketView> {
           const SizedBox(
             height: 8.0,
           ),
-          const Padding(
+          Padding(
             padding: EdgeInsets.all(8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -337,163 +340,80 @@ class _TiketViewState extends State<TiketView> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text(
-                  "Lihat Semua",
-                  style: TextStyle(
-                    fontSize: 12.0,
-                    color: Colors.blue,
+                GestureDetector(
+                  onTap: () => Get.to(WisataView()),
+                  child: Text(
+                    "Lihat Semua",
+                    style: TextStyle(
+                      fontSize: 12.0,
+                      color: Colors.blue,
+                    ),
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(
-            height: 8.0,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Container(
-                width: 150.w,
-                height: 200.h,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        height: 100.h,
-                        width: 150.w,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          image: const DecorationImage(
-                            image: NetworkImage(
-                                "https://media.istockphoto.com/id/1471856897/id/foto/ulun-danu-beratan-temple-bali-indonesia.jpg?s=1024x1024&w=is&k=20&c=vt8wVg0-iq1IT4Cmn9MGPsUk1OtxFejbi2CNAdtdIvo="),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 8.0,
-                    ),
-                    const Text(
-                      "Candi Bali",
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const Text(
-                      "Bali",
-                      style: TextStyle(
-                        fontSize: 12.0,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    //buat teks rating
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.star,
-                          color: Colors.black,
-                          size: 12.0,
-                        ),
-                        Text(
-                          "4.5",
-                          style: TextStyle(
-                            fontSize: 12.0,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const Text(
-                      "Rp. 1.000.000",
-                      style: TextStyle(
-                        fontSize: 12.0,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                width: 150.w,
-                height: 200.h,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        height: 100.h,
-                        width: 150.w,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          image: const DecorationImage(
-                            image: NetworkImage(
-                                "https://media.istockphoto.com/id/1471856897/id/foto/ulun-danu-beratan-temple-bali-indonesia.jpg?s=1024x1024&w=is&k=20&c=vt8wVg0-iq1IT4Cmn9MGPsUk1OtxFejbi2CNAdtdIvo="),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 8.0,
-                    ),
-                    const Text(
-                      "Candi Bali",
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const Text(
-                      "Bali",
-                      style: TextStyle(
-                        fontSize: 12.0,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    //buat teks rating
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.star,
-                          color: Colors.black,
-                          size: 12.0,
-                        ),
-                        Text(
-                          "4.5",
-                          style: TextStyle(
-                            fontSize: 12.0,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const Text(
-                      "Rp. 1.000.000",
-                      style: TextStyle(
-                        fontSize: 12.0,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+          CardRekomendasiTiket(),
         ],
+      ),
+    );
+  }
+}
+
+class CardRekomendasiTiket extends StatefulWidget {
+  const CardRekomendasiTiket({
+    super.key,
+  });
+
+  @override
+  State<CardRekomendasiTiket> createState() => _CardRekomendasiTiketState();
+}
+
+class _CardRekomendasiTiketState extends State<CardRekomendasiTiket> {
+  late Future<List<TourModel>> futureHotels;
+
+  @override
+  void initState() {
+    super.initState();
+    futureHotels = fetchHotels();
+  }
+
+  Future<List<TourModel>> fetchHotels() async {
+    final response = await http.get(Uri.parse(UrlApi.tour));
+
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+      return jsonResponse.map((hotel) => TourModel.fromJson(hotel)).toList();
+    } else {
+      throw Exception('Failed to load hotels');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: FutureBuilder<List<TourModel>>(
+        future: futureHotels,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Failed to load hotels'));
+          } else {
+            List<TourModel> hotels = snapshot.data!;
+            return GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 1.0,
+                mainAxisSpacing: 1.0,
+              ),
+              itemCount: 2,
+              itemBuilder: (context, index) {
+                return CardWisata(tourModel: hotels[index]);
+              },
+            );
+          }
+        },
       ),
     );
   }

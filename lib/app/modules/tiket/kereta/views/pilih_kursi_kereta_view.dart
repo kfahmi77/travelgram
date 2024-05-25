@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:travelgram/app/modules/detail_pemesanan/views/detail_pemesanan_view%20copy.dart';
 import 'package:travelgram/app/modules/tiket/kereta/models/kereta_model.dart';
 
-
 class PilihKursiKeretaView extends StatefulWidget {
   final KeretaModel busModel;
   const PilihKursiKeretaView({required this.busModel, super.key});
@@ -51,16 +50,23 @@ class _PilihKursiKeretaViewState extends State<PilihKursiKeretaView> {
               ),
             ],
           ),
-          Row(
-            children: [
-              Text(
-                detailTiket,
-                style: TextStyle(
-                  fontWeight: FontWeight.normal,
-                  fontSize: 15.sp,
+          Expanded(
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      detailTiket,
+                      style: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        fontSize: 15.sp,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

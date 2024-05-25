@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:travelgram/app/shared/url_api.dart';
 
 import '../models/tiket_saya_model.dart';
 
@@ -44,7 +45,7 @@ class _TiketSayaViewState extends State<TiketSayaView> {
   Future<void> fetchTransaksi() async {
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.196.181:8000/api/transactions'),
+        Uri.parse(UrlApi.transaction),
         headers: <String, String>{
           'Authorization': 'Bearer $_token',
         },

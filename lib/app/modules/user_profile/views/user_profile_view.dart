@@ -30,8 +30,7 @@ class _UserProfileViewState extends State<UserProfileView> {
   @override
   void initState() {
     super.initState();
-    _feedUserModel =
-        FeedUserModel(posts: [], totalFriend: 0, totalPost: 0, avatar: '');
+    _feedUserModel = FeedUserModel(posts: [], totalFriend: 0, totalPost: 0);
     initializeTokenAndFetchPosts();
     futureUser = fetchUser();
   }
@@ -97,13 +96,13 @@ class _UserProfileViewState extends State<UserProfileView> {
               return Text("${snapshot.error}");
             }
 
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           },
         ),
         centerTitle: false,
       ),
       body: isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : Column(
               children: [
                 Flexible(
@@ -141,7 +140,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                                         Flexible(
                                           child: Text(
                                             "${_feedUserModel.posts.length} \n Postingan",
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontSize: 15.0,
                                             ),
                                           ),
@@ -151,7 +150,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                                             color: Colors.transparent,
                                             child: Text(
                                               "${_feedUserModel.totalFriend} \n Pengikut",
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontSize: 15.0,
                                               ),
                                             ),
@@ -185,7 +184,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                                       return Text("${snapshot.error}");
                                     }
 
-                                    return CircularProgressIndicator();
+                                    return const CircularProgressIndicator();
                                   },
                                 ),
                               ),
@@ -213,7 +212,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(40.0),
                         topRight: Radius.circular(40.0),
                       ),
@@ -237,7 +236,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                           child: GridView.builder(
                             gridDelegate:
                                 const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
+                              crossAxisCount: 3,
                               crossAxisSpacing: 4.0,
                               mainAxisSpacing: 4.0,
                             ),
@@ -258,16 +257,40 @@ class _UserProfileViewState extends State<UserProfileView> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) => FullScreenImage(
-                                            imageUrl:
-                                                '${UrlApi.urlStorage}${_feedUserModel.posts[index].imageUrl}',
+                                            imageUrl: _feedUserModel
+                                                        .posts[index]
+                                                        .imageUrl !=
+                                                    null
+                                                ? '${UrlApi.urlStorage}${_feedUserModel.posts[index].imageUrl}'
+                                                : _feedUserModel
+                                                    .posts[index].content,
                                           ),
                                         ),
                                       );
                                     },
-                                    child: Image.network(
-                                      '${UrlApi.urlStorage}${_feedUserModel.posts[index].imageUrl}',
-                                      fit: BoxFit.cover,
-                                    ),
+                                    child: _feedUserModel
+                                                .posts[index].imageUrl !=
+                                            null
+                                        ? Image.network(
+                                            '${UrlApi.urlStorage}${_feedUserModel.posts[index].imageUrl}',
+                                            fit: BoxFit.cover,
+                                          )
+                                        : Container(
+                                            height: 100,
+                                            width: 100,
+                                            decoration: const BoxDecoration(
+                                              color: Colors.blue,
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                _feedUserModel
+                                                    .posts[index].content,
+                                                style: const TextStyle(
+                                                  fontSize: 20.0,
+                                                ),
+                                              ),
+                                            ),
+                                          ), // Placeholder widget or any alternative image widget
                                   ),
                                 ),
                               );

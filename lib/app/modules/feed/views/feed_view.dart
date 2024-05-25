@@ -330,7 +330,9 @@ class _FeedListState extends State<FeedList> {
                       children: [
                         IconButton(
                           icon: Icon(
-                            message.isLiked ? Icons.favorite : Icons.favorite_border,
+                            message.isLiked
+                                ? Icons.favorite
+                                : Icons.favorite_border,
                             color: Colors.red,
                             size: 24,
                           ),
