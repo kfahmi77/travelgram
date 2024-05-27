@@ -93,7 +93,7 @@ class _CommentBottomSheetState extends State<CommentBottomSheet> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           const Text(
-            'Comments',
+            'Komentar',
             style: TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.bold,
