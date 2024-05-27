@@ -20,68 +20,70 @@ class _TambahReviewpageState extends State<TambahReviewpage> {
   final TextEditingController _reviewController = TextEditingController();
 
   Future<void> _submitReview() async {
-   final String review = _reviewController.text;
+    final String review = _reviewController.text;
 
-  if (review.isNotEmpty && _rating != 0.0) {
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String? token = prefs.getString('token');
+    if (review.isNotEmpty && _rating != 0.0) {
+      try {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        String? token = prefs.getString('token');
 
-      final response = await http.post(
-        Uri.parse(UrlApi.addRating), // Replace with your API endpoint
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-        body: jsonEncode({
-          'rating': _rating,
-          'review': review,
-          'tour_ticket_id': widget.idTicket, // Include the tour ticket ID if needed
-        }),
-      );
-
-      if (response.statusCode == 200) {
-        // Handle successful submission
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Review submitted successfully'),
-          ),
+        final response = await http.post(
+          Uri.parse(UrlApi.addRating), // Replace with your API endpoint
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+          body: jsonEncode({
+            'rating': _rating,
+            'review': review,
+            'tour_ticket_id':
+                widget.idTicket, // Include the tour ticket ID if needed
+          }),
         );
-        // Clear the form
-        _reviewController.clear();
-        setState(() {
-          _rating = 0.0;
-        });
-      } else {
-        // Handle server errors
+
+        if (response.statusCode == 200) {
+          // Handle successful submission
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Ulasan berhasil dikirim'),
+            ),
+          );
+          // Clear the form
+          _reviewController.clear();
+          setState(() {
+            _rating = 0.0;
+          });
+        } else {
+          // Handle server errors
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content:
+                  Text('Failed to submit review: ${response.reasonPhrase}'),
+            ),
+          );
+        }
+      } catch (e) {
+        // Handle network errors
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to submit review: ${response.reasonPhrase}'),
+            content: Text('Failed to submit review: $e'),
           ),
         );
       }
-    } catch (e) {
-      // Handle network errors
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to submit review: $e'),
+        const SnackBar(
+          content: Text('Isi review dengan benar'),
         ),
       );
     }
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Isi review dengan benar'),
-      ),
-    );
-  }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Write a Review'),
+        title: const Text('Tambah Review'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -116,7 +118,7 @@ class _TambahReviewpageState extends State<TambahReviewpage> {
               maxLines: 4,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                labelText: 'Write your review',
+                labelText: 'Tulis Reviewmu disini',
               ),
             ),
             const SizedBox(height: 16),
