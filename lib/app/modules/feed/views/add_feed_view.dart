@@ -74,7 +74,7 @@ class _AddFeedViewState extends State<AddFeedView> {
                 padding: const EdgeInsets.all(12),
                 child: TextFormField(
                   controller: _caption,
-                  maxLength: 30,
+                  maxLength: 100,
                   decoration: const InputDecoration(
                     labelText: 'Caption',
                     labelStyle: TextStyle(
@@ -94,7 +94,7 @@ class _AddFeedViewState extends State<AddFeedView> {
                       height: 300.h,
                       padding: const EdgeInsets.all(12),
                       child: Image.file(_image!))
-                  : const Text('No image selected.'),
+                  : const Text('Belum ada gambar dipilih'),
               ElevatedButton(
                 onPressed: () {
                   showModalBottomSheet(
@@ -132,7 +132,7 @@ class _AddFeedViewState extends State<AddFeedView> {
                     ? CircularProgressIndicator(
                         valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
                       )
-                    : const Text("Save"),
+                    : const Text("Simpan"),
               ),
             ],
           ),
@@ -154,7 +154,7 @@ class ImageSourceSheet extends StatelessWidget {
         children: <Widget>[
           ListTile(
             leading: const Icon(Icons.camera_alt),
-            title: const Text('Camera'),
+            title: const Text('kamera'),
             onTap: () {
               Navigator.of(context).pop();
               _getImage(ImageSource.camera);
@@ -162,7 +162,7 @@ class ImageSourceSheet extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.photo_library),
-            title: const Text('Gallery'),
+            title: const Text('Galeri'),
             onTap: () {
               Navigator.of(context).pop();
               _getImage(ImageSource.gallery);
