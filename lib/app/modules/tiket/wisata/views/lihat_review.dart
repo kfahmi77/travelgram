@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travelgram/app/modules/tiket/wisata/models/rating_model.dart';
+import 'package:travelgram/app/modules/tiket/wisata/models/tour_model.dart';
 import 'package:travelgram/app/modules/tiket/wisata/views/tambah_review.dart';
 import 'package:http/http.dart' as http;
 import 'package:travelgram/app/shared/url_api.dart';
@@ -13,13 +14,14 @@ import '../models/total_rating_model.dart';
 
 class ReviewPage extends StatelessWidget {
   final int idTicket;
-  const ReviewPage({required this.idTicket, super.key});
+  final TourModel tour;
+  const ReviewPage({required this.idTicket, required this.tour, super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Jawa Timur Park 1'),
+        title: Text(tour.namaWisata),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -33,7 +35,7 @@ class ReviewPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Ratings & Reviews',
+              'Peringkat & Ulasan',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             Padding(
@@ -125,7 +127,7 @@ class _RatingSummaryState extends State<RatingSummary> {
                     style: TextStyle(fontSize: 24),
                   ),
                   const SizedBox(width: 16),
-                  Text('Dari ${snapshot.data?.totalUser ?? 0} Review'),
+                  Text('Dari ${snapshot.data?.totalUser ?? 0} Ulasan'),
                 ],
               ),
             ],

@@ -120,7 +120,7 @@ class _DetailWisataViewState extends State<DetailWisataView> {
                     alignment: Alignment.centerRight,
                     child: TextButton(
                       onPressed: () {
-                        Get.to(() => ReviewPage(idTicket: widget.tourModel.id));
+                        Get.to(() => ReviewPage(idTicket: widget.tourModel.id, tour: widget.tourModel));
                       },
                       child: const Text('Lihat Semua',
                           style: TextStyle(color: Colors.blue)),
