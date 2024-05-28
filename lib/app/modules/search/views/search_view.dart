@@ -100,39 +100,56 @@ class _UserSearchPageState extends State<UserSearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: TextField(
-          controller: _searchController,
-          decoration: InputDecoration(
-            hintText: 'Cari user...',
-            border: InputBorder.none,
+        title: Container(
+          margin: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: Colors.grey[200],
+            borderRadius: BorderRadius.circular(10),
           ),
-          onChanged: _onSearch,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                hintText: 'Cari user...',
+                border: InputBorder.none,
+              ),
+              onChanged: _onSearch,
+            ),
+          ),
         ),
       ),
       body: ListView.builder(
         itemCount: _searchResults.length,
         itemBuilder: (context, index) {
           User user = _searchResults[index];
-          return ListTile(
-              title: Text(user.username),
-              subtitle: Text(user.email),
-              leading: CircleAvatar(
-                backgroundImage: user.avatar != null
-                    ? NetworkImage('${UrlApi.urlStorage}//${user.avatar}')
-                    : NetworkImage(UrlApi.dummyImage),
-              ),
-              onTap: () {
-                Get.to(SearchUserViewTest(
-                  idUser: user.id,
-                  token: widget.token,
-                ));
-              },
-              trailing: GestureDetector(
-                child: const Icon(Icons.message),
+          return Container(
+            margin: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: ListTile(
+                title: Text(user.username),
+                subtitle: Text(user.email),
+                leading: CircleAvatar(
+                  backgroundImage: user.avatar != null
+                      ? NetworkImage('${UrlApi.urlStorage}//${user.avatar}')
+                      : NetworkImage(UrlApi.dummyImage),
+                ),
                 onTap: () {
-                  _startConversation(user);
+                  Get.to(SearchUserViewTest(
+                    idUser: user.id,
+                    token: widget.token,
+                  ));
                 },
-              ));
+                trailing: GestureDetector(
+                  child: const Icon(Icons.message),
+                  onTap: () {
+                    _startConversation(user);
+                  },
+                )),
+          );
         },
       ),
     );
