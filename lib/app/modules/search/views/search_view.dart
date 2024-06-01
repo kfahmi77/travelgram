@@ -100,11 +100,30 @@ class _UserSearchPageState extends State<UserSearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+<<<<<<< Updated upstream
         title: TextField(
           controller: _searchController,
           decoration: InputDecoration(
             hintText: 'Cari user...',
             border: InputBorder.none,
+=======
+        title: Container(
+          margin: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: Colors.grey[200],
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                hintText: 'Cari Pengguna...',
+                border: InputBorder.none,
+              ),
+              onChanged: _onSearch,
+            ),
+>>>>>>> Stashed changes
           ),
           onChanged: _onSearch,
         ),
