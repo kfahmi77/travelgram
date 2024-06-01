@@ -104,7 +104,7 @@ class _UserSearchPageState extends State<UserSearchPage> {
         title: TextField(
           controller: _searchController,
           decoration: InputDecoration(
-            hintText: 'Cari user...',
+            hintText: 'Cari Pengguna...',
             border: InputBorder.none,
 =======
         title: Container(
