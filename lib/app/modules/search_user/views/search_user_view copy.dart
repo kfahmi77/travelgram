@@ -147,7 +147,7 @@ class _SearchUserViewTestState extends State<SearchUserViewTest> {
                             user.confirmed != null
                                 ? ElevatedButton(
                                     onPressed: () {},
-                                    child: const Text('Teman'),
+                                    child: const Text('Pengikut'),
                                   )
                                 : ElevatedButton(
                                     onPressed: () {
@@ -214,7 +214,7 @@ class _SearchUserViewTestState extends State<SearchUserViewTest> {
                                             MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                            'Teman',
+                                            'Pengikut',
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 20.0,

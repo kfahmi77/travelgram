@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -202,7 +204,7 @@ class _HomeViewState extends State<HomeView> {
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        child: const Text('Close'),
+                        child: const Text('Tutup'),
                       ),
                     ],
                   );

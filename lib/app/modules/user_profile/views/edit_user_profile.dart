@@ -183,7 +183,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             ));
                           }
                         },
-                        child: const Text('Save'),
+                        child: const Text('Simpan'),
                       ),
                     ],
                   ),

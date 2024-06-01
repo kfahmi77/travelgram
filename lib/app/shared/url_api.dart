@@ -1,9 +1,9 @@
 class UrlApi {
-  // static String baseUrl = 'https://dksystem.id/api/';
-  // static String urlStorage = 'https://dksystem.id/storage/';
+  static String baseUrl = 'https://dksystem.id/api/';
+  static String urlStorage = 'https://dksystem.id/storage/';
 
-  static String baseUrl = 'http://192.168.64.181:8000/api/';
-  static String urlStorage = 'http://192.168.64.181:8000/storage/';
+  static String baseUrl = 'http://192.168.196.181:8000/api/';
+  static String urlStorage = 'http://192.168.196.181:8000/storage/';
   static String register = '${baseUrl}register';
   static String login = '${baseUrl}login';
   static String logout = '${baseUrl}logout';
@@ -42,11 +42,6 @@ class UrlApi {
   static String unlikeFeed = '${baseUrl}unlikes';
 
   static String transaction = '${baseUrl}transactions';
-
-  static String rating = '${baseUrl}reviews';
-  static String getRating = '${baseUrl}reviews/show';
-    static String totalRating = '${baseUrl}reviews/total';
-  static String addRating = '${baseUrl}reviews';
 
   static String dummyImage =
       'https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg';

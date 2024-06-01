@@ -201,7 +201,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                           onPressed: () {
                             Get.to(() => const EditProfilePage());
                           },
-                          child: const Text("Edit Profile"),
+                          child: const Text("ubah profil"),
                         ),
                       ],
                     ),
