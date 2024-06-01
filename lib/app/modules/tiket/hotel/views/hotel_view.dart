@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:travelgram/app/modules/tiket/hotel/models/hotel_model.dart';
 import 'package:travelgram/app/modules/tiket/hotel/views/detial_hotel.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:travelgram/app/shared/url_api.dart';
+
+import 'cari_hotel.dart';
 
 class HotelView extends StatefulWidget {
   @override
@@ -63,6 +66,7 @@ class _HotelViewState extends State<HotelView> {
                         border: InputBorder.none,
                         prefixIcon: Icon(Icons.search),
                       ),
+                      onTap: () => Get.to(HotelSearchView()),
                     ),
                   ),
                 ),

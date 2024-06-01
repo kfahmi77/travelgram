@@ -19,7 +19,8 @@ class _PesawatViewState extends State<PesawatView> {
   String selectedProvinsi = "";
   String selectedKelas = "";
   DateTime selectedDate = DateTime.now();
-  DateTime? selectedDateKembali;
+  TextEditingController _dateController1 = TextEditingController();
+  TextEditingController _dateController2 = TextEditingController();
   int penumpang = 1;
 
   Map<String, String> bandaraProvinsiMap = {
@@ -46,21 +47,17 @@ class _PesawatViewState extends State<PesawatView> {
     return DateFormat('EEEE, dd MMMM yyyy', 'id_ID').format(date);
   }
 
-  Future<void> _selectDate(BuildContext context, bool isDepartureDate) async {
+  Future<void> _selectDate(
+      BuildContext context, TextEditingController controller) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate:
-          isDepartureDate ? selectedDate : selectedDateKembali ?? selectedDate,
-      firstDate: DateTime(2015, 8),
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
       lastDate: DateTime(2101),
     );
-    if (picked != null) {
+    if (picked != null && picked != DateTime.now()) {
       setState(() {
-        if (isDepartureDate) {
-          selectedDate = picked;
-        } else {
-          selectedDateKembali = picked;
-        }
+        controller.text = formatDate(picked);
       });
     }
   }
@@ -253,102 +250,94 @@ class _PesawatViewState extends State<PesawatView> {
               ),
             ),
           ),
-          SizedBox(
-            height: 10.h,
-          ),
           Padding(
-            padding: const EdgeInsets.only(left: 18.0),
-            child: Row(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
               children: [
-                Text("Tanggal Berangkat",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 14.sp,
-                    )),
-              ],
-            ),
-          ),
-          //create a date picker
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 10.w),
-            padding: EdgeInsets.symmetric(horizontal: 10.w),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                color: Colors.grey,
-              ),
-            ),
-            child: Row(
-              children: [
-                Text(
-                  formatDate(selectedDate),
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14.sp,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Tanggal Berangkat',
+                        style: TextStyle(
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                const Spacer(),
-                IconButton(
-                  icon: const Icon(Icons.calendar_today),
-                  onPressed: () async {
-                    await _selectDate(context, true); // for departure date
-                    log(selectedDate.toString());
+                TextField(
+                  controller: _dateController1,
+                  decoration: InputDecoration(
+                    hintText: 'Pillih Tanggal Berangkat',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: const BorderSide(
+                        color: Colors.grey,
+                        width: 1.0,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: const BorderSide(
+                        color: Colors.blue,
+                        width: 2.0,
+                      ),
+                    ),
+                  ),
+                  onTap: () {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                    _selectDate(context, _dateController1);
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Tanggal Pulang',
+                        style: TextStyle(
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                TextField(
+                  controller: _dateController2,
+                  decoration: InputDecoration(
+                    hintText: 'Pilih Tanggal Pulang',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: const BorderSide(
+                        color: Colors.grey,
+                        width: 1.0,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: const BorderSide(
+                        color: Colors.blue,
+                        width: 2.0,
+                      ),
+                    ),
+                  ),
+                  onTap: () {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                    _selectDate(context, _dateController2);
                   },
                 ),
               ],
             ),
-          ),
-          SizedBox(
-            height: 10.h,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 18.0),
-            child: Row(
-              children: [
-                Text(
-                  "Tanggal Kembali",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14.sp,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 10.w),
-            padding: EdgeInsets.symmetric(horizontal: 10.w),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                color: Colors.grey,
-              ),
-            ),
-            child: Row(
-              children: [
-                Text(
-                  formatDate(selectedDateKembali ?? selectedDate),
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14.sp,
-                  ),
-                ),
-                const Spacer(),
-                IconButton(
-                  icon: const Icon(Icons.calendar_today),
-                  onPressed: () async {
-                    await _selectDate(context, false); // for return date
-                    log(selectedDateKembali.toString());
-                  },
-                ),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 10.h,
           ),
           Padding(
             padding: const EdgeInsets.only(left: 18.0, right: 18.0),
@@ -490,8 +479,8 @@ class _PesawatViewState extends State<PesawatView> {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return CariPesawatView(
                   namaBandaraAsal: dropdownAsalBandara,
-                  namaBandaraTujuan: dropdownTujuanBandara, tanggal: formatDate(selectedDate),
-                  
+                  namaBandaraTujuan: dropdownTujuanBandara,
+                  tanggal: formatDate(selectedDate),
                 );
               }));
             },

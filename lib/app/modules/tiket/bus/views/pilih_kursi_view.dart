@@ -52,16 +52,23 @@ class _PilihKursiViewState extends State<PilihKursiView> {
               ),
             ],
           ),
-          Row(
-            children: [
-              Text(
-                detailTiket,
-                style: TextStyle(
-                  fontWeight: FontWeight.normal,
-                  fontSize: 15.sp,
+          Expanded(
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      detailTiket,
+                      style: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        fontSize: 15.sp,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,6 +29,10 @@ class _FeedListState extends State<FeedList> {
   String? _idUser;
 
   Stream<List<Feed>>? _messagesStream;
+
+  String formatDate(DateTime date) {
+    return DateFormat('EEEE, dd MMMM yyyy', 'id_ID').format(date);
+  }
 
   @override
   void initState() {
@@ -152,8 +157,13 @@ class _FeedListState extends State<FeedList> {
         'Authorization': 'Bearer ${_token ?? ''}',
       },
     );
-
-    return response;
+    if (response.statusCode == 200) {
+      log('Feed deleted successfully');
+      Get.snackbar('Success', 'Berhasil menghapus feed');
+      return response;
+    } else {
+      throw Exception('Failed to delete feed');
+    }
   }
 
   void _showCommentBottomSheet(BuildContext context, int postId) {
@@ -243,8 +253,8 @@ class _FeedListState extends State<FeedList> {
                                     Text(
                                       message.username,
                                     ),
-                                    const Text(
-                                      'Lokasi',
+                                    Text(
+                                      formatDate(message.createdAt),
                                     ),
                                   ],
                                 ),
@@ -286,8 +296,10 @@ class _FeedListState extends State<FeedList> {
                       padding: const EdgeInsets.only(left: 8.0, right: 8),
                       child: Row(
                         children: [
-                          Text(
-                            message.content,
+                          Expanded(
+                            child: Text(
+                              message.content,
+                            ),
                           ),
                         ],
                       ),
@@ -330,7 +342,9 @@ class _FeedListState extends State<FeedList> {
                       children: [
                         IconButton(
                           icon: Icon(
-                            message.isLiked ? Icons.favorite : Icons.favorite_border,
+                            message.isLiked
+                                ? Icons.favorite
+                                : Icons.favorite_border,
                             color: Colors.red,
                             size: 24,
                           ),
