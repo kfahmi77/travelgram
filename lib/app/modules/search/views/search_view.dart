@@ -106,6 +106,7 @@ class _UserSearchPageState extends State<UserSearchPage> {
             hintText: 'Cari Pengguna...',
             border: InputBorder.none,
           ),
+          onChanged: _onSearch,
         ),
       ),
       body: ListView.builder(

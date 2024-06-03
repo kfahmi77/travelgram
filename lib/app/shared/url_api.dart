@@ -43,6 +43,11 @@ class UrlApi {
 
   static String transaction = '${baseUrl}transactions';
 
+  static String rating = '${baseUrl}reviews';
+  static String getRating = '${baseUrl}reviews/show';
+    static String totalRating = '${baseUrl}reviews/total';
+  static String addRating = '${baseUrl}reviews';
+
   static String dummyImage =
       'https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg';
 }
