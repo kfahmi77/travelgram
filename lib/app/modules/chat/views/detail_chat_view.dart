@@ -105,7 +105,7 @@ class _DetailChatViewState extends State<DetailChatView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Chat Messages'),
+        title: const Text('Obrolan Pesan'),
       ),
       body: Column(
         children: [
@@ -195,7 +195,7 @@ class _DetailChatViewState extends State<DetailChatView> {
                   child: TextField(
                     controller: _messageController,
                     decoration: const InputDecoration(
-                      hintText: 'Type your message...',
+                      hintText: 'Ketik pesanmu...',
                     ),
                   ),
                 ),

@@ -63,7 +63,7 @@ class _ChatScreenViewState extends State<ChatScreenView> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Messages'),
+          title: const Text('Pesan'),
           actions: [
             IconButton(
               icon: const Icon(Icons.add),

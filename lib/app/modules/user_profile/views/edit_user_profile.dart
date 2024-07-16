@@ -87,7 +87,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Profile'),
+        title: const Text('Ubah Profil'),
       ),
       body: profileData == null
           ? const Center(child: CircularProgressIndicator())
@@ -128,7 +128,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             const InputDecoration(labelText: 'Nama Lengkap'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter your full name';
+                            return 'Masukan Nama lengkpa';
                           }
                           return null;
                         },
@@ -139,7 +139,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             const InputDecoration(labelText: 'Username'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter your username';
+                            return 'Masukan Username';
                           }
                           return null;
                         },
@@ -150,7 +150,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         decoration: const InputDecoration(labelText: 'Email'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter your email';
+                            return 'Masukan Email';
                           }
                           return null;
                         },
@@ -161,7 +161,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             const InputDecoration(labelText: 'No Telepon'),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter your phone number';
+                            return 'Masukan no Telp';
                           }
                           return null;
                         },
